@@ -338,7 +338,7 @@ async function renderAdminPage(){
     var facilities=[];
     for(var i=0;i<ud.documents.length;i++){if(ud.documents[i].facility&&facilities.indexOf(ud.documents[i].facility)===-1){facilities.push(ud.documents[i].facility);}}
     
-    var h='<div class="welcome-section"><h2>🛡️ Admin Panel - Taarifa Zote</h2><p>👑 Unaona taarifa za watoa huduma wote, watoto wote, na chanjo zote.</p></div>';
+    var h='<div class="welcome-section"><h2>🛡️ Admin Panel - Taarifa Zote</h2>
     
     // ANNOUNCEMENT CARD
     h+='<div class="card" style="border:2px solid var(--warning);background:var(--warning-light);margin-bottom:24px;"><h3 style="color:#92400e;">📢 Tangazo kwa Watoa Huduma Wote</h3><div class="form-group"><label style="color:#92400e;">✏️ Ujumbe</label><textarea class="form-textarea" id="announcementMessage" style="background:var(--surface);" placeholder="Andika tangazo...">'+escapeHtml(ca)+'</textarea></div><div style="display:flex;gap:10px;"><button class="btn btn-primary" onclick="postAnnouncement()" style="background:var(--warning);">📢 Toa Tangazo</button><button class="btn btn-danger" onclick="clearAnnouncement()">🗑️ Futa Tangazo</button></div><div id="announcementStatus" style="margin-top:10px;"></div></div>';
