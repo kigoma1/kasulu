@@ -607,7 +607,7 @@ async function saveAnnouncement(message) {
 
 // ==================== UTILS ====================
 function showToast(msg, type='info') {
-    const icons = {success:'✅', error:'❌', warning:'⚠️', info:'ℹ️'};
+    const icons = {success:'✅', error:'x', warning:'⚠️', info:'ℹ️'};
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
@@ -646,10 +646,10 @@ async function register() {
 
     setStatus('');
     if(!fullName||!email||!password||!phone||!region||!district||!facility||!gender) {
-        setStatus('❌ Tafadhali jaza taarifa ZOTE zenye alama ya nyota (*).', 'error');
+        setStatus('x Tafadhali jaza taarifa ZOTE zenye alama ya nyota (*).', 'error');
         return;
     }
-    if(password.length < 8) { setStatus('❌ Nywila iwe na angalau herufi 8.', 'error'); return; }
+    if(password.length < 8) { setStatus('x Nywila iwe na angalau herufi 8.', 'error'); return; }
 
     setStatus('⏳ Inasajili akaunti yako...', 'success');
     showLoading(true);
@@ -680,7 +680,7 @@ async function login() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     setStatus('');
-    if(!email || !password) { setStatus('❌ Jaza email na nywila.', 'error'); return; }
+    if(!email || !password) { setStatus('x Jaza email na nywila.', 'error'); return; }
 
     setStatus('⏳ Inakuingiza...', 'success');
     showLoading(true);
@@ -695,8 +695,8 @@ async function login() {
     } catch(e) {
         showLoading(false);
         let errorMsg = '';
-        if(e.message.includes('Invalid credentials')) errorMsg = '❌ <strong>Email au Nywila si sahihi!</strong><br><br>Sababu zinazowezekana:<br>• Umeingiza email au nywila isiyo sahihi<br>• Hakikisha umejisajili kwanza<br><br><a href="#" onclick="showAuthForm(\'register\')" style="color:var(--primary);">👉 Bonyeza hapa kusajili</a>';
-        else errorMsg = `❌ Imeshindwa kuingia.<br><small>${escapeHtml(e.message)}</small>`;
+        if(e.message.includes('Invalid credentials')) errorMsg = 'x <strong>Email au Nywila si sahihi!</strong><br><br>Sababu zinazowezekana:<br>• Umeingiza email au nywila isiyo sahihi<br>• Hakikisha umejisajili kwanza<br><br><a href="#" onclick="showAuthForm(\'register\')" style="color:var(--primary);">👉 Bonyeza hapa kusajili</a>';
+        else errorMsg = `x Imeshindwa kuingia.<br><small>${escapeHtml(e.message)}</small>`;
         setStatus(errorMsg, 'error');
     }
 }
@@ -863,7 +863,7 @@ async function quickVaccinate() {
         resultDiv.innerHTML = `<p style="color:var(--success);">✅ Chanjo ya <strong>${vaccineName}</strong> imerekodiwa kwa <strong>${escapeHtml(child?.fullName||'Mtoto')}</strong>!</p>`;
         setTimeout(() => navigateTo('dashboard'), 1000);
         showToast('Chanjo imerekodiwa!', 'success');
-    } catch(e) { resultDiv.innerHTML = `<p style="color:var(--danger);">❌ Imeshindwa: ${escapeHtml(e.message)}</p>`; }
+    } catch(e) { resultDiv.innerHTML = `<p style="color:var(--danger);">x Imeshindwa: ${escapeHtml(e.message)}</p>`; }
 }
 
 // ==================== CHILDREN ====================
@@ -886,7 +886,7 @@ async function filterChildren() {
 function openChildModal() {
     document.getElementById('modalContainer').innerHTML = `
         <div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
-            <div class="modal-header"><h3>➕ Sajili Mtoto</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
+            <div class="modal-header"><h3>+ Sajili Mtoto</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
             <div class="form-group"><label>Jina Kamili *</label><input type="text" class="form-input" id="cfn" placeholder="Jina kamili"></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Tarehe ya Kuzaliwa *</label><input type="date" class="form-input" id="cdob"></div><div class="form-group"><label>Jinsia *</label><select class="form-select" id="cgen"><option>Me</option><option>Ke</option></select></div></div>
             <div class="form-group"><label>Mzazi/Mlezi *</label><input type="text" class="form-input" id="cpn" placeholder="Jina la mzazi"></div>
@@ -1031,7 +1031,7 @@ async function postAnnouncement() {
     const statusDiv = document.getElementById('announcementStatus');
     
     if(!message) {
-        statusDiv.innerHTML = '<p style="color:var(--danger);">❌ Tafadhali andika ujumbe wa tangazo.</p>';
+        statusDiv.innerHTML = '<p style="color:var(--danger);">+ Tafadhali andika ujumbe wa tangazo.</p>';
         return;
     }
     
@@ -1042,7 +1042,7 @@ async function postAnnouncement() {
         statusDiv.innerHTML = '<p style="color:var(--success);">✅ Tangazo limetolewa kwa mafanikio! Litaonekana kwa watumiaji wote.</p>';
         showToast('Tangazo limetolewa!','success');
     } else {
-        statusDiv.innerHTML = '<p style="color:var(--danger);">❌ Imeshindwa kutoa tangazo. Angalia kama collection ya announcements ipo.</p>';
+        statusDiv.innerHTML = '<p style="color:var(--danger);">x Imeshindwa kutoa tangazo. Angalia kama collection ya announcements ipo.</p>';
     }
 }
 
@@ -1076,7 +1076,7 @@ async function clearAnnouncement() {
         statusDiv.innerHTML = '<p style="color:var(--success);">✅ Tangazo limefutwa.</p>';
         showToast('Tangazo limefutwa!','success');
     } catch(e) {
-        statusDiv.innerHTML = `<p style="color:var(--danger);">❌ Imeshindwa: ${escapeHtml(e.message)}</p>`;
+        statusDiv.innerHTML = `<p style="color:var(--danger);">x Imeshindwa: ${escapeHtml(e.message)}</p>`;
     }
 }
 
