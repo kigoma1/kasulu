@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="sw" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>JOEVACCINATION SYSTEM</title>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --primary-gradient: linear-gradient(135deg, #2563eb, #3b82f6);
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --info: #06b6d4;
+            --info-light: #cffafe;
+            --bg: #f0f4f8;
+            --bg-secondary: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --border-focus: #2563eb;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0f1e;
+            --bg-secondary: #111827;
+            --surface: #1a2332;
+            --surface-hover: #243044;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-light: #64748b;
+            --border: #2d3a4a;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow: 0 4px 6px rgba(0,0,0,0.4);
+            --shadow-md: 0 6px 12px rgba(0,0,0,0.5);
+            --shadow-lg: 0 15px 30px rgba(0,0,0,0.6);
+            --shadow-xl: 0 25px 50px rgba(0,0,0,0.7);
+            --primary-light: #1e3a5f;
+            --success-light: #064e3b;
+            --warning-light: #78350f;
+            --danger-light: #7f1d1d;
+            --info-light: #164e63;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.4s;
+        }
+        .loading-screen.hidden { opacity: 0; pointer-events: none; display: none; }
+        .loader-container { text-align: center; }
+        .loader-ring {
+            width: 56px; height: 56px; border: 3px solid var(--border);
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin: 0 auto 16px;
+        }
+        .loader-text { color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed; top: 24px; right: 24px; z-index: 10000;
+            display: flex; flex-direction: column; gap: 10px; max-width: 420px;
+        }
+        .toast {
+            padding: 16px 20px; border-radius: var(--radius);
+            background: var(--surface); color: var(--text);
+            box-shadow: var(--shadow-xl); display: flex; align-items: center;
+            gap: 12px; animation: toastIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            border: 1px solid var(--border);
+        }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.info { border-left: 4px solid var(--info); }
+        .toast-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .toast-message { flex: 1; font-weight: 500; }
+        @keyframes toastIn {
+            from { transform: translateX(120%) scale(0.8); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        /* App Header */
+        .app-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px; height: 68px; display: flex; align-items: center;
+            justify-content: space-between; position: sticky; top: 0; z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+        .app-logo {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.2rem; font-weight: 700; color: var(--primary);
+        }
+        .app-logo .logo-icon {
+            width: 42px; height: 42px; border-radius: var(--radius);
+            background: var(--primary-gradient); display: flex;
+            align-items: center; justify-content: center; color: white; font-size: 1.3rem;
+        }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        /* Theme Toggle */
+        .theme-toggle-btn {
+            width: 48px; height: 28px; border-radius: 30px;
+            background: var(--border); border: none; cursor: pointer;
+            position: relative; transition: var(--transition); padding: 0;
+        }
+        .theme-toggle-btn .toggle-circle {
+            position: absolute; top: 3px; left: 3px;
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--surface); box-shadow: var(--shadow);
+            transition: var(--transition); display: flex;
+            align-items: center; justify-content: center; font-size: 0.7rem;
+        }
+        [data-theme="dark"] .theme-toggle-btn { background: var(--primary); }
+        [data-theme="dark"] .theme-toggle-btn .toggle-circle { left: 23px; }
+
+        /* Buttons */
+        .btn {
+            padding: 11px 22px; border: none; border-radius: var(--radius-sm);
+            font-weight: 600; font-size: 0.9rem; cursor: pointer;
+            transition: var(--transition); display: inline-flex;
+            align-items: center; gap: 8px; white-space: nowrap;
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-primary {
+            background: var(--primary-gradient); color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: var(--surface); color: var(--text);
+            border: 2px solid var(--border);
+        }
+        .btn-secondary:hover { background: var(--surface-hover); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-sm { padding: 7px 16px; font-size: 0.8rem; border-radius: 20px; }
+        .btn-outline {
+            background: transparent; border: 2px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; margin-bottom: 5px; font-weight: 600;
+            font-size: 0.85rem; color: var(--text-secondary);
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+            border-radius: var(--radius-sm); font-size: 0.95rem;
+            background: var(--bg-secondary); color: var(--text);
+            transition: var(--transition); font-family: var(--font);
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+            background: var(--surface);
+        }
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        /* Cards */
+        .card {
+            background: var(--surface); border-radius: var(--radius-lg);
+            padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border);
+            transition: var(--transition); margin-bottom: 20px;
+        }
+        .card:hover { box-shadow: var(--shadow-md); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--surface); border-radius: var(--radius-lg);
+            padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 16px; transition: var(--transition);
+            cursor: pointer;
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-lg); transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .stat-icon {
+            width: 52px; height: 52px; border-radius: var(--radius);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; flex-shrink: 0;
+        }
+        .stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto; border-radius: var(--radius-lg);
+            border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+        }
+        table { width: 100%; border-collapse: collapse; background: var(--surface); }
+        th {
+            background: var(--bg-secondary); padding: 14px 16px; text-align: left;
+            font-weight: 700; font-size: 0.8rem; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border);
+        }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        tbody tr { transition: var(--transition); }
+        tbody tr:hover { background: var(--bg-secondary); }
+
+        /* Badges */
+        .badge {
+            padding: 5px 12px; border-radius: 20px; font-size: 0.75rem;
+            font-weight: 600; display: inline-block;
+        }
+        .badge-success { background: var(--success-light); color: #065f46; }
+        .badge-danger { background: var(--danger-light); color: #991b1b; }
+        .badge-warning { background: var(--warning-light); color: #92400e; }
+        .badge-info { background: var(--info-light); color: #155e75; }
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; animation: fadeIn 0.2s; backdrop-filter: blur(4px);
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal {
+            background: var(--surface); border-radius: var(--radius-xl);
+            padding: 30px; max-width: 580px; width: 92%;
+            max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-xl);
+            animation: modalIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            border: 1px solid var(--border);
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+        }
+        .modal-header h3 { font-size: 1.3rem; font-weight: 700; }
+        .close-btn {
+            width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border);
+            background: var(--surface); cursor: pointer; font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); color: var(--text);
+        }
+        .close-btn:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 6px; background: var(--bg-secondary);
+            padding: 6px; border-radius: var(--radius); margin-bottom: 20px;
+            flex-wrap: wrap; border: 1px solid var(--border);
+        }
+        .tab {
+            padding: 10px 20px; border: none; border-radius: var(--radius-sm);
+            cursor: pointer; font-weight: 600; font-size: 0.9rem;
+            background: transparent; color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .tab.active {
+            background: var(--surface); color: var(--primary);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex; gap: 4px; flex-wrap: wrap; padding: 8px 0;
+        }
+        .nav-link {
+            padding: 10px 18px; border-radius: 30px;
+            text-decoration: none; color: var(--text-secondary);
+            font-weight: 600; font-size: 0.9rem; transition: var(--transition);
+            cursor: pointer; border: 2px solid transparent;
+        }
+        .nav-link:hover { background: var(--bg-secondary); color: var(--text); }
+        .nav-link.active {
+            background: var(--primary-light); color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Search */
+        .search-box {
+            display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .search-box .form-input { flex: 1; min-width: 200px; border-radius: 30px; }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: var(--primary-gradient); color: white;
+            border-radius: var(--radius-lg); padding: 24px 28px;
+            margin-bottom: 24px; box-shadow: var(--shadow-lg);
+        }
+        .welcome-section h2 { font-size: 1.4rem; margin-bottom: 4px; }
+        .welcome-section p { opacity: 0.9; font-size: 0.9rem; }
+
+        /* Page Title */
+        .page-title {
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 14px; margin-bottom: 20px;
+        }
+
+        .hidden { display: none !important; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+        .empty-icon { font-size: 3.5rem; margin-bottom: 12px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 14px; gap: 10px; }
+            .stat-icon { width: 42px; height: 42px; font-size: 1.3rem; }
+            .stat-value { font-size: 1.5rem; }
+            .app-header { padding: 0 14px; height: 56px; }
+            .app-logo { font-size: 1rem; }
+            .modal { padding: 20px; }
+            th, td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <p class="loader-text">JOEVACCINATION SYSTEM inapakia...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- App Container -->
+    <div id="appContainer" class="hidden">
+        <header class="app-header">
+            <div class="app-logo">
+                <div class="logo-icon">💉</div>
+                JOEVACCINATION SYSTEM
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle-btn" onclick="toggleTheme()" title="Badilisha mwanga" id="themeToggleBtn">
+                    <span class="toggle-circle" id="toggleCircle">☀️</span>
+                </button>
+                <span id="userDisplayName" style="font-weight:600;font-size:0.9rem;"></span>
+                <button class="btn btn-sm btn-outline" onclick="logout()">🚪 Toka</button>
+            </div>
+        </header>
+        <div style="padding:12px 24px 0;background:var(--surface);border-bottom:1px solid var(--border);">
+            <nav class="nav-container" id="mainNav">
+                <a class="nav-link active" data-page="dashboard">📊 Dashboard</a>
+                <a class="nav-link" data-page="children">👶 Watoto</a>
+                <a class="nav-link" data-page="vaccinations">💉 Chanjo</a>
+                <a class="nav-link" data-page="schedule">📅 Ratiba</a>
+                <a class="nav-link" data-page="reports">📈 Ripoti</a>
+                <a class="nav-link admin-only hidden" data-page="admin">🔐 Admin</a>
+            </nav>
+        </div>
+        <div style="padding:24px;max-width:1400px;margin:0 auto;" id="pageContent"></div>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="authContainer" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);">
+        <div class="card" style="max-width:480px;width:100%;padding:36px 28px;" id="authCard">
+            <div id="loginForm">
+                <div style="text-align:center;margin-bottom:28px;">
+                    <div style="width:60px;height:60px;border-radius:var(--radius);background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 14px;color:white;">💉</div>
+                    <h2 style="color:var(--text);">JOEVACCINATION SYSTEM</h2>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;">Ingia kusimamia chanjo za watoto</p>
+                </div>
+                <div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="example@email.com"></div>
+                <div class="form-group"><label>Nywila</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div>
+                <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;" onclick="login()">🔐 Ingia</button>
+                <div style="text-align:center;margin-top:18px;">
+                    <a href="#" onclick="showAuthForm('register')" style="color:var(--primary);font-weight:600;text-decoration:none;">📝 Sajili akaunti mpya</a>
+                </div>
+            </div>
+            <div id="registerForm" class="hidden">
+                <div style="text-align:center;margin-bottom:24px;">
+                    <h2 style="color:var(--primary);">📝 Sajili Akaunti</h2>
+                    <p style="color:var(--text-secondary);font-size:0.85rem;">Jaza taarifa za kituo chako cha afya</p>
+                </div>
+                <div class="form-group"><label>Jina Kamili *</label><input type="text" class="form-input" id="regFullName" placeholder="Jina lako kamili"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="form-group"><label>Jinsia *</label><select class="form-select" id="regGender"><option value="">Chagua</option><option>Me</option><option>Ke</option></select></div>
+                    <div class="form-group"><label>Simu *</label><input type="tel" class="form-input" id="regPhone" placeholder="07XXXXXXXX"></div>
+                </div>
+                <div class="form-group"><label>Email *</label><input type="email" class="form-input" id="regEmail" placeholder="example@email.com"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="form-group"><label>Mkoa *</label><input type="text" class="form-input" id="regRegion" placeholder="Mkoa"></div>
+                    <div class="form-group"><label>Wilaya *</label><input type="text" class="form-input" id="regDistrict" placeholder="Wilaya"></div>
+                </div>
+                <div class="form-group"><label>Kituo cha Afya *</label><input type="text" class="form-input" id="regFacility" placeholder="Jina la kituo"></div>
+                <div class="form-group"><label>Nywila * (Angalau herufi 8)</label><input type="password" class="form-input" id="regPassword" placeholder="••••••••"></div>
+                <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;" onclick="register()">📝 Sajili</button>
+                <div style="text-align:center;margin-top:18px;">
+                    <a href="#" onclick="showAuthForm('login')" style="color:var(--primary);font-weight:600;">← Tayari una akaunti? Ingia</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ==================== APPWRITE CONFIG ====================
+const APPWRITE_CONFIG = {
+    endpoint: 'https://fra.cloud.appwrite.io/v1',
+    projectId: '6a21b1440038c361fabb',
+    databaseId: '6a21b1f8000e608360bb',
+    collections: {
+        users: 'users',
+        children: 'children',
+        vaccinations: 'vaccinations',
+        systemSettings: 'system_settings'
+    }
+};
+
+const { Client, Account, Databases, ID, Query } = Appwrite;
+const client = new Client().setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
+const account = new Account(client);
+const databases = new Databases(client);
+
+let currentUser = null;
+let isAdmin = false;
+const VACCINES = ['BCG', 'OPV', 'Pentavalent', 'PCV', 'Rotavirus', 'IPV', 'Measles', 'Rubella', 'Vitamin A'];
+
+// ==================== THEME ====================
+function toggleTheme() {
+    const html = document.documentElement;
+    const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    const circle = document.getElementById('toggleCircle');
+    if (circle) circle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+}
+
+function initTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = prefersDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    const circle = document.getElementById('toggleCircle');
+    if (circle) circle.textContent = theme === 'dark' ? '🌙' : '☀️';
+}
+
+// ==================== UTILS ====================
+function showToast(msg, type='info') {
+    const icons = {success:'✅', error:'❌', warning:'⚠️', info:'ℹ️'};
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><span class="toast-message">${msg}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(120%)'; setTimeout(()=>toast.remove(),300); }, 4000);
+}
+
+function showLoading(s=true) {
+    document.getElementById('loadingScreen').classList.toggle('hidden', !s);
+}
+
+function escapeHtml(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function formatDate(d) { if(!d) return '-'; return new Date(d).toLocaleDateString('sw-TZ',{year:'numeric',month:'short',day:'numeric'}); }
+function getDaysRemaining(d) { if(!d) return null; return Math.ceil((new Date(d)-new Date())/(1000*60*60*24)); }
+
+// ==================== AUTH ====================
+function showAuthForm(f) {
+    document.getElementById('loginForm').classList.toggle('hidden', f!=='login');
+    document.getElementById('registerForm').classList.toggle('hidden', f!=='register');
+}
+
+async function register() {
+    const fullName = document.getElementById('regFullName').value.trim();
+    const gender = document.getElementById('regGender').value;
+    const phone = document.getElementById('regPhone').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const region = document.getElementById('regRegion').value.trim();
+    const district = document.getElementById('regDistrict').value.trim();
+    const facility = document.getElementById('regFacility').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    if(!fullName||!email||!password||!phone||!region||!district||!facility||!gender) return showToast('Jaza taarifa zote zenye *','error');
+    if(password.length<8) return showToast('Nywila iwe na angalau herufi 8','error');
+
+    showLoading(true);
+    try {
+        const userAccount = await account.create(ID.unique(), email, password, fullName);
+        let role = 'health_worker';
+        try { const labels = await account.listLabels(); if(labels.labels&&labels.labels.includes('admin')) role='admin'; } catch(e) {}
+        
+        await databases.createDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.users, ID.unique(), {
+            userId: userAccount.$id, fullName, gender, phone, email, region, district, facility, role, status: 'active', createdAt: new Date().toISOString()
+        });
+        
+        await account.createEmailSession(email, password);
+        await loadUserAndEnter(userAccount.$id);
+        showLoading(false);
+        showToast(`Karibu ${fullName}! Akaunti imesajiliwa.`,'success');
+    } catch(e) {
+        showLoading(false);
+        showToast('Imeshindwa: '+e.message,'error');
+    }
+}
+
+async function login() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if(!email||!password) return showToast('Jaza email na nywila','error');
+    
+    showLoading(true);
+    try {
+        await account.createEmailSession(email, password);
+        const userAccount = await account.get();
+        await loadUserAndEnter(userAccount.$id);
+        showLoading(false);
+    } catch(e) {
+        showLoading(false);
+        showToast('Email au nywila si sahihi','error');
+    }
+}
+
+async function loadUserAndEnter(userId) {
+    let role = 'health_worker';
+    try { const user=await account.get(); if(user.labels&&user.labels.includes('admin')) role='admin'; if(user.prefs&&user.prefs.role==='admin') role='admin'; } catch(e) {}
+    
+    const userDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.users, [Query.equal('userId',userId)]);
+    if(userDocs.documents.length===0) {
+        const ua=await account.get();
+        await databases.createDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.users, ID.unique(), {
+            userId, fullName:ua.name||'', email:ua.email||'', phone:'', gender:'', region:'', district:'', facility:'', role, status:'active', createdAt:new Date().toISOString()
+        });
+        currentUser = {userId, fullName:ua.name, email:ua.email, role, status:'active'};
+    } else {
+        currentUser = userDocs.documents[0];
+        if(currentUser.role!==role) { await databases.updateDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.users, currentUser.$id, {role}); currentUser.role=role; }
+    }
+    
+    isAdmin = (role==='admin');
+    document.getElementById('userDisplayName').textContent = currentUser.fullName||currentUser.email||'Mtoa Huduma';
+    document.getElementById('authContainer').classList.add('hidden');
+    document.getElementById('appContainer').classList.remove('hidden');
+    if(isAdmin) document.querySelectorAll('.admin-only').forEach(el=>el.classList.remove('hidden'));
+    navigateTo('dashboard');
+}
+
+async function logout() {
+    try{await account.deleteSession('current');}catch(e){}
+    currentUser=null; isAdmin=false;
+    document.getElementById('appContainer').classList.add('hidden');
+    document.getElementById('authContainer').classList.remove('hidden');
+    document.getElementById('authContainer').style.display='flex';
+    document.querySelectorAll('.admin-only').forEach(el=>el.classList.add('hidden'));
+    showAuthForm('login');
+    showToast('Umetoka kwenye mfumo','info');
+}
+
+// ==================== NAVIGATION ====================
+function navigateTo(page) {
+    document.querySelectorAll('.nav-link').forEach(l=>l.classList.toggle('active',l.dataset.page===page));
+    loadPage(page);
+}
+
+async function loadPage(page) {
+    const container = document.getElementById('pageContent');
+    showLoading(true);
+    try {
+        if(page==='dashboard') container.innerHTML = await renderDashboard();
+        else if(page==='children') container.innerHTML = await renderChildrenPage();
+        else if(page==='vaccinations') container.innerHTML = await renderVaccinationsPage();
+        else if(page==='schedule') container.innerHTML = await renderSchedulePage();
+        else if(page==='reports') container.innerHTML = await renderReportsPage();
+        else if(page==='admin') container.innerHTML = isAdmin ? await renderAdminPage() : '<div class="card empty-state"><div class="empty-icon">🔒</div><h3>Hauna Ruhusa</h3><p>Admin pekee anaweza kufungua.</p></div>';
+        attachNavEvents();
+    } catch(e) {
+        container.innerHTML = `<div class="card empty-state"><div class="empty-icon">❌</div><h3>Imeshindwa</h3><p>${escapeHtml(e.message)}</p><button class="btn btn-primary" style="margin-top:16px;" onclick="navigateTo('dashboard')">Rudi Dashboard</button></div>`;
+    }
+    showLoading(false);
+}
+
+function attachNavEvents() {
+    document.querySelectorAll('.nav-link').forEach(l=>{l.onclick=(e)=>{e.preventDefault();navigateTo(l.dataset.page);};});
+}
+
+// ==================== DASHBOARD (Imeboreshwa na quick vaccinate) ====================
+async function renderDashboard() {
+    const childrenDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.equal('createdBy',currentUser.userId)]);
+    const childIds = childrenDocs.documents.map(c=>c.childId);
+    let allVax = [];
+    for(const cid of childIds) {
+        const v = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, [Query.equal('childId',cid), Query.orderDesc('vaccinationDate')]);
+        allVax = allVax.concat(v.documents);
+    }
+    const today = new Date().toISOString().split('T')[0];
+    const todayVax = allVax.filter(v=>v.vaccinationDate===today);
+    const upcoming = allVax.filter(v=>v.nextVaccinationDate&&v.nextVaccinationDate>today);
+    const overdue = allVax.filter(v=>v.nextVaccinationDate&&v.nextVaccinationDate<today);
+
+    // Store data for quick actions
+    window._dashData = { children: childrenDocs.documents, allVax, todayVax, upcoming, overdue };
+
+    return `
+        <div class="welcome-section">
+            <h2>👋 Karibu, ${escapeHtml(currentUser.fullName||currentUser.email)}!</h2>
+            <p>🏥 ${escapeHtml(currentUser.facility||'Kituo chako')} | ${currentUser.role==='admin'?'👑 Admin':'👨‍⚕️ Mtoa Huduma'}</p>
+        </div>
+        
+        <!-- Quick Vaccinate Section -->
+        <div class="card" style="border:2px solid var(--primary);background:var(--primary-light);margin-bottom:24px;">
+            <h3 style="color:var(--primary);margin-bottom:12px;">⚡ Rekodi Chanjo kwa Haraka</h3>
+            <p style="color:var(--text-secondary);margin-bottom:14px;font-size:0.9rem;">Chagua mtoto na aina ya chanjo kurekodi haraka bila kwenda ukurasa mwingine.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:0.8rem;">👶 Mtoto</label>
+                    <select class="form-select" id="quickChild" style="background:var(--surface);">
+                        <option value="">Chagua mtoto...</option>
+                        ${childrenDocs.documents.map(c=>`<option value="${c.childId}">${escapeHtml(c.fullName)}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:0.8rem;">💉 Chanjo</label>
+                    <select class="form-select" id="quickVaccine" style="background:var(--surface);">
+                        <option value="">Chagua chanjo...</option>
+                        ${VACCINES.map(v=>`<option value="${v}">${v}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:0.8rem;">📅 Tarehe</label>
+                    <input type="date" class="form-input" id="quickDate" value="${today}" style="background:var(--surface);">
+                </div>
+                <button class="btn btn-primary" onclick="quickVaccinate()" style="height:42px;">💉 Rekodi</button>
+            </div>
+            <div id="quickVaxResult" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" onclick="navigateTo('children')">
+                <div class="stat-icon" style="background:var(--primary-light);color:var(--primary);">👶</div>
+                <div><div class="stat-value">${childrenDocs.total}</div><div class="stat-label">Watoto Waliosajiliwa</div></div>
+            </div>
+            <div class="stat-card" onclick="navigateTo('vaccinations')">
+                <div class="stat-icon" style="background:var(--success-light);color:var(--success);">💉</div>
+                <div><div class="stat-value">${allVax.length}</div><div class="stat-label">Chanjo Zilizotolewa</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:var(--warning-light);color:var(--warning);">📅</div>
+                <div><div class="stat-value">${todayVax.length}</div><div class="stat-label">Chanjo za Leo</div></div>
+            </div>
+            <div class="stat-card" onclick="navigateTo('schedule')">
+                <div class="stat-icon" style="background:var(--danger-light);color:var(--danger);">⚠️</div>
+                <div><div class="stat-value">${overdue.length}</div><div class="stat-label">Zilizochelewa</div></div>
+            </div>
+        </div>
+
+        <!-- Leo's Vaccinations -->
+        ${todayVax.length > 0 ? `
+        <div class="card" style="border-left:4px solid var(--success);">
+            <h3 style="color:var(--success);margin-bottom:14px;">✅ Chanjo za Leo (${todayVax.length})</h3>
+            <div class="table-container">
+                <table><thead><tr><th>Mtoto</th><th>Chanjo</th><th>Dozi</th><th>Mtoa Huduma</th></tr></thead>
+                <tbody>${todayVax.map(v=>{const c=childrenDocs.documents.find(x=>x.childId===v.childId);return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td><span class="badge badge-success">${v.vaccineName}</span></td><td>${v.dose}</td><td>${escapeHtml(currentUser.fullName||'Mtoa')}</td></tr>`;}).join('')}</tbody></table>
+            </div>
+        </div>` : ''}
+
+        <!-- Overdue -->
+        ${overdue.length > 0 ? `
+        <div class="card" style="border-left:4px solid var(--danger);">
+            <h3 style="color:var(--danger);margin-bottom:14px;">⚠️ Zilizochelewa (${overdue.length})</h3>
+            <div class="table-container">
+                <table><thead><tr><th>Mtoto</th><th>Chanjo</th><th>Ilitakiwa</th><th>Siku</th><th>Vitendo</th></tr></thead>
+                <tbody>${overdue.slice(0,5).map(v=>{const c=childrenDocs.documents.find(x=>x.childId===v.childId);const days=Math.abs(getDaysRemaining(v.nextVaccinationDate));return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td>${v.vaccineName} D${v.dose}</td><td>${formatDate(v.nextVaccinationDate)}</td><td><span class="badge badge-danger">${days} siku</span></td><td><button class="btn btn-sm btn-primary" onclick="vaccinateChild('${v.childId}')">💉 Toa Chanjo</button></td></tr>`;}).join('')}</tbody></table>
+            </div>
+        </div>` : ''}
+
+        <!-- Upcoming -->
+        <div class="card">
+            <h3 style="margin-bottom:14px;">📅 Chanjo Zinazofuata</h3>
+            <div class="table-container">
+                <table><thead><tr><th>Mtoto</th><th>Chanjo</th><th>Tarehe</th><th>Siku</th><th>Vitendo</th></tr></thead>
+                <tbody>${upcoming.sort((a,b)=>a.nextVaccinationDate?.localeCompare(b.nextVaccinationDate||'')).slice(0,10).map(v=>{const c=childrenDocs.documents.find(x=>x.childId===v.childId);const days=getDaysRemaining(v.nextVaccinationDate);return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td>${v.vaccineName} D${v.dose}</td><td>${formatDate(v.nextVaccinationDate)}</td><td><span class="badge ${days<7?'badge-warning':'badge-info'}">${days} siku</span></td><td><button class="btn btn-sm btn-primary" onclick="vaccinateChild('${v.childId}')">💉 Toa</button></td></tr>`;}).join('')||'<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div><p>Hakuna chanjo zinazofuata</p></div></td></tr>'}</tbody></table>
+            </div>
+        </div>
+        <div id="modalContainer"></div>`;
+}
+
+// Quick Vaccinate from Dashboard
+async function quickVaccinate() {
+    const childId = document.getElementById('quickChild').value;
+    const vaccineName = document.getElementById('quickVaccine').value;
+    const date = document.getElementById('quickDate').value;
+    const resultDiv = document.getElementById('quickVaxResult');
+
+    if(!childId || !vaccineName || !date) {
+        resultDiv.innerHTML = '<p style="color:var(--danger);">❌ Tafadhali chagua mtoto, chanjo na tarehe.</p>';
+        return;
+    }
+
+    resultDiv.innerHTML = '<p style="color:var(--primary);">⏳ Inarekodi chanjo...</p>';
+
+    try {
+        const next = new Date(date);
+        const intervals = {BCG:0, OPV:28, Pentavalent:28, PCV:28, Rotavirus:28, IPV:28, Measles:0, Rubella:0, 'Vitamin A':180};
+        next.setDate(next.getDate() + (intervals[vaccineName] || 28));
+        const nextDate = intervals[vaccineName] === 0 ? '' : next.toISOString().split('T')[0];
+
+        await databases.createDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, ID.unique(), {
+            vaccinationId: ID.unique(), childId, vaccineName, dose: 1,
+            vaccinationDate: date, nextVaccinationDate: nextDate,
+            providerId: currentUser.userId, notes: 'Imerekodiwa kutoka Dashboard',
+            createdAt: new Date().toISOString()
+        });
+
+        // Find child name
+        const child = window._dashData?.children?.find(c=>c.childId===childId);
+        
+        resultDiv.innerHTML = `<p style="color:var(--success);">✅ Chanjo ya <strong>${vaccineName}</strong> imerekodiwa kwa <strong>${escapeHtml(child?.fullName||'Mtoto')}</strong>!</p>`;
+        
+        // Refresh dashboard after 1 second
+        setTimeout(() => navigateTo('dashboard'), 1000);
+        showToast(`Chanjo ya ${vaccineName} imerekodiwa!`, 'success');
+    } catch(e) {
+        resultDiv.innerHTML = `<p style="color:var(--danger);">❌ Imeshindwa: ${escapeHtml(e.message)}</p>`;
+    }
+}
+
+// ==================== CHILDREN PAGE ====================
+async function renderChildrenPage() {
+    const docs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.equal('createdBy',currentUser.userId), Query.orderDesc('$createdAt')]);
+    window._children = docs.documents;
+    return `
+        <div class="page-header">
+            <h2 class="page-title">👶 Watoto (${docs.total})</h2>
+            <button class="btn btn-primary" onclick="openChildModal()">➕ Sajili Mtoto</button>
+        </div>
+        <div class="search-box">
+            <input type="text" class="form-input" id="childSearch" placeholder="🔍 Tafuta kwa jina, simu..." oninput="filterChildren()">
+        </div>
+        <div class="table-container card" style="padding:0;">
+            <table><thead><tr><th>Jina</th><th>Jinsia</th><th>Mzazi</th><th>Simu</th><th>Kituo</th><th>Vitendo</th></tr></thead>
+            <tbody id="childrenTable">${docs.documents.map(c=>`<tr><td><strong>${escapeHtml(c.fullName)}</strong></td><td>${c.gender==='Me'?'👦 Me':'👧 Ke'}</td><td>${escapeHtml(c.parentName)}</td><td>${escapeHtml(c.parentPhone)}</td><td>${escapeHtml(c.facility)}</td><td><button class="btn btn-sm btn-primary" onclick="vaccinateChild('${c.childId}')">💉 Chanjo</button></td></tr>`).join('')||'<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><h3>Hakuna Watoto</h3><p>Bonyeza "Sajili Mtoto" kuanza</p></div></td></tr>'}</tbody></table>
+        </div>
+        <div id="modalContainer"></div>`;
+}
+
+async function filterChildren() {
+    const s = document.getElementById('childSearch')?.value.toLowerCase()||'';
+    const filtered = window._children.filter(c=>c.fullName.toLowerCase().includes(s)||c.parentPhone.includes(s)||c.parentName.toLowerCase().includes(s));
+    document.getElementById('childrenTable').innerHTML = filtered.map(c=>`<tr><td><strong>${escapeHtml(c.fullName)}</strong></td><td>${c.gender==='Me'?'👦 Me':'👧 Ke'}</td><td>${escapeHtml(c.parentName)}</td><td>${escapeHtml(c.parentPhone)}</td><td>${escapeHtml(c.facility)}</td><td><button class="btn btn-sm btn-primary" onclick="vaccinateChild('${c.childId}')">💉 Chanjo</button></td></tr>`).join('')||'<tr><td colspan="6"><div class="empty-state"><h3>Hakuna matokeo</h3></div></td></tr>';
+}
+
+function openChildModal() {
+    document.getElementById('modalContainer').innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
+            <div class="modal-header"><h3>➕ Sajili Mtoto</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
+            <div class="form-group"><label>Jina Kamili *</label><input type="text" class="form-input" id="cfn" placeholder="Jina kamili la mtoto"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="form-group"><label>Tarehe ya Kuzaliwa *</label><input type="date" class="form-input" id="cdob"></div>
+                <div class="form-group"><label>Jinsia *</label><select class="form-select" id="cgen"><option>Me</option><option>Ke</option></select></div>
+            </div>
+            <div class="form-group"><label>Mzazi/Mlezi *</label><input type="text" class="form-input" id="cpn" placeholder="Jina la mzazi"></div>
+            <div class="form-group"><label>Simu *</label><input type="tel" class="form-input" id="cph" placeholder="07XXXXXXXX"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+                <div class="form-group"><label>Mkoa</label><input type="text" class="form-input" id="creg" value="${escapeHtml(currentUser.region||'')}"></div>
+                <div class="form-group"><label>Wilaya</label><input type="text" class="form-input" id="cdis" value="${escapeHtml(currentUser.district||'')}"></div>
+                <div class="form-group"><label>Kituo</label><input type="text" class="form-input" id="cfac" value="${escapeHtml(currentUser.facility||'')}"></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="saveChild()">💾 Sajili Mtoto</button>
+        </div></div>`;
+}
+
+function closeModal() { document.getElementById('modalContainer').innerHTML = ''; }
+
+async function saveChild() {
+    const fn=document.getElementById('cfn').value.trim();
+    const dob=document.getElementById('cdob').value;
+    const gen=document.getElementById('cgen').value;
+    const pn=document.getElementById('cpn').value.trim();
+    const ph=document.getElementById('cph').value.trim();
+    if(!fn||!dob||!pn||!ph) return showToast('Jaza taarifa zenye *','error');
+    try {
+        await databases.createDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, ID.unique(), {
+            childId: ID.unique(), fullName: fn, gender: gen, birthDate: dob,
+            parentName: pn, parentPhone: ph,
+            region: document.getElementById('creg').value.trim(),
+            district: document.getElementById('cdis').value.trim(),
+            facility: document.getElementById('cfac').value.trim(),
+            address: '', notes: '', createdBy: currentUser.userId, createdAt: new Date().toISOString()
+        });
+        closeModal();
+        navigateTo('children');
+        showToast('Mtoto amesajiliwa!','success');
+    } catch(e) { showToast('Imeshindwa: '+e.message,'error'); }
+}
+
+function vaccinateChild(childId) {
+    document.getElementById('modalContainer').innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
+            <div class="modal-header"><h3>💉 Rekodi Chanjo</h3><button class="close-btn" onclick="closeModal()">✕</button></div>
+            <div class="form-group"><label>Aina ya Chanjo *</label><select class="form-select" id="vxn">${VACCINES.map(v=>`<option>${v}</option>`).join('')}</select></div>
+            <div class="form-group"><label>Dozi *</label><input type="number" class="form-input" id="vxd" value="1" min="1" max="10"></div>
+            <div class="form-group"><label>Tarehe ya Kutolewa *</label><input type="date" class="form-input" id="vxdt" value="${new Date().toISOString().split('T')[0]}"></div>
+            <div class="form-group"><label>Maelezo</label><textarea class="form-textarea" id="vxnotes" placeholder="Maelezo ya ziada..."></textarea></div>
+            <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="saveVaccination('${childId}')">💾 Hifadhi Chanjo</button>
+        </div></div>`;
+}
+
+async function saveVaccination(childId) {
+    const vn=document.getElementById('vxn').value;
+    const dose=parseInt(document.getElementById('vxd').value);
+    const dt=document.getElementById('vxdt').value;
+    const notes=document.getElementById('vxnotes')?.value.trim()||'';
+    if(!vn||!dose||!dt) return showToast('Jaza taarifa zenye *','error');
+    const next=new Date(dt);
+    const intervals={BCG:0,OPV:28,Pentavalent:28,PCV:28,Rotavirus:28,IPV:28,Measles:0,Rubella:0,'Vitamin A':180};
+    next.setDate(next.getDate()+(intervals[vn]||28));
+    const nextDate=intervals[vn]===0?'':next.toISOString().split('T')[0];
+    try {
+        await databases.createDocument(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, ID.unique(), {
+            vaccinationId:ID.unique(),childId,vaccineName:vn,dose,vaccinationDate:dt,nextVaccinationDate:nextDate,
+            providerId:currentUser.userId,notes,createdAt:new Date().toISOString()
+        });
+        closeModal();
+        navigateTo('vaccinations');
+        showToast('Chanjo imerekodiwa!','success');
+    } catch(e) { showToast('Imeshindwa: '+e.message,'error'); }
+}
+
+// ==================== VACCINATIONS PAGE ====================
+async function renderVaccinationsPage() {
+    const childrenDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.equal('createdBy',currentUser.userId)]);
+    const childIds = childrenDocs.documents.map(c=>c.childId);
+    let allVax = [];
+    for(const cid of childIds) {
+        const v = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, [Query.equal('childId',cid), Query.orderDesc('vaccinationDate')]);
+        allVax = allVax.concat(v.documents);
+    }
+    window._vax = {vax:allVax, children:childrenDocs.documents};
+    return `
+        <div class="page-header">
+            <h2 class="page-title">💉 Kumbukumbu za Chanjo (${allVax.length})</h2>
+            <button class="btn btn-primary" onclick="navigateTo('children')">➕ Mtoto Mpya</button>
+        </div>
+        <div class="search-box">
+            <input type="text" class="form-input" id="vaxSearch" placeholder="🔍 Tafuta kwa jina au chanjo..." oninput="filterVax()">
+            <select class="form-select" id="vaxFilter" onchange="filterVax()" style="max-width:180px;">
+                <option value="">Aina Zote</option>${VACCINES.map(v=>`<option>${v}</option>`).join('')}
+            </select>
+        </div>
+        <div class="table-container card" style="padding:0;">
+            <table><thead><tr><th>Mtoto</th><th>Chanjo</th><th>Dozi</th><th>Tarehe</th><th>Inayofuata</th><th>Mtoa</th></tr></thead>
+            <tbody id="vaxTable">${allVax.map(v=>{const c=childrenDocs.documents.find(x=>x.childId===v.childId);const days=getDaysRemaining(v.nextVaccinationDate);return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td><span class="badge badge-primary">${v.vaccineName}</span></td><td>${v.dose}</td><td>${formatDate(v.vaccinationDate)}</td><td><span class="badge ${!v.nextVaccinationDate?'badge-success':days<0?'badge-danger':days<7?'badge-warning':'badge-info'}">${v.nextVaccinationDate?formatDate(v.nextVaccinationDate):'✅ Kamili'}</span></td><td>${escapeHtml(currentUser.fullName||'Mtoa')}</td></tr>`;}).join('')||'<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><h3>Hakuna Chanjo</h3><p>Bado hakuna chanjo zilizorekodiwa</p></div></td></tr>'}</tbody></table>
+        </div>`;
+}
+
+function filterVax() {
+    const s=document.getElementById('vaxSearch')?.value.toLowerCase()||'';
+    const type=document.getElementById('vaxFilter')?.value||'';
+    const d=window._vax;
+    let filtered=d.vax;
+    if(type) filtered=filtered.filter(v=>v.vaccineName===type);
+    if(s) filtered=filtered.filter(v=>{const c=d.children.find(x=>x.childId===v.childId);return(c?.fullName||'').toLowerCase().includes(s)||v.vaccineName.toLowerCase().includes(s);});
+    document.getElementById('vaxTable').innerHTML = filtered.map(v=>{const c=d.children.find(x=>x.childId===v.childId);const days=getDaysRemaining(v.nextVaccinationDate);return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td><span class="badge badge-primary">${v.vaccineName}</span></td><td>${v.dose}</td><td>${formatDate(v.vaccinationDate)}</td><td><span class="badge ${!v.nextVaccinationDate?'badge-success':days<0?'badge-danger':days<7?'badge-warning':'badge-info'}">${v.nextVaccinationDate?formatDate(v.nextVaccinationDate):'✅ Kamili'}</span></td><td>${escapeHtml(currentUser.fullName||'Mtoa')}</td></tr>`;}).join('')||'<tr><td colspan="6"><div class="empty-state"><h3>Hakuna matokeo</h3></div></td></tr>';
+}
+
+// ==================== SCHEDULE ====================
+async function renderSchedulePage() {
+    const childrenDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.equal('createdBy',currentUser.userId)]);
+    const childIds = childrenDocs.documents.map(c=>c.childId);
+    let allVax = [];
+    for(const cid of childIds) {
+        const v = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, [Query.equal('childId',cid)]);
+        allVax = allVax.concat(v.documents);
+    }
+    const today = new Date().toISOString().split('T')[0];
+    const nextWeek = new Date(Date.now()+7*24*60*60*1000).toISOString().split('T')[0];
+    const overdue = allVax.filter(v=>v.nextVaccinationDate&&v.nextVaccinationDate<today);
+    const thisWeek = allVax.filter(v=>v.nextVaccinationDate&&v.nextVaccinationDate>=today&&v.nextVaccinationDate<=nextWeek);
+    window._schedule = {overdue, thisWeek, children:childrenDocs.documents};
+    return `
+        <h2 class="page-title">📅 Ratiba ya Chanjo</h2>
+        <div class="tabs">
+            <button class="tab active" onclick="showScheduleTab('overdue',this)">⚠️ Zilizochelewa (${overdue.length})</button>
+            <button class="tab" onclick="showScheduleTab('week',this)">📅 Wiki Hii (${thisWeek.length})</button>
+        </div>
+        <div id="scheduleContent">${renderScheduleTable(overdue)}</div>`;
+}
+
+function renderScheduleTable(data) {
+    const children = window._schedule?.children||[];
+    if(!data.length) return '<div class="card empty-state"><div class="empty-icon">✅</div><h3>Hakuna Chanjo</h3><p>Hakuna chanjo katika kipindi hiki</p></div>';
+    return `<div class="table-container card" style="padding:0;"><table><thead><tr><th>Mtoto</th><th>Chanjo</th><th>Dozi</th><th>Tarehe</th><th>Siku</th><th>Vitendo</th></tr></thead><tbody>${data.sort((a,b)=>a.nextVaccinationDate?.localeCompare(b.nextVaccinationDate||'')).map(v=>{const c=children.find(x=>x.childId===v.childId);const days=getDaysRemaining(v.nextVaccinationDate);return `<tr><td><strong>${escapeHtml(c?.fullName||'?')}</strong></td><td>${v.vaccineName}</td><td>${v.dose}</td><td>${formatDate(v.nextVaccinationDate)}</td><td><span class="badge ${days<0?'badge-danger':'badge-warning'}">${days<0?Math.abs(days)+' zimepita':days+' siku'}</span></td><td><button class="btn btn-sm btn-primary" onclick="vaccinateChild('${v.childId}')">💉 Toa</button></td></tr>`;}).join('')}</tbody></table></div>`;
+}
+
+function showScheduleTab(type,btn) {
+    document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('scheduleContent').innerHTML = renderScheduleTable(window._schedule[type]);
+}
+
+// ==================== REPORTS ====================
+async function renderReportsPage() {
+    const childrenDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.equal('createdBy',currentUser.userId)]);
+    const childIds = childrenDocs.documents.map(c=>c.childId);
+    let allVax = [];
+    for(const cid of childIds) {
+        const v = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, [Query.equal('childId',cid)]);
+        allVax = allVax.concat(v.documents);
+    }
+    window._reports = {childrenDocs, allVax};
+    const byVaccine = {};
+    allVax.forEach(v=>{byVaccine[v.vaccineName]=(byVaccine[v.vaccineName]||0)+1;});
+    return `
+        <h2 class="page-title">📈 Ripoti za Chanjo</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon" style="background:var(--primary-light);color:var(--primary);">👶</div><div><div class="stat-value">${childrenDocs.total}</div><div class="stat-label">Watoto</div></div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--success-light);color:var(--success);">💉</div><div><div class="stat-value">${allVax.length}</div><div class="stat-label">Chanjo</div></div></div>
+        </div>
+        <div class="card"><h4>💉 Chanjo kwa Aina</h4><div class="table-container"><table><thead><tr><th>Chanjo</th><th>Idadi</th></tr></thead><tbody>${Object.entries(byVaccine).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td><strong>${k}</strong></td><td><span class="badge badge-primary">${v}</span></td></tr>`).join('')}</tbody></table></div></div>
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="exportCSV()">📥 Pakua CSV</button>`;
+}
+
+function exportCSV() {
+    const d=window._reports;
+    let csv='Mtoto,Jinsia,Mzazi,Simu,Kituo,Chanjo,Dozi,Tarehe,Inayofuata\n';
+    d.childrenDocs.documents.forEach(c=>{const cv=d.allVax.filter(v=>v.childId===c.childId);if(cv.length===0)csv+=`"${c.fullName}","${c.gender}","${c.parentName}","${c.parentPhone}","${c.facility}","-","-","-","-"\n`;else cv.forEach(v=>csv+=`"${c.fullName}","${c.gender}","${c.parentName}","${c.parentPhone}","${c.facility}","${v.vaccineName}","${v.dose}","${v.vaccinationDate}","${v.nextVaccinationDate||'-'}"\n`);});
+    const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='JOEVACCINATION_ripoti_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+    showToast('Ripoti imepakuliwa!','success');
+}
+
+// ==================== ADMIN ====================
+async function renderAdminPage() {
+    if(!isAdmin) return '<div class="card empty-state"><div class="empty-icon">🔒</div><h3>Hauna Ruhusa</h3><p>Admin pekee anaweza kufungua.</p></div>';
+    const usersDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.users, [Query.orderDesc('$createdAt')]);
+    const childrenDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.children, [Query.orderDesc('$createdAt')]);
+    const vaxDocs = await databases.listDocuments(APPWRITE_CONFIG.databaseId, APPWRITE_CONFIG.collections.vaccinations, [Query.orderDesc('vaccinationDate')]);
+    window._admin = {users:usersDocs.documents, children:childrenDocs.documents, vax:vaxDocs.documents};
+    return `
+        <div class="welcome-section"><h2>🔐 Admin Panel ya Siri</h2><p>👑 Admin pekee anaweza kusimamia mfumo wote.</p></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon" style="background:var(--primary-light);color:var(--primary);">👨‍⚕️</div><div><div class="stat-value">${usersDocs.total}</div><div class="stat-label">Watoa Huduma</div></div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--success-light);color:var(--success);">👶</div><div><div class="stat-value">${childrenDocs.total}</div><div class="stat-label">Watoto</div></div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--warning-light);color:var(--warning);">💉</div><div><div class="stat-value">${vaxDocs.total}</div><div class="stat-label">Chanjo</div></div></div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="showAdminTab('users',this)">👨‍⚕️ Watoa Huduma</button>
+            <button class="tab" onclick="showAdminTab('children',this)">👶 Watoto</button>
+            <button class="tab" onclick="showAdminTab('vax',this)">💉 Chanjo</button>
+        </div>
+        <div id="adminContent">${renderAdminUsers()}</div>`;
+}
+
+function renderAdminUsers() {
+    const u=window._admin.users;
+    return `<div class="card" style="padding:0;"><div class="table-container"><table><thead><tr><th>Jina</th><th>Email</th><th>Simu</th><th>Kituo</th><th>Role</th><th>Status</th><th>Vitendo</th></tr></thead><tbody>${u.map(x=>`<tr><td><strong>${escapeHtml(x.fullName)}</strong> ${x.role==='admin'?'👑':''}</td><td>${x.email}</td><td>${x.phone||'-'}</td><td>${escapeHtml(x.facility||'-')}</td><td><span class="badge ${x.role==='admin'?'badge-warning':'badge-info'}">${x.role}</span></td><td><span class="badge ${x.status==='active'?'badge-success':'badge-danger'}">${x.status}</span></td><td>${x.role!=='admin'?`<button class="btn btn-sm ${x.status==='active'?'btn-danger':'btn-success'}" onclick="toggleUserStatus('${x.userId}')">${x.status==='active'?'🔒 Zima':'🔓 Wezesha'}</button>`:'<span class="badge badge-primary">Admin</span>'}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
+function showAdminTab(type,btn) {
+    document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    const d=window._admin;
+    if(type==='users') document.getElementById('adminContent').innerHTML=renderAdminUsers();
+    else if(type==='children') document.getElementById('adminContent').innerHTML=`<div class="card" style="padding:0;"><div class="table-container"><table><thead><tr><th>Mtoto</th><th>Mzazi</th><th>Simu</th><th>Kituo</th></tr></thead><tbody>${d.children.map(c=>`<tr><td><strong>${escapeHtml(c.fullName)}</strong></td><td>${escapeHtml(c.parentName)}</td><td>${c.parentPhone}</td><td>${escapeHtml(c.facility)}</td></tr>`).join('')}</tbody></table></div></div>`;
+    else document.getElementById('adminContent').innerHTML=`<div class="card" style="padding:0;"><div class="table-container"><table><thead><tr><th>Chanjo</th><th>Dozi</th><th>Tarehe</th></tr></thead><tbody>${d.vax.map(v=>`<tr><td><strong>${v.vaccineName}</strong></td><td>${v.dose}</td><td>${formatDate(v.vaccinationDate)}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
+async function toggleUserStatus(userId) {
+    const docs=await databases.listDocuments(APPWRITE_CONFIG.databaseId,APPWRITE_CONFIG.collections.users,[Query.equal('userId',userId)]);
+    if(docs.documents.length===0) return;
+    const u=docs.documents[0];
+    if(u.role==='admin') return showToast('Huwezi kumzuia admin!','error');
+    await databases.updateDocument(APPWRITE_CONFIG.databaseId,APPWRITE_CONFIG.collections.users,u.$id,{status:u.status==='active'?'disabled':'active'});
+    navigateTo('admin');
+    showToast('Status imebadilishwa!','success');
+}
+
+// ==================== INIT ====================
+async function init() {
+    initTheme();
+    showLoading(true);
+    console.log('🚀 JOEVACCINATION SYSTEM Inaanza...');
+    console.log('📡 Endpoint:', APPWRITE_CONFIG.endpoint);
+    console.log('📦 Project:', APPWRITE_CONFIG.projectId);
+    
+    try {
+        const user = await account.get();
+        console.log('✅ User already logged in:', user.email);
+        await loadUserAndEnter(user.$id);
+    } catch(e) {
+        console.log('ℹ️ No active session, showing login');
+        document.getElementById('authContainer').classList.remove('hidden');
+        document.getElementById('authContainer').style.display='flex';
+        showAuthForm('login');
+    }
+    showLoading(false);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+console.log('💉 JOEVACCINATION SYSTEM Imepakiwa kwa Mafanikio!');
+console.log('👨‍⚕️ Mtoa huduma anaweza kurekodi chanjo moja kwa moja kutoka Dashboard');
+console.log('📊 Chanjo zinaonekana kwenye Dashboard mara moja');
+</script>
+</body>
+</html>
