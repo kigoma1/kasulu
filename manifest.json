@@ -1,13 +1,22 @@
 {
-  "name": "VACCINATION SYSTEM",
-  "short_name": "Vaccination",
-  "start_url": "./",
+  "name": "Behsit Field System",
+  "short_name": "Behsit Field",
+  "description": "Smart Internship Logbook Management System",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#1e40af",
-  "icons": [{
-    "src": "icon-192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }]
+  "background_color": "#1a5276",
+  "theme_color": "#1a5276",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a350eca003a8264a282/view?project=6a21b1440038c361fabb",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a350eca003a8264a282/view?project=6a21b1440038c361fabb",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
