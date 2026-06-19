@@ -1,3 +1,18 @@
-const CACHE='vaccination-v1';
-self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(['./'])}))});
-self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(res){if(!res||res.status!==200||res.type!=='basic')return res;var rc=res.clone();caches.open(CACHE).then(function(c){c.put(e.request,rc)});return res})}))});
+const CACHE_NAME = 'behsit-field-v3';
+const urlsToCache = ['/', 'index.html', 'manifest.json'];
+
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+  self.skipWaiting();
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request).catch(() => caches.match('index.html')))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))));
+  self.clients.claim();
+});
