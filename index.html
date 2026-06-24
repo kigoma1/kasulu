@@ -17,128 +17,248 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-    --p:#0f172a;--s:#3b82f6;--g:#10b981;--w:#f59e0b;--d:#ef4444;
-    --r:20px;--rs:14px;--card:#ffffff;--card-hover:#f8fafc;
-    --text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;
-    --shadow-sm:0 1px 2px rgba(0,0,0,0.05);
-    --shadow:0 4px 6px rgba(0,0,0,0.05);
-    --shadow-lg:0 20px 60px rgba(0,0,0,0.1);
-    --gradient:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#1a5276 100%);
-    --glass:rgba(255,255,255,0.92);
+    --p: #0f172a;
+    --s: #3b82f6;
+    --g: #10b981;
+    --w: #f59e0b;
+    --d: #ef4444;
+    --r: 20px;
+    --rs: 14px;
+    --card: #ffffff;
+    --card-hover: #f8fafc;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --bg: #f8fafc;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 6px rgba(0,0,0,0.05);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.1);
+    --gradient: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a5276 100%);
+    --glass: rgba(255,255,255,0.92);
 }
 body.dm {
-    --card:#1e293b;--card-hover:#273548;--text:#e2e8f0;
-    --muted:#94a3b8;--border:#334155;--bg:#0f172a;
-    --glass:rgba(30,41,59,0.92);
+    --card: #1e293b;
+    --card-hover: #273548;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #334155;
+    --bg: #0f172a;
+    --glass: rgba(30,41,59,0.92);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
     font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
-    background:var(--gradient);background-attachment:fixed;min-height:100vh;
-    color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    background:var(--gradient);
+    background-attachment:fixed;
+    min-height:100vh;
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
 }
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:10px}
-.aw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.ac{background:var(--card);border-radius:24px;box-shadow:var(--shadow-lg);width:100%;max-width:480px;overflow:hidden;transition:all 0.3s ease;border:1px solid var(--border)}
-.ah{background:var(--gradient);padding:2.5rem 2rem;text-align:center;color:#fff;position:relative;overflow:hidden}
-.ah::after{content:'';position:absolute;bottom:-20px;left:-20px;right:-20px;height:40px;background:var(--card);border-radius:50% 50% 0 0}
-.ab{padding:2rem}
-.fc{border:2px solid var(--border);border-radius:var(--rs);padding:0.85rem 1rem;font-size:0.9rem;width:100%;background:var(--bg);transition:all 0.25s ease;color:var(--text);font-family:'Inter',sans-serif}
-.fc:focus{border-color:var(--s);box-shadow:0 0 0 4px rgba(59,130,246,0.1);outline:none;background:var(--card)}
-.fc::placeholder{color:#94a3b8}
-.auto-expand{min-height:80px;max-height:300px;overflow-y:auto;resize:vertical}
-.bg{background:var(--gradient);color:#fff;border:none;border-radius:var(--rs);padding:0.9rem;font-weight:600;font-size:0.95rem;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.6rem;transition:all 0.3s ease;position:relative;overflow:hidden;letter-spacing:0.3px}
-.bg::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s ease}
-.bg:hover::before{left:100%}
-.bg:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(15,23,42,0.4)}
-.bg:disabled{opacity:0.6;pointer-events:none;transform:none}
-.bg:disabled::before{display:none}
-.bo{border:2px solid var(--s);color:var(--s);background:transparent;border-radius:var(--rs);padding:0.85rem;font-weight:600;width:100%;cursor:pointer;transition:all 0.3s ease;font-size:0.9rem}
-.bo:hover{background:var(--s);color:#fff;transform:translateY(-1px)}
-.dc{display:none;min-height:100vh}
-.mc{padding:1rem;min-height:100vh;max-width:1200px;margin:0 auto}
-.tb{
-    background:var(--glass);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-    border-radius:20px;padding:0.85rem 1.8rem;margin-bottom:1.2rem;
-    display:flex;justify-content:space-between;align-items:center;gap:1rem;
-    box-shadow:0 8px 32px rgba(0,0,0,0.12);position:sticky;top:0.8rem;z-index:999;
-    flex-wrap:wrap;border:1px solid var(--border);transition:all 0.3s ease;
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#94a3b8; border-radius:10px; }
+.aw { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1rem; }
+.ac { background:var(--card); border-radius:24px; box-shadow:var(--shadow-lg); width:100%; max-width:460px; overflow:hidden; transition:all 0.3s ease; border:1px solid var(--border); }
+.ah { background:var(--gradient); padding:2.5rem 2rem; text-align:center; color:#fff; position:relative; overflow:hidden; }
+.ah::after { content:''; position:absolute; bottom:-20px; left:-20px; right:-20px; height:40px; background:var(--card); border-radius:50% 50% 0 0; }
+.ab { padding:2rem; }
+.fc { border:2px solid var(--border); border-radius:var(--rs); padding:0.85rem 1rem; font-size:0.9rem; width:100%; background:var(--bg); transition:all 0.25s ease; color:var(--text); font-family:'Inter',sans-serif; }
+.fc:focus { border-color:var(--s); box-shadow:0 0 0 4px rgba(59,130,246,0.1); outline:none; background:var(--card); }
+.fc::placeholder { color:#94a3b8; }
+.auto-expand { min-height:80px; max-height:300px; overflow-y:auto; resize:vertical; }
+.bg { background:var(--gradient); color:#fff; border:none; border-radius:var(--rs); padding:0.9rem; font-weight:600; font-size:0.95rem; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.6rem; transition:all 0.3s ease; position:relative; overflow:hidden; letter-spacing:0.3px; }
+.bg::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent); transition:left 0.5s ease; }
+.bg:hover::before { left:100%; }
+.bg:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(15,23,42,0.4); }
+.bg:disabled { opacity:0.6; pointer-events:none; transform:none; }
+.bg:disabled::before { display:none; }
+.bo { border:2px solid var(--s); color:var(--s); background:transparent; border-radius:var(--rs); padding:0.85rem; font-weight:600; width:100%; cursor:pointer; transition:all 0.3s ease; font-size:0.9rem; }
+.bo:hover { background:var(--s); color:#fff; transform:translateY(-1px); }
+.dc { display:none; min-height:100vh; }
+.mc { padding:1rem; min-height:100vh; max-width:1200px; margin:0 auto; }
+.tb { 
+    background:var(--glass); 
+    backdrop-filter:blur(20px); 
+    -webkit-backdrop-filter:blur(20px); 
+    border-radius:20px; 
+    padding:0.8rem 1.5rem; 
+    margin-bottom:1rem; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    gap:1.5rem; 
+    box-shadow:var(--shadow); 
+    position:sticky; 
+    top:0.8rem; 
+    z-index:100; 
+    flex-wrap:wrap; 
+    border:1px solid var(--border);
 }
-.role-badge{
-    display:inline-flex;align-items:center;gap:0.4rem;
-    background:var(--gradient);color:#fff;padding:0.3rem 0.75rem;
-    border-radius:20px;font-size:0.65rem;font-weight:700;
-    text-transform:uppercase;letter-spacing:0.5px;margin-right:0.6rem;white-space:nowrap;
+.tb-left {
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    flex:1;
+    min-width:200px;
 }
-.user-name-display{
-    font-weight:700;font-size:0.85rem;color:var(--text);
-    letter-spacing:-0.2px;white-space:nowrap;max-width:180px;
-    overflow:hidden;text-overflow:ellipsis;
+.tb-center {
+    display:flex;
+    align-items:center;
+    gap:0.8rem;
+    flex-wrap:wrap;
 }
-.top-bar-right{display:flex;align-items:center;gap:0.75rem}
-.top-bar-left{display:flex;align-items:center;gap:0.75rem}
-.cc{background:var(--card);border-radius:20px;padding:1.8rem;box-shadow:var(--shadow);margin-bottom:1rem;animation:fi 0.35s cubic-bezier(0.4,0,0.2,1);border:1px solid var(--border);transition:all 0.3s ease}
-.cc:hover{box-shadow:var(--shadow-lg)}
-@keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.bsc{background:var(--s);color:#fff;border:none;border-radius:12px;padding:0.55rem 1.1rem;font-size:0.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.25s ease;letter-spacing:0.2px;white-space:nowrap}
-.bsc:hover{background:#2563eb;transform:translateY(-2px);box-shadow:0 4px 15px rgba(59,130,246,0.3)}
-.bsc:disabled{opacity:0.5;pointer-events:none}
-.bsc-outline{background:transparent;color:var(--s);border:2px solid var(--s);border-radius:12px;padding:0.55rem 1.1rem;font-size:0.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.25s ease;white-space:nowrap}
-.bsc-outline:hover{background:var(--s);color:#fff;transform:translateY(-2px)}
-.bxsd{background:var(--d);color:#fff;border:none;border-radius:10px;padding:0.4rem 0.8rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.25s ease}
-.bxsd:hover{background:#dc2626;transform:translateY(-1px)}
-.bxsw{background:var(--w);color:#1e293b;border:none;border-radius:10px;padding:0.4rem 0.8rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.25s ease}
-.bxsw:hover{background:#e5980b;transform:translateY(-1px)}
-.bst{padding:0.25rem 0.7rem;border-radius:20px;font-weight:600;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.5px}
-.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1rem}
-.sc{background:var(--card);border-radius:20px;padding:1.8rem;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s ease;border:1px solid var(--border)}
-.sc:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,0.15)}
-.sc h2{font-size:2.2rem;font-weight:800;margin:0;color:var(--text);letter-spacing:-0.5px}
-.sc p{font-size:0.72rem;text-transform:uppercase;opacity:0.6;letter-spacing:0.8px;margin:0;font-weight:600}
-.sp-sm{border:2px dashed var(--border);border-radius:var(--rs);background:var(--bg);width:100%;height:100px;cursor:crosshair}
-.hamburger-btn{background:var(--bg);border:1px solid var(--border);font-size:1.3rem;cursor:pointer;color:var(--text);padding:0.5rem 0.7rem;border-radius:12px;transition:all 0.25s ease}
-.hamburger-btn:hover{background:var(--card-hover)}
-.side-menu{position:fixed;top:0;left:-300px;width:285px;height:100vh;height:100dvh;background:var(--card);box-shadow:5px 0 40px rgba(0,0,0,0.2);z-index:1099;transition:left 0.35s cubic-bezier(0.4,0,0.2,1);padding:1.5rem 1rem;display:flex;flex-direction:column;overflow-y:auto;border-radius:0 24px 24px 0;border:1px solid var(--border)}
-.side-menu.open{left:0}
-.side-menu-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1098;display:none;cursor:pointer;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
-.side-menu-overlay.show{display:block}
-.smg{margin-bottom:0.5rem}
-.smgt{font-size:0.65rem;text-transform:uppercase;color:var(--muted);padding:0.6rem 0.9rem 0.3rem;font-weight:700;letter-spacing:1.2px}
-.smi{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 0.9rem;border-radius:12px;cursor:pointer;color:var(--text);font-weight:500;margin:0.15rem 0;border:none;background:transparent;width:100%;text-align:left;font-size:0.84rem;transition:all 0.2s ease}
-.smi:hover{background:rgba(59,130,246,0.08);color:var(--s);transform:translateX(3px)}
-.smi i{font-size:0.9rem;width:22px;text-align:center}
-.abg{background:var(--d);color:#fff;border-radius:20px;min-width:22px;height:20px;font-size:0.65rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;margin-left:auto;padding:0 7px}
-.sd{border-top:1px solid var(--border);margin:0.8rem 0}
-.act-card{border-left:4px solid var(--w);padding:1rem 1.2rem;margin-bottom:0.7rem;border-radius:14px;background:var(--card);display:flex;align-items:center;gap:1rem;font-size:0.82rem;transition:all 0.3s ease;box-shadow:var(--shadow-sm);border:1px solid var(--border);cursor:pointer}
-.act-card:hover{transform:translateX(4px);box-shadow:var(--shadow);border-left-color:var(--s)}
-.pt-ch{font-weight:600;padding:0.85rem 1.2rem;background:var(--card);color:var(--text);border-radius:14px;cursor:pointer;margin:0.4rem 0;transition:all 0.3s ease;font-size:0.88rem;border:1px solid var(--border);display:flex;align-items:center;gap:0.5rem}
-.pt-ch:hover{background:var(--card-hover);transform:translateX(3px);border-color:var(--s)}
-.pt-it{padding:0.55rem 1.5rem;border-bottom:1px solid var(--border);font-size:0.82rem;color:var(--text)}
-.tag{display:inline-block;padding:0.25rem 0.8rem;border-radius:20px;font-size:0.7rem;font-weight:600;letter-spacing:0.3px}
-.badge-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px}
-.empty-state{text-align:center;padding:3.5rem 1.5rem}
-.empty-state i{font-size:3.5rem;color:#cbd5e1;margin-bottom:1rem;display:block}
-body.dm .empty-state i{color:#475569}
-.report-section{border-radius:var(--rs);margin-bottom:0.6rem;overflow:hidden;border:1px solid var(--border)}
-.report-header{background:var(--bg);padding:0.9rem 1.2rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:0.88rem;transition:all 0.25s ease}
-.report-header:hover{background:var(--card-hover)}
-.report-body{padding:1.2rem;background:var(--card)}
-.review-actions{display:flex;gap:0.6rem;margin-top:1.2rem}
-.review-actions button{flex:1}
-.alert-info-custom{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);border-radius:14px;padding:0.85rem 1rem;font-size:0.82rem;color:var(--s)}
-.week-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gradient);color:#fff;padding:0.35rem 0.85rem;border-radius:20px;font-weight:700;font-size:0.78rem}
-.supervisor-card{cursor:pointer;transition:all 0.2s ease}
-.supervisor-card:hover{border-color:var(--s)!important;background:rgba(59,130,246,0.03)!important}
-.supervisor-card.selected{border-color:var(--s)!important;background:rgba(59,130,246,0.06)!important}
-.attendance-card{border-left:4px solid var(--g)}
-.attendance-dot{width:12px;height:12px;border-radius:50%;display:inline-block}
-.attendance-present{background:#10b981}
-.attendance-absent{background:#e2e8f0;border:2px solid #cbd5e1}
-.pulse{animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,0.4)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
-@media(max-width:768px){.mc{padding:0.5rem}.cc{padding:1.2rem}.sg{grid-template-columns:repeat(2,1fr)}.sc h2{font-size:1.6rem}.tb{padding:0.6rem 1rem;top:0.5rem}.ah{padding:2rem 1.5rem}.ab{padding:1.5rem}}
+.tb-right {
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    flex-shrink:0;
+}
+.tb-logo {
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:2px solid var(--s);
+    flex-shrink:0;
+}
+.tb-title {
+    font-weight:700;
+    font-size:0.88rem;
+    letter-spacing:-0.2px;
+    white-space:nowrap;
+    color:var(--text);
+}
+.tb-role-badge {
+    background:var(--s);
+    color:#fff;
+    padding:0.3rem 0.8rem;
+    border-radius:20px;
+    font-size:0.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    white-space:nowrap;
+}
+.tb-user-info {
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    background:var(--bg);
+    padding:0.4rem 1rem;
+    border-radius:25px;
+    border:1px solid var(--border);
+}
+.tb-user-name {
+    font-weight:600;
+    font-size:0.82rem;
+    color:var(--text);
+    max-width:200px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.tb-user-avatar {
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--gradient);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:0.75rem;
+    flex-shrink:0;
+}
+.cc { background:var(--card); border-radius:20px; padding:1.8rem; box-shadow:var(--shadow); margin-bottom:1rem; animation:fi 0.4s cubic-bezier(0.4,0,0.2,1); border:1px solid var(--border); transition:all 0.3s ease; }
+.cc:hover { box-shadow:var(--shadow-lg); }
+@keyframes fi { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.bsc { background:var(--s); color:#fff; border:none; border-radius:12px; padding:0.55rem 1.1rem; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem; transition:all 0.25s ease; letter-spacing:0.2px; white-space:nowrap; }
+.bsc:hover { background:#2563eb; transform:translateY(-2px); box-shadow:0 4px 15px rgba(59,130,246,0.3); }
+.bsc:disabled { opacity:0.5; pointer-events:none; }
+.bsc-outline { background:transparent; color:var(--s); border:2px solid var(--s); border-radius:12px; padding:0.55rem 1.1rem; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem; transition:all 0.25s ease; white-space:nowrap; }
+.bsc-outline:hover { background:var(--s); color:#fff; transform:translateY(-2px); }
+.bxsd { background:var(--d); color:#fff; border:none; border-radius:10px; padding:0.4rem 0.8rem; font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.25s ease; }
+.bxsd:hover { background:#dc2626; transform:translateY(-1px); }
+.bxsw { background:var(--w); color:#1e293b; border:none; border-radius:10px; padding:0.4rem 0.8rem; font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.25s ease; }
+.bxsw:hover { background:#e5980b; transform:translateY(-1px); }
+.bst { padding:0.25rem 0.7rem; border-radius:20px; font-weight:600; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.5px; }
+.sg { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:1rem; }
+.sc { background:var(--card); border-radius:20px; padding:1.8rem; text-align:center; box-shadow:var(--shadow); cursor:pointer; transition:all 0.3s ease; border:1px solid var(--border); }
+.sc:hover { transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,0,0,0.15); }
+.sc h2 { font-size:2.2rem; font-weight:800; margin:0; color:var(--text); letter-spacing:-0.5px; }
+.sc p { font-size:0.72rem; text-transform:uppercase; opacity:0.6; letter-spacing:0.8px; margin:0; font-weight:600; }
+.sp-sm { border:2px dashed var(--border); border-radius:var(--rs); background:var(--bg); width:100%; height:100px; cursor:crosshair; }
+.hamburger-btn { 
+    background:var(--bg); 
+    border:1px solid var(--border); 
+    font-size:1.3rem; 
+    cursor:pointer; 
+    color:var(--text); 
+    padding:0.5rem 0.7rem; 
+    border-radius:12px; 
+    transition:all 0.25s ease; 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+}
+.hamburger-btn:hover { background:var(--card-hover); }
+.side-menu { position:fixed; top:0; left:-300px; width:285px; height:100vh; height:100dvh; background:var(--card); box-shadow:5px 0 40px rgba(0,0,0,0.2); z-index:1099; transition:left 0.35s cubic-bezier(0.4,0,0.2,1); padding:1.5rem 1rem; display:flex; flex-direction:column; overflow-y:auto; border-radius:0 24px 24px 0; border:1px solid var(--border); }
+.side-menu.open { left:0; }
+.side-menu-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1098; display:none; cursor:pointer; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
+.side-menu-overlay.show { display:block; }
+.smg { margin-bottom:0.5rem; }
+.smgt { font-size:0.65rem; text-transform:uppercase; color:var(--muted); padding:0.6rem 0.9rem 0.3rem; font-weight:700; letter-spacing:1.2px; }
+.smi { display:flex; align-items:center; gap:0.7rem; padding:0.7rem 0.9rem; border-radius:12px; cursor:pointer; color:var(--text); font-weight:500; margin:0.15rem 0; border:none; background:transparent; width:100%; text-align:left; font-size:0.84rem; transition:all 0.2s ease; }
+.smi:hover { background:rgba(59,130,246,0.08); color:var(--s); transform:translateX(3px); }
+.smi i { font-size:0.9rem; width:22px; text-align:center; }
+.abg { background:var(--d); color:#fff; border-radius:20px; min-width:22px; height:20px; font-size:0.65rem; display:inline-flex; align-items:center; justify-content:center; font-weight:700; margin-left:auto; padding:0 7px; }
+.sd { border-top:1px solid var(--border); margin:0.8rem 0; }
+.act-card { border-left:4px solid var(--w); padding:1rem 1.2rem; margin-bottom:0.7rem; border-radius:14px; background:var(--card); display:flex; align-items:center; gap:1rem; font-size:0.82rem; transition:all 0.3s ease; box-shadow:var(--shadow-sm); border:1px solid var(--border); cursor:pointer; }
+.act-card:hover { transform:translateX(4px); box-shadow:var(--shadow); border-left-color:var(--s); }
+.pt-ch { font-weight:600; padding:0.85rem 1.2rem; background:var(--card); color:var(--text); border-radius:14px; cursor:pointer; margin:0.4rem 0; transition:all 0.3s ease; font-size:0.88rem; border:1px solid var(--border); display:flex; align-items:center; gap:0.5rem; }
+.pt-ch:hover { background:var(--card-hover); transform:translateX(3px); border-color:var(--s); }
+.pt-it { padding:0.55rem 1.5rem; border-bottom:1px solid var(--border); font-size:0.82rem; color:var(--text); }
+.tag { display:inline-block; padding:0.25rem 0.8rem; border-radius:20px; font-size:0.7rem; font-weight:600; letter-spacing:0.3px; }
+.badge-dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:7px; }
+.empty-state { text-align:center; padding:3.5rem 1.5rem; }
+.empty-state i { font-size:3.5rem; color:#cbd5e1; margin-bottom:1rem; display:block; }
+body.dm .empty-state i { color:#475569; }
+.report-section { border-radius:var(--rs); margin-bottom:0.6rem; overflow:hidden; border:1px solid var(--border); }
+.report-header { background:var(--bg); padding:0.9rem 1.2rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600; font-size:0.88rem; transition:all 0.25s ease; }
+.report-header:hover { background:var(--card-hover); }
+.report-body { padding:1.2rem; background:var(--card); }
+.review-actions { display:flex; gap:0.6rem; margin-top:1.2rem; }
+.review-actions button { flex:1; }
+.alert-info-custom { background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.15); border-radius:14px; padding:0.85rem 1rem; font-size:0.82rem; color:var(--s); }
+.week-badge { display:inline-flex; align-items:center; gap:0.4rem; background:var(--gradient); color:#fff; padding:0.35rem 0.85rem; border-radius:20px; font-weight:700; font-size:0.78rem; }
+.supervisor-card { cursor:pointer; transition:all 0.2s ease; }
+.supervisor-card:hover { border-color:var(--s)!important; background:rgba(59,130,246,0.03)!important; }
+.supervisor-card.selected { border-color:var(--s)!important; background:rgba(59,130,246,0.06)!important; }
+@media (max-width:768px) { 
+    .mc { padding:0.5rem; } 
+    .cc { padding:1.2rem; } 
+    .sg { grid-template-columns:repeat(2,1fr); } 
+    .sc h2 { font-size:1.6rem; } 
+    .tb { padding:0.6rem 1rem; gap:0.8rem; }
+    .tb-user-name { max-width:120px; font-size:0.75rem; }
+    .tb-title { font-size:0.78rem; }
+    .tb-role-badge { font-size:0.62rem; padding:0.25rem 0.6rem; }
+    .tb-user-info { padding:0.3rem 0.7rem; }
+    .ah { padding:2rem 1.5rem; } 
+    .ab { padding:1.5rem; } 
+    .tb-center { order:3; width:100%; justify-content:center; }
+}
+@media (max-width:480px) {
+    .tb { padding:0.5rem 0.8rem; }
+    .tb-logo { width:30px; height:30px; }
+    .tb-title { font-size:0.72rem; }
+    .tb-user-name { max-width:80px; font-size:0.7rem; }
+    .tb-user-avatar { width:24px; height:24px; font-size:0.65rem; }
+}
 </style>
 </head>
 <body>
@@ -155,7 +275,6 @@ body.dm .empty-state i{color:#475569}
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1">Email Address</label><input type="email" id="le" class="fc" placeholder="your@email.com" autocomplete="email"></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1">Password</label><div style="position:relative"><input type="password" id="lp" class="fc" placeholder="••••••••" autocomplete="current-password"><i class="bi bi-eye-slash" id="tpi" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8;font-size:1.1rem" onclick="tP()"></i></div></div>
 <button id="lb" class="bg"><i class="bi bi-box-arrow-in-right"></i>Sign In</button>
-<div class="text-center mt-3"><small><a id="fpl" style="color:var(--muted);cursor:pointer;text-decoration:none;font-size:0.8rem">Forgot Password?</a></small></div>
 </div>
 <div class="text-center pb-4"><small class="text-muted">No account? <a id="srl" style="color:var(--s);cursor:pointer;font-weight:600;text-decoration:none">Register here</a></small></div>
 </div>
@@ -166,9 +285,6 @@ body.dm .empty-state i{color:#475569}
 <div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1">Reg No.</label><input type="text" id="rrn" class="fc" placeholder="SCT221-0001"></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1">Institution</label><input type="text" id="ri" class="fc" placeholder="University name"></div></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1">Department</label><input type="text" id="rd" class="fc" placeholder="Computer Science"></div>
 <div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1">Region *</label><select id="regR" class="fc" onchange="uD()"><option value="">Select</option></select></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1">District</label><select id="regD" class="fc"><option value="">Select</option></select></div></div>
-<div class="mb-3"><label class="small fw-semibold text-muted mb-1">Choose a Username *</label><input type="text" id="rusr" class="fc" placeholder="e.g. john2024"><small class="text-muted">Only letters, numbers, and underscores (min 4 characters)</small></div>
-<div class="mb-3"><label class="small fw-semibold text-muted mb-1">Security Question *</label><select id="rsq" class="fc"><option value="">Select a security question...</option><option value="mother">What is your mother's maiden name?</option><option value="city">What city were you born in?</option><option value="pet">What is the name of your first pet?</option><option value="teacher">What is your favorite teacher's name?</option><option value="nickname">What is your childhood nickname?</option></select></div>
-<div class="mb-3"><label class="small fw-semibold text-muted mb-1">Security Answer *</label><input type="text" id="rsa" class="fc" placeholder="Your answer"><small class="text-muted">⚠️ Remember this answer — needed for password recovery</small></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1">Password *</label><input type="password" id="rpw" class="fc" placeholder="Min 8 characters"></div>
 <button id="rb" class="bg"><i class="bi bi-person-plus"></i>Create Account</button>
 <button id="btl" class="bo mt-3"><i class="bi bi-arrow-left"></i>Back to Login</button>
@@ -180,12 +296,12 @@ body.dm .empty-state i{color:#475569}
 <div id="dc" class="dc">
 <div class="mc">
 <div class="tb">
-<div class="top-bar-left">
-<img src="https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a36391e001202801f50/view?project=6a21b1440038c361fabb" style="width:34px;height:34px;border-radius:50%;border:2px solid var(--p)">
-<h5 class="m-0 fw-bold" id="pt" style="font-size:0.88rem;letter-spacing:-0.2px">Dashboard</h5>
+<div class="tb-left">
+<img src="https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a36391e001202801f50/view?project=6a21b1440038c361fabb" class="tb-logo" alt="Logo">
+<h5 class="tb-title m-0" id="pt">Dashboard</h5>
 </div>
-<div class="d-flex align-items-center gap-3">
-<div class="top-bar-right" id="ui"></div>
+<div class="tb-center" id="ui"></div>
+<div class="tb-right">
 <button class="hamburger-btn" id="hb" title="Menu">☰</button>
 </div>
 </div>
@@ -207,9 +323,7 @@ body.dm .empty-state i{color:#475569}
 <button class="smi" data-p="search"><i class="bi bi-search"></i>Search</button>
 </div>
 <div class="smg" id="mSt"><div class="smgt">📝 STUDENT</div>
-<button class="smi" data-p="daily_entry"><i class="bi bi-pencil-square"></i>Daily Entry</button>
-<button class="smi" data-p="my_logbooks"><i class="bi bi-journal-text"></i>Weekly Reports</button>
-<button class="smi" data-p="attendance"><i class="bi bi-calendar-check"></i>Attendance</button>
+<button class="smi" data-p="my_logbooks"><i class="bi bi-journal-text"></i>My Logbooks</button>
 <button class="smi" data-p="pt_checklist"><i class="bi bi-check2-square"></i>PT Checklist</button>
 <button class="smi" data-p="comprehensive_report"><i class="bi bi-file-earmark-text"></i>Full Report</button>
 <button class="smi" data-p="final_assessment"><i class="bi bi-star-fill"></i>My Assessment</button>
@@ -231,7 +345,6 @@ body.dm .empty-state i{color:#475569}
 </div>
 <div class="sd"></div>
 <button class="smi" data-p="about"><i class="bi bi-info-circle"></i>About</button>
-<button class="smi" id="mHowItWorks"><i class="bi bi-question-circle"></i>How It Works</button>
 <button class="smi" id="mContact"><i class="bi bi-whatsapp"></i>Help & Support</button>
 <button class="smi" id="mDark"><i class="bi bi-moon-stars"></i>Dark Mode</button>
 <button class="smi" id="mLogout"><i class="bi bi-box-arrow-right"></i>Logout</button>
@@ -250,13 +363,15 @@ body.dm .empty-state i{color:#475569}
 const cl=new Appwrite.Client().setEndpoint('https://fra.cloud.appwrite.io/v1').setProject('6a21b1440038c361fabb');
 const ac=new Appwrite.Account(cl),db=new Appwrite.Databases(cl);
 const D='6a21b1f8000e608360bb';
-const C={U:'users',L:'logbooks',DL:'daily_logs',A:'assignments',R:'reviews',N:'notifications',F:'final_assessments',ATT:'attendance'};
+const C={U:'users',L:'logbooks',A:'assignments',R:'reviews',N:'notifications',F:'final_assessments'};
 const ST={NS:'not_submitted',P:'pending',A:'approved',R:'rejected'};
 const LOGO='https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a36391e001202801f50/view?project=6a21b1440038c361fabb';
 let U=null,chk=null,sp=null;
+let lastPopupTime=0; // Timer ya kuzuia kurudia popup
+const POPUP_COOLDOWN=60000; // Sekunde 60 kabla popup haijarudi
+
 const TZ={'Arusha':['Arusha City','Arusha Rural','Karatu','Longido','Meru','Monduli','Ngorongoro'],'Dar es Salaam':['Ilala','Kigamboni','Kinondoni','Temeke','Ubungo'],'Dodoma':['Bahi','Chamwino','Chemba','Dodoma City','Kondoa','Kongwa','Mpwapwa'],'Geita':['Bukombe','Chato','Geita','Mbogwe'],'Iringa':['Iringa Municipal','Iringa Rural','Kilolo','Mafinga','Mufindi'],'Kagera':['Biharamulo','Bukoba Municipal','Bukoba Rural','Karagwe','Kyerwa','Missenyi','Muleba','Ngara'],'Kigoma':['Buhigwe','Kakonko','Kasulu','Kibondo','Kigoma Municipal','Uvinza'],'Kilimanjaro':['Hai','Moshi Municipal','Moshi Rural','Mwanga','Rombo','Same','Siha'],'Lindi':['Kilwa','Lindi Municipal','Liwale','Nachingwea','Ruangwa'],'Manyara':['Babati','Hanang','Kiteto','Mbulu','Simanjiro'],'Mara':['Bunda','Butiama','Musoma Municipal','Musoma Rural','Serengeti','Tarime'],'Mbeya':['Busokelo','Chunya','Kyela','Mbarali','Mbeya City','Mbeya Rural','Rungwe'],'Morogoro':['Gairo','Ifakara','Kilombero','Kilosa','Morogoro Municipal','Morogoro Rural','Mvomero','Ulanga'],'Mtwara':['Masasi','Mtwara Municipal','Mtwara Rural','Newala','Tandahimba'],'Mwanza':['Ilemela','Kwimba','Magu','Misungwi','Nyamagana','Sengerema','Ukerewe'],'Njombe':['Ludewa','Makambako','Makete','Njombe','Wanging\'ombe'],'Pwani':['Bagamoyo','Chalinze','Kibaha','Kisarawe','Mafia','Mkuranga','Rufiji'],'Rukwa':['Kalambo','Nkasi','Sumbawanga','Sumbawanga Town'],'Ruvuma':['Mbinga','Namtumbo','Nyasa','Songea Municipal','Songea Rural','Tunduru'],'Shinyanga':['Kahama','Kishapu','Msalala','Shinyanga Municipal','Shinyanga Rural','Ushetu'],'Simiyu':['Bariadi','Busega','Itilima','Maswa','Meatu'],'Singida':['Ikungi','Iramba','Itigi','Manyoni','Mkalama','Singida Municipal','Singida Rural'],'Songwe':['Ileje','Mbozi','Momba','Songwe','Tunduma'],'Tabora':['Igunga','Kaliua','Nzega','Sikonge','Tabora Municipal','Tabora Rural','Urambo','Uyui'],'Tanga':['Handeni','Kilindi','Korogwe','Lushoto','Mkinga','Muheza','Pangani','Tanga City']};
 const PT={'Food Hygiene & Safety':['Inspection of meat & carriage facilities','Abattoir hygiene standards inspection','Post mortem carcass inspection','Meat carriage vehicle inspection','Butcheries inspection','Fish carriage vehicle inspection','Food premise registration & licensing','Restaurants & food vendors inspection','Food shops & supermarkets inspection','Cereals harvesting & storage monitoring','Condemned food disposal & certification','Healthcare waste management','Incinerator & waste pit assessment'],'Occupational Health & Safety':['Manufacturing Industry assessment','Health Facilities assessment','Construction site assessment','Mining assessment','Agriculture assessment','Informal Garages assessment','Carpentry assessment','Flour Mills assessment','Quarrying assessment'],'Environmental Health Inspection':['School inspection','Prison inspection','Market inspection','Bar inspection','Recreational Grounds inspection'],'Disease Prevention & Control':['Disease management using guidelines','Malaria vector control interventions','Disease surveillance & reporting','Outbreak investigation','Infectious disease case follow-up','Immunization promotion','Vaccine cold chain management','Vaccine ordering & distribution','Immunization sessions & records','Mortuary inspections','Corpse preservation procedures','Cemetery inspection & recommendations','Unclaimed bodies & exhumation procedures','Port health functions'],'Buildings & Land Management':['Land-use survey application','Lighting assessment','Ventilation assessment','Building standards adherence','Building plans scrutinization']};
-
 function st(m,t='success'){const c=t==='error'?'#ef4444':t==='warning'?'#f59e0b':'#10b981';Toastify({text:m,duration:2500,gravity:'top',position:'right',style:{background:c,color:'#fff',borderRadius:'12px',padding:'10px 18px',fontSize:'13px',fontWeight:'500',boxShadow:'0 4px 15px rgba(0,0,0,0.15)'}}).showToast()}
 function sl(){Swal.fire({title:'Please wait...',allowOutsideClick:!1,didOpen:()=>Swal.showLoading()})}
 function hl(){Swal.close()}
@@ -265,123 +380,349 @@ function tS(){document.getElementById('sm').classList.toggle('open');document.ge
 function cS(){document.getElementById('sm').classList.remove('open');document.getElementById('smo').classList.remove('show')}
 function uD(){const r=document.getElementById('regR')?.value,s=document.getElementById('regD');if(s){s.innerHTML='<option value="">Select</option>';if(r&&TZ[r])TZ[r].forEach(d=>{s.innerHTML+=`<option value="${d}">${d}</option>`})}}
 function pR(){const s=document.getElementById('regR');if(s){s.innerHTML='<option value="">Select</option>';Object.keys(TZ).sort().forEach(r=>{s.innerHTML+=`<option value="${r}">${r}</option>`})}}
-function cF(){['le','lp','rfn','re','rp','rusr','rpw','rrn','ri','rd','rsa'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const rs=document.getElementById('regR');if(rs)rs.selectedIndex=0;const ds=document.getElementById('regD');if(ds)ds.innerHTML='<option value="">Select</option>';const sq=document.getElementById('rsq');if(sq)sq.selectedIndex=0}
+function cF(){['le','lp','rfn','re','rp','rpw','rrn','ri','rd'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const rs=document.getElementById('regR');if(rs)rs.selectedIndex=0;const ds=document.getElementById('regD');if(ds)ds.innerHTML='<option value="">Select</option>'}
 function wD(){const d=new Date(),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1),m=new Date(d.setDate(diff)),dates={};['Monday','Tuesday','Wednesday','Thursday','Friday'].forEach((dn,i)=>{const dt=new Date(m);dt.setDate(m.getDate()+i);dates[dn]=dt.toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long'})});return dates}
 async function cn(uid,t,m){if(!uid)return;try{await db.createDocument(D,C.N,Appwrite.ID.unique(),{userId:uid,title:t,message:m,isRead:!1,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()})}catch(e){console.error('Note error:',e.message)}}
-async function pop(){if(!U||U.role!=='supervisor')return;try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);const sids=asgn.documents.map(a=>a.studentId);const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);const my=logs.documents.filter(l=>sids.includes(l.studentId));const total=my.length;const badge=document.getElementById('actBadge');if(badge){badge.style.display=total>0?'inline-flex':'none';badge.textContent=total>99?'99+':total}if(total>0){const names=[];for(const l of my.slice(0,3)){try{const su=await db.getDocument(D,C.U,l.studentId);names.push(su.fullName)}catch(e){}}const r=await Swal.fire({title:`📬 ${total} New Submission(s)`,html:`<div class="text-start small">${names.map(n=>`<div class="border rounded p-2 mb-1">📝 ${n}</div>`).join('')}${my.length>3?`<p class="text-muted">+${my.length-3} more</p>`:''}</div>`,icon:'info',confirmButtonText:'Review',showCancelButton:!0,cancelButtonText:'Later',confirmButtonColor:'#1a5276'});if(r.isConfirmed)lp('action_reviews')}}catch(e){}}
-async function rSup(n,em,pw,rg){if(!n||!em||!pw){console.log('Missing fields');return null}try{const ex=await db.listDocuments(D,C.U,[Appwrite.Query.equal('email',em),Appwrite.Query.equal('role','supervisor')]);if(ex.total>0){console.log('Already in DB');return ex.documents[0]}const now=new Date().toISOString();let uid=Appwrite.ID.unique();try{await ac.create(uid,em,pw,n)}catch(e){if(e.message.includes('409')||e.message.includes('already exists')){uid=Appwrite.ID.unique()}else throw e}const doc=await db.createDocument(D,C.U,uid,{userId:uid,fullName:n,email:em,role:'supervisor',region:rg||'',phone:'',isActive:!1,createdAt:now,updatedAt:now});return doc}catch(e){console.error('rSup error:',e.message);return null}}
 
-async function reg(){
-    const d={
-        fn:document.getElementById('rfn')?.value?.trim(),
-        em:document.getElementById('re')?.value?.trim(),
-        ph:document.getElementById('rp')?.value?.trim(),
-        usr:document.getElementById('rusr')?.value?.trim()?.toLowerCase(),
-        rn:document.getElementById('rrn')?.value?.trim()||'',
-        ins:document.getElementById('ri')?.value?.trim()||'',
-        dep:document.getElementById('rd')?.value?.trim()||'',
-        rg:document.getElementById('regR')?.value,
-        ds:document.getElementById('regD')?.value,
-        pw:document.getElementById('rpw')?.value,
-        sq:document.getElementById('rsq')?.value,
-        sa:document.getElementById('rsa')?.value?.trim()?.toLowerCase()
-    };
-    if(!d.fn||!d.em||!d.ph||!d.usr||!d.rg||!d.pw||!d.sq||!d.sa)return st('Fill all required fields','warning');
-    if(d.pw.length<8)return st('Password min 8 chars','warning');
-    if(d.usr.length<4)return st('Username must be at least 4 characters','warning');
-    if(!/^[a-z0-9_]+$/.test(d.usr))return st('Username: only letters, numbers, underscores','warning');
-    const btn=document.getElementById('rb');btn.disabled=!0;
+// ============ POPUP IMEFANYIWA MAREKEBISHO: Haitajirudia rudia ============
+async function pop(){
+    if(!U||U.role!=='supervisor')return;
+    
+    // Zuia popup kurudia ndani ya dakika 1 (POPUP_COOLDOWN)
+    const now=Date.now();
+    if(now-lastPopupTime<POPUP_COOLDOWN){
+        // Badala ya popup, update badge tu kwenye menu
+        try{
+            const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);
+            const sids=asgn.documents.map(a=>a.studentId);
+            const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);
+            const my=logs.documents.filter(l=>sids.includes(l.studentId));
+            const total=my.length;
+            const badge=document.getElementById('actBadge');
+            if(badge){
+                badge.style.display=total>0?'inline-flex':'none';
+                badge.textContent=total>99?'99+':total;
+            }
+        }catch(e){}
+        return;
+    }
+    
+    try{
+        const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);
+        const sids=asgn.documents.map(a=>a.studentId);
+        const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);
+        const my=logs.documents.filter(l=>sids.includes(l.studentId));
+        const total=my.length;
+        const badge=document.getElementById('actBadge');
+        if(badge){
+            badge.style.display=total>0?'inline-flex':'none';
+            badge.textContent=total>99?'99+':total;
+        }
+        
+        // Onyesha popup mara moja tu kwa muda wa POPUP_COOLDOWN
+        if(total>0){
+            lastPopupTime=now; // Rekodi muda wa popup
+            const names=[];
+            for(const l of my.slice(0,5)){
+                try{
+                    const su=await db.getDocument(D,C.U,l.studentId);
+                    names.push({name:su.fullName,week:l.weekNumber,id:l.$id});
+                }catch(e){}
+            }
+            
+            const nameList=names.map(n=>`
+                <div class="border rounded p-2 mb-1 d-flex justify-content-between align-items-center" style="cursor:pointer" onclick="Swal.clickConfirm();Swal.getPopup().__selectedLog='${n.id}'">
+                    <span>📝 <strong>${n.name}</strong> - Week ${n.week}</span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            `).join('');
+            
+            const r=await Swal.fire({
+                title:`📬 ${total} New Submission(s)`,
+                html:`
+                    <div class="text-start small">
+                        ${nameList}
+                        ${my.length>5?`<p class="text-muted text-center">+${my.length-5} more</p>`:''}
+                    </div>
+                    <p class="small text-muted mt-2 mb-0">Click any student to review, or go to Action Required</p>
+                `,
+                icon:'info',
+                confirmButtonText:'📋 View All Pending',
+                showCancelButton:!0,
+                cancelButtonText:'Later',
+                confirmButtonColor:'#1a5276',
+                cancelButtonColor:'#6b7280'
+            });
+            
+            if(r.isConfirmed){
+                // Kama amechagua specific log, fungua hiyo
+                const selectedLog=Swal.getPopup().__selectedLog;
+                if(selectedLog){
+                    await rvL(selectedLog);
+                }else{
+                    lp('action_reviews');
+                }
+            }
+        }
+    }catch(e){}
+}
+// ============ MWISHO WA MAREKEBISHO YA POPUP ============
+
+async function rSup(n,em,pw,rg){if(!n||!em||!pw){console.log('Missing fields');return null}try{const ex=await db.listDocuments(D,C.U,[Appwrite.Query.equal('email',em),Appwrite.Query.equal('role','supervisor')]);if(ex.total>0){console.log('Already in DB');return ex.documents[0]}const now=new Date().toISOString();let uid=Appwrite.ID.unique();try{await ac.create(uid,em,pw,n)}catch(e){if(e.message.includes('409')||e.message.includes('already exists')){uid=Appwrite.ID.unique()}else throw e}const doc=await db.createDocument(D,C.U,uid,{userId:uid,fullName:n,email:em,role:'supervisor',region:rg||'',phone:'',isActive:!1,createdAt:now,updatedAt:now});return doc}catch(e){console.error('rSup error:',e.message);return null}}
+async function reg(){const d={fn:document.getElementById('rfn')?.value?.trim(),em:document.getElementById('re')?.value?.trim(),ph:document.getElementById('rp')?.value?.trim(),rn:document.getElementById('rrn')?.value?.trim()||'',ins:document.getElementById('ri')?.value?.trim()||'',dep:document.getElementById('rd')?.value?.trim()||'',rg:document.getElementById('regR')?.value,ds:document.getElementById('regD')?.value,pw:document.getElementById('rpw')?.value};if(!d.fn||!d.em||!d.ph||!d.rg||!d.pw)return st('Fill all required fields','warning');if(d.pw.length<8)return st('Password min 8 chars','warning');const btn=document.getElementById('rb');btn.disabled=!0;try{sl();const uid=Appwrite.ID.unique(),now=new Date().toISOString();await ac.create(uid,d.em,d.pw,d.fn);await db.createDocument(D,C.U,uid,{userId:uid,fullName:d.fn,email:d.em,regNum:d.rn,institution:d.ins,department:d.dep,role:'student',phone:d.ph,region:d.rg,district:d.ds||'',supStatus:ST.NS,isActive:!0,createdAt:now,updatedAt:now});hl();st('Account created successfully! 🎉');cF();document.getElementById('rf').style.display='none';document.getElementById('lf').style.display='block'}catch(e){hl();Swal.fire({icon:'error',title:'Registration Failed',text:e.message})}btn.disabled=!1}
+async function login(){const em=document.getElementById('le')?.value?.trim(),pw=document.getElementById('lp')?.value;if(!em||!pw)return st('Enter email & password','warning');const btn=document.getElementById('lb');btn.disabled=!0;try{sl();try{await ac.deleteSession('current')}catch(x){}await ac.createEmailPasswordSession(em,pw);const acc=await ac.get();let ud;try{ud=await db.listDocuments(D,C.U,[Appwrite.Query.equal('userId',acc.$id)])}catch(x){ud={total:0,documents:[]}}if(ud.total>0)U=ud.documents[0];else{const now=new Date().toISOString();U={userId:acc.$id,fullName:acc.name||em,email:acc.email||em,role:'student',supStatus:ST.NS};try{await db.createDocument(D,C.U,acc.$id,{...U,createdAt:now,updatedAt:now})}catch(x){}}hl();if(U.role==='supervisor'&&U.isActive===!1){try{await ac.deleteSession('current')}catch(e){}U=null;Swal.fire({icon:'info',title:'⏳ Pending Approval',text:'Your account is pending admin approval.'});btn.disabled=!1;return}if(U.role==='supervisor'&&!U.pwChanged){const changed=await fPw();if(!changed){try{await ac.deleteSession('current')}catch(e){}U=null;btn.disabled=!1;return}try{await db.updateDocument(D,C.U,U.userId,{pwChanged:new Date().toISOString(),updatedAt:new Date().toISOString()})}catch(e){}}cF();st(`Welcome, ${U.fullName}! 👋`);sD()}catch(e){hl();Swal.fire({icon:'error',title:'Login Failed',text:'Invalid email or password'})}btn.disabled=!1}
+async function fPw(){const{value}=await Swal.fire({title:'🔒 Change Password Required',html:`<div class="text-start"><div class="alert alert-warning small mb-3"><strong>Security Alert!</strong><br>The student who registered you knows your password. Change it now.</div><input id="op" class="form-control form-control-sm mb-2" type="password" placeholder="Current Password *"><input id="np" class="form-control form-control-sm mb-2" type="password" placeholder="New Password (min 8) *"><input id="cp" class="form-control form-control-sm mb-2" type="password" placeholder="Confirm New Password *"></div>`,showCancelButton:!1,allowOutsideClick:!1,allowEscapeKey:!1,confirmButtonText:'Change Password',confirmButtonColor:'#1a5276',preConfirm:()=>{const op=document.getElementById('op').value,np=document.getElementById('np').value,cp=document.getElementById('cp').value;if(!op||!np||!cp)return Swal.showValidationMessage('All fields required');if(np.length<8)return Swal.showValidationMessage('Min 8 characters');if(np!==cp)return Swal.showValidationMessage('Passwords do not match');if(op===np)return Swal.showValidationMessage('Must be different');return{op,np}}});if(!value)return!1;try{sl();await ac.updatePassword(value.np,value.op);hl();await Swal.fire({icon:'success',title:'✅ Password Changed!',text:'Your account is now secure.',confirmButtonColor:'#10b981'});return!0}catch(e){hl();if(e.message.includes('Invalid credentials')){await Swal.fire({icon:'error',title:'Wrong Password',text:'Try again.'});return await fPw()}Swal.fire({icon:'error',title:'Error',text:e.message});return!1}}
+
+// ============ SUPERVISOR CHANGE PASSWORD KUTOKA PROFILE ============
+async function changePasswordFromProfile(){
+    const{value:formData}=await Swal.fire({
+        title:'🔒 Change Password',
+        html:`
+            <div class="text-start">
+                <div class="alert alert-info small py-2 mb-3">
+                    <i class="bi bi-info-circle"></i> Change your account password
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-semibold text-muted mb-1">Current Password *</label>
+                    <input id="cpop" class="fc" type="password" placeholder="Enter current password">
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-semibold text-muted mb-1">New Password *</label>
+                    <input id="cpnp" class="fc" type="password" placeholder="Min 8 characters">
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-semibold text-muted mb-1">Confirm New Password *</label>
+                    <input id="cpcp" class="fc" type="password" placeholder="Re-enter new password">
+                </div>
+            </div>
+        `,
+        showCancelButton:!0,
+        confirmButtonText:'<i class="bi bi-check-circle"></i> Change Password',
+        cancelButtonText:'Cancel',
+        confirmButtonColor:'#1a5276',
+        preConfirm:()=>{
+            const op=document.getElementById('cpop')?.value;
+            const np=document.getElementById('cpnp')?.value;
+            const cp=document.getElementById('cpcp')?.value;
+            if(!op||!np||!cp){Swal.showValidationMessage('All fields required');return!1}
+            if(np.length<8){Swal.showValidationMessage('Min 8 characters');return!1}
+            if(np!==cp){Swal.showValidationMessage('Passwords do not match');return!1}
+            if(op===np){Swal.showValidationMessage('New password must be different');return!1}
+            return{op,np};
+        }
+    });
+    
+    if(!formData)return;
+    
     try{
         sl();
-        const existingUser=await db.listDocuments(D,C.U,[Appwrite.Query.equal('username',d.usr),Appwrite.Query.limit(1)]);
-        if(existingUser.total>0){hl();st('Username already taken! Choose another.','warning');btn.disabled=!1;return}
-        const uid=Appwrite.ID.unique(),now=new Date().toISOString();
-        await ac.create(uid,d.em,d.pw,d.fn);
-        await db.createDocument(D,C.U,uid,{userId:uid,fullName:d.fn,email:d.em,username:d.usr,regNum:d.rn,institution:d.ins,department:d.dep,role:'student',phone:d.ph,region:d.rg,district:d.ds||'',securityQuestion:d.sq,securityAnswer:d.sa,supStatus:ST.NS,isActive:!0,createdAt:now,updatedAt:now});
-        hl();st(`Account created! 🎉 Username: ${d.usr}`);cF();
-        document.getElementById('rf').style.display='none';document.getElementById('lf').style.display='block';
-    }catch(e){hl();Swal.fire({icon:'error',title:'Registration Failed',text:e.message})}
-    btn.disabled=!1;
+        await ac.updatePassword(formData.np,formData.op);
+        
+        // Update pwChanged field
+        try{
+            await db.updateDocument(D,C.U,U.userId,{
+                pwChanged:new Date().toISOString(),
+                updatedAt:new Date().toISOString()
+            });
+        }catch(e){}
+        
+        U.pwChanged=new Date().toISOString();
+        hl();
+        
+        await Swal.fire({
+            icon:'success',
+            title:'✅ Password Changed!',
+            text:'Your password has been updated successfully.',
+            confirmButtonColor:'#10b981'
+        });
+        
+        st('Password changed successfully! 🔒');
+    }catch(e){
+        hl();
+        if(e.message.includes('Invalid credentials')){
+            Swal.fire({
+                icon:'error',
+                title:'Wrong Password',
+                text:'Current password is incorrect. Please try again.',
+                confirmButtonColor:'#ef4444'
+            });
+        }else{
+            Swal.fire({
+                icon:'error',
+                title:'Error',
+                text:e.message||'Failed to change password. Try again.'
+            });
+        }
+    }
 }
+// ============ MWISHO WA CHANGE PASSWORD ============
 
-async function login(){const em=document.getElementById('le')?.value?.trim(),pw=document.getElementById('lp')?.value;if(!em||!pw)return st('Enter email & password','warning');const btn=document.getElementById('lb');btn.disabled=!0;try{sl();try{await ac.deleteSession('current')}catch(x){}await ac.createEmailPasswordSession(em,pw);const acc=await ac.get();let ud;try{ud=await db.listDocuments(D,C.U,[Appwrite.Query.equal('userId',acc.$id)])}catch(x){ud={total:0,documents:[]}}if(ud.total>0)U=ud.documents[0];else{const now=new Date().toISOString();U={userId:acc.$id,fullName:acc.name||em,email:acc.email||em,role:'student',supStatus:ST.NS,isActive:!0};try{await db.createDocument(D,C.U,acc.$id,{...U,createdAt:now,updatedAt:now})}catch(x){}}hl();if(U.role==='supervisor'&&U.isActive===!1){try{await ac.deleteSession('current')}catch(e){}U=null;Swal.fire({icon:'info',title:'⏳ Pending Approval',text:'Your account is pending admin approval.',confirmButtonColor:'#1a5276'});btn.disabled=!1;return}if(U.role==='supervisor'&&!U.pwChanged){const changed=await fPw();if(!changed){try{await ac.deleteSession('current')}catch(e){}U=null;btn.disabled=!1;return}try{await db.updateDocument(D,C.U,U.userId,{pwChanged:new Date().toISOString(),updatedAt:new Date().toISOString()})}catch(e){}}cF();st(`Welcome, ${U.fullName}! 👋`);sD()}catch(e){hl();let msg='Invalid email or password';if(e.message&&e.message.includes('Invalid credentials'))msg='Invalid email or password';Swal.fire({icon:'error',title:'Login Failed',text:msg,confirmButtonColor:'#1a5276'})}btn.disabled=!1}
-async function fPw(){const{value}=await Swal.fire({title:'🔒 Change Password Required',html:`<div class="text-start"><div class="alert alert-warning small mb-3"><strong>Security Alert!</strong><br>The student who registered you knows your password. Change it now.</div><input id="op" class="form-control form-control-sm mb-2" type="password" placeholder="Current Password *"><input id="np" class="form-control form-control-sm mb-2" type="password" placeholder="New Password (min 8) *"><input id="cp" class="form-control form-control-sm mb-2" type="password" placeholder="Confirm New Password *"></div>`,showCancelButton:!1,allowOutsideClick:!1,allowEscapeKey:!1,confirmButtonText:'Change Password',confirmButtonColor:'#1a5276',preConfirm:()=>{const op=document.getElementById('op').value,np=document.getElementById('np').value,cp=document.getElementById('cp').value;if(!op||!np||!cp)return Swal.showValidationMessage('All fields required');if(np.length<8)return Swal.showValidationMessage('Min 8 characters');if(np!==cp)return Swal.showValidationMessage('Passwords do not match');if(op===np)return Swal.showValidationMessage('Must be different');return{op,np}}});if(!value)return!1;try{sl();await ac.updatePassword(value.np,value.op);hl();await Swal.fire({icon:'success',title:'✅ Password Changed!',text:'Your account is now secure.',confirmButtonColor:'#10b981'});return!0}catch(e){hl();if(e.message.includes('Invalid credentials')){await Swal.fire({icon:'error',title:'Wrong Password',text:'Try again.'});return await fPw()}Swal.fire({icon:'error',title:'Error',text:e.message});return!1}}
-async function logout(){try{await ac.deleteSession('current')}catch(e){}if(chk)clearInterval(chk);U=null;cF();document.getElementById('ac').style.display='flex';document.getElementById('dc').style.display='none';document.getElementById('lf').style.display='block';document.getElementById('rf').style.display='none';cS();st('Logged out','info')}
-async function ck(){try{const acc=await ac.get();const docs=await db.listDocuments(D,C.U,[Appwrite.Query.equal('userId',acc.$id)]);if(docs.total>0){U=docs.documents[0];sD()}else{document.getElementById('ac').style.display='flex';document.getElementById('dc').style.display='none'}}catch(e){document.getElementById('ac').style.display='flex';document.getElementById('dc').style.display='none';document.getElementById('lf').style.display='block';document.getElementById('rf').style.display='none'}}
+async function logout(){try{await ac.deleteSession('current')}catch(e){}if(chk)clearInterval(chk);U=null;lastPopupTime=0;cF();document.getElementById('ac').style.display='flex';document.getElementById('dc').style.display='none';document.getElementById('lf').style.display='block';document.getElementById('rf').style.display='none';cS()}
+async function ck(){try{const acc=await ac.get();const docs=await db.listDocuments(D,C.U,[Appwrite.Query.equal('userId',acc.$id)]);if(docs.total>0){U=docs.documents[0];sD()}}catch(e){}}
 function uM(){const r=U?.role;document.getElementById('mSt').style.display=r==='student'?'block':'none';document.getElementById('mSp').style.display=r==='supervisor'?'block':'none';document.getElementById('mAd').style.display=r==='admin'?'block':'none'}
-function sD(){document.getElementById('ac').style.display='none';document.getElementById('dc').style.display='block';document.getElementById('ui').innerHTML=`<span class="role-badge"><i class="bi ${U.role==='admin'?'bi-shield-lock-fill':U.role==='supervisor'?'bi-person-badge-fill':'bi-person-fill'}"></i> ${U.role.toUpperCase()}</span><span class="user-name-display" title="${U.fullName}">${U.fullName}</span>`;document.getElementById('mun').textContent=U.fullName;uM();lp('dashboard');if(U.role==='supervisor'){if(chk)clearInterval(chk);chk=setInterval(pop,30000);setTimeout(pop,2000)}if(U.role==='admin')setTimeout(uB,1000)}
+function sD(){
+    document.getElementById('ac').style.display='none';
+    document.getElementById('dc').style.display='block';
+    
+    // Professional Topbar UI
+    const uiEl = document.getElementById('ui');
+    const firstLetter = U.fullName.charAt(0).toUpperCase();
+    uiEl.innerHTML = `
+        <div class="tb-user-info">
+            <div class="tb-user-avatar">${firstLetter}</div>
+            <span class="tb-user-name">${U.fullName}</span>
+        </div>
+        <span class="tb-role-badge">${U.role}</span>
+    `;
+    
+    document.getElementById('mun').textContent=U.fullName;
+    uM();
+    lp('dashboard');
+    if(U.role==='supervisor'){
+        if(chk)clearInterval(chk);
+        // Angalia kila baada ya sekunde 60 badala ya 30
+        chk=setInterval(pop,60000);
+        // Subiri kidogo kabla ya popup ya kwanza
+        setTimeout(pop,3000);
+    }
+    if(U.role==='admin')setTimeout(uB,1000)
+}
 async function uB(){try{const s=await db.listDocuments(D,C.U,[Appwrite.Query.equal('role','supervisor'),Appwrite.Query.equal('isActive',!1)]);const b=document.getElementById('appBadge');if(b){b.style.display=s.total>0?'inline-flex':'none';b.textContent=s.total}}catch(e){}}
-async function lp(p){const t=document.getElementById('pt'),c=document.getElementById('pc');c.innerHTML='<div class="empty-state"><div class="spinner-border text-primary" style="width:2.5rem;height:2.5rem"></div><p class="mt-2 text-muted small">Loading...</p></div>';let h='';switch(p){case'dashboard':t.textContent='Dashboard';h=await rd();break;case'profile':t.textContent='Profile';h=await rp();break;case'search':t.textContent='Search';h=rs();break;case'daily_entry':t.textContent='Daily Entry';h=await rde();break;case'my_logbooks':t.textContent='Weekly Reports';h=await rml();break;case'attendance':t.textContent='Attendance';h=await ratt();break;case'pt_checklist':t.textContent='PT Checklist';h=rpt();break;case'comprehensive_report':t.textContent='Full Report';h=await rcr();break;case'final_assessment':t.textContent='Assessment';h=await rfa();break;case'view_supervisors':t.textContent='My Supervisor';h=rvs();break;case'action_reviews':t.textContent='Action Required';h=await ract();break;case'student_reports':t.textContent='Student Reports';h=await rsr();break;case'users':t.textContent='Users';h=await ru();break;case'pending_approvals':t.textContent='Pending Approvals';h=await rpa();break;case'all_logbooks':t.textContent='All Logbooks';h=await ral();break;case'assignments':t.textContent='Assignments';h=await ras();break;case'analytics':t.textContent='Analytics';h=await rn();break;case'bulk_delete':t.textContent='Bulk Delete';h=rbd();break;case'export_data':t.textContent='Export Data';h=red();break;case'about':t.textContent='About';h=rab();break;default:h='<div class="cc empty-state"><i class="bi bi-exclamation-circle"></i><p class="mt-2">Page not found</p></div>'}c.innerHTML=h;cS();if(p==='analytics')setTimeout(rc,500)}
-
-async function rd(){if(U.role==='student'){let currentWeekInfo='';if(U.fieldStartDate){const start=new Date(U.fieldStartDate);const diffDays=Math.floor((new Date()-start)/(1000*60*60*24));const cw=Math.floor(diffDays/7)+1;const weekStart=new Date(start.getTime()+((cw-1)*7*24*60*60*1000));const weekEnd=new Date(weekStart.getTime()+(6*24*60*60*1000));currentWeekInfo=`<div class="alert-info-custom mb-3"><div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-calendar-week" style="font-size:1.2rem"></i><strong>Current Week: ${cw}</strong></div><span class="text-muted" style="font-size:0.78rem">${weekStart.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${weekEnd.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</span></div>`}return`<div class="cc text-center"><img src="${LOGO}" style="width:75px;height:75px;border-radius:50%;margin-bottom:1rem;border:3px solid var(--p);box-shadow:0 4px 15px rgba(0,0,0,0.1)"><h4 class="fw-bold mb-1" style="letter-spacing:-0.3px">Welcome, ${U.fullName}!</h4><p class="text-muted small mb-3">${U.institution||''} ${U.department?'• '+U.department:''}</p>${currentWeekInfo}<div class="d-grid gap-2 mt-3" style="max-width:280px;margin:0 auto"><button class="bsc" onclick="lp('daily_entry')"><i class="bi bi-pencil-square"></i> Daily Entry</button><button class="bsc-outline" onclick="lp('attendance')"><i class="bi bi-calendar-check"></i> Attendance</button><button class="bo mt-2" onclick="showHowItWorks()"><i class="bi bi-question-circle"></i> How It Works</button></div></div>`}if(U.role==='supervisor'){try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);const sids=asgn.documents.map(a=>a.studentId);const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);const p=logs.documents.filter(l=>sids.includes(l.studentId)).length;return`<div class="sg"><div class="sc" onclick="lp('action_reviews')"><h2 style="color:#f59e0b">${p}</h2><p>Pending Reviews</p></div><div class="sc" onclick="lp('student_reports')"><h2>${asgn.total}</h2><p>My Students</p></div></div>`}catch(e){return'<div class="cc">Error loading dashboard</div>'}}if(U.role==='admin'){try{const[u,s]=await Promise.all([db.listDocuments(D,C.U),db.listDocuments(D,C.U,[Appwrite.Query.equal('role','supervisor'),Appwrite.Query.equal('isActive',!1)])]);return`<div class="sg"><div class="sc" onclick="lp('users')"><h2 style="color:#3b82f6">${u.documents.filter(x=>x.role==='student').length}</h2><p>Students</p></div><div class="sc" onclick="lp('users')"><h2 style="color:#10b981">${u.documents.filter(x=>x.role==='supervisor').length}</h2><p>Supervisors</p></div><div class="sc" onclick="lp('pending_approvals')"><h2 style="color:#f59e0b">${s.total}</h2><p>Pending</p></div></div>`}catch(e){return'<div class="cc">Error loading dashboard</div>'}}return'<div class="cc">Welcome</div>'}
+async function lp(p){const t=document.getElementById('pt'),c=document.getElementById('pc');c.innerHTML='<div class="empty-state"><div class="spinner-border text-primary" style="width:2.5rem;height:2.5rem"></div><p class="mt-2 text-muted small">Loading...</p></div>';let h='';switch(p){case'dashboard':t.textContent='Dashboard';h=await rd();break;case'profile':t.textContent='Profile';h=await rp();break;case'search':t.textContent='Search';h=rs();break;case'my_logbooks':t.textContent='My Logbooks';h=await rml();break;case'pt_checklist':t.textContent='PT Checklist';h=rpt();break;case'comprehensive_report':t.textContent='Full Report';h=await rcr();break;case'final_assessment':t.textContent='Assessment';h=await rfa();break;case'view_supervisors':t.textContent='My Supervisor';h=rvs();break;case'action_reviews':t.textContent='Action Required';h=await ract();break;case'student_reports':t.textContent='Student Reports';h=await rsr();break;case'users':t.textContent='Users';h=await ru();break;case'pending_approvals':t.textContent='Pending Approvals';h=await rpa();break;case'all_logbooks':t.textContent='All Logbooks';h=await ral();break;case'assignments':t.textContent='Assignments';h=await ras();break;case'analytics':t.textContent='Analytics';h=await rn();break;case'bulk_delete':t.textContent='Bulk Delete';h=rbd();break;case'export_data':t.textContent='Export Data';h=red();break;case'about':t.textContent='About';h=rab();break;default:h='<div class="cc empty-state"><i class="bi bi-exclamation-circle"></i><p class="mt-2">Page not found</p></div>'}c.innerHTML=h;cS();if(p==='analytics')setTimeout(rc,500)}
+async function rd(){if(U.role==='student'){let currentWeekInfo='';if(U.fieldStartDate){const start=new Date(U.fieldStartDate);const diffDays=Math.floor((new Date()-start)/(1000*60*60*24));const cw=Math.floor(diffDays/7)+1;const weekStart=new Date(start.getTime()+((cw-1)*7*24*60*60*1000));const weekEnd=new Date(weekStart.getTime()+(6*24*60*60*1000));currentWeekInfo=`<div class="alert-info-custom mb-3"><div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-calendar-week" style="font-size:1.2rem"></i><strong>Current Week: ${cw}</strong></div><span class="text-muted" style="font-size:0.78rem">${weekStart.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${weekEnd.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</span></div>`}return`<div class="cc text-center"><img src="${LOGO}" style="width:75px;height:75px;border-radius:50%;margin-bottom:1rem;border:3px solid var(--p);box-shadow:0 4px 15px rgba(0,0,0,0.1)"><h4 class="fw-bold mb-1" style="letter-spacing:-0.3px">Welcome, ${U.fullName}!</h4><p class="text-muted small mb-3">${U.institution||''} ${U.department?'• '+U.department:''}</p>${currentWeekInfo}<div class="d-grid gap-2 mt-3" style="max-width:280px;margin:0 auto"><button class="bsc" onclick="lp('my_logbooks')"><i class="bi bi-journal-text"></i>My Logbooks</button><button class="bsc-outline" onclick="lp('pt_checklist')"><i class="bi bi-check2-square"></i>PT Checklist</button></div></div>`}if(U.role==='supervisor'){try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);const sids=asgn.documents.map(a=>a.studentId);const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);const p=logs.documents.filter(l=>sids.includes(l.studentId)).length;return`<div class="sg"><div class="sc" onclick="lp('action_reviews')"><h2 style="color:#f59e0b">${p}</h2><p>Pending Reviews</p></div><div class="sc" onclick="lp('student_reports')"><h2>${asgn.total}</h2><p>My Students</p></div></div>`}catch(e){return'<div class="cc">Error loading dashboard</div>'}}if(U.role==='admin'){try{const[u,s]=await Promise.all([db.listDocuments(D,C.U),db.listDocuments(D,C.U,[Appwrite.Query.equal('role','supervisor'),Appwrite.Query.equal('isActive',!1)])]);return`<div class="sg"><div class="sc" onclick="lp('users')"><h2 style="color:#3b82f6">${u.documents.filter(x=>x.role==='student').length}</h2><p>Students</p></div><div class="sc" onclick="lp('users')"><h2 style="color:#10b981">${u.documents.filter(x=>x.role==='supervisor').length}</h2><p>Supervisors</p></div><div class="sc" onclick="lp('pending_approvals')"><h2 style="color:#f59e0b">${s.total}</h2><p>Pending</p></div></div>`}catch(e){return'<div class="cc">Error loading dashboard</div>'}}return'<div class="cc">Welcome</div>'}
 function rab(){return`<div class="cc text-center"><img src="${LOGO}" style="width:85px;height:85px;border-radius:50%;margin-bottom:1.2rem"><h5 class="fw-bold mb-2">Behsit Field System</h5><p class="text-muted small">Smart Internship Logbook v3.0</p><hr><p class="mb-1"><i class="bi bi-telephone"></i> 0624887209</p><a href="https://wa.link/epddi1" target="_blank" class="btn btn-success btn-sm mt-2"><i class="bi bi-whatsapp"></i> WhatsApp Support</a></div>`}
-async function rp(){let h=`<div class="cc"><div class="text-center mb-4"><img src="${LOGO}" style="width:75px;height:75px;border-radius:50%;border:3px solid var(--p);box-shadow:0 4px 15px rgba(0,0,0,0.1)"><h5 class="fw-bold mt-3 mb-1">${U.fullName}</h5><span class="tag" style="background:var(--s);color:#fff">${U.role.toUpperCase()}</span></div><div class="border rounded-3 p-3 mb-3"><p class="small mb-2"><strong>📧 Email:</strong> ${U.email}</p>`;if(U.username)h+=`<p class="small mb-2"><strong>👤 Username:</strong> ${U.username}</p>`;if(U.phone)h+=`<p class="small mb-2"><strong>📱 Phone:</strong> ${U.phone}</p>`;if(U.regNum)h+=`<p class="small mb-2"><strong>🆔 Reg No:</strong> ${U.regNum}</p>`;if(U.institution)h+=`<p class="small mb-2"><strong>🏛 Institution:</strong> ${U.institution}</p>`;if(U.region)h+=`<p class="small mb-2"><strong>📍 Region:</strong> ${U.region}${U.district?', '+U.district:''}</p>`;h+='</div>';if(U.role==='student'){h+=`<div class="border rounded-3 p-3 mb-3"><p class="small mb-2"><strong>Supervisor Status:</strong> ${U.supStatus===ST.A?'<span class="text-success">✅ Approved</span>':U.supStatus===ST.P?'<span class="text-warning">⏳ Pending Approval</span>':'<span class="text-danger">⚠ Not Submitted</span>'}</p>`;if(U.supName)h+=`<p class="small mb-0"><strong>👨‍🏫 Supervisor:</strong> ${U.supName} (${U.supEmail||'N/A'})</p>`;h+=`</div><button class="bsc mt-2" onclick="lp('view_supervisors')"><i class="bi bi-pencil"></i>Manage Supervisor</button>`}return h+'</div>'}
-function rvs(){if(!U.supName){return`<div class="cc"><h5 class="fw-bold mb-3">👨‍🏫 My Supervisor</h5><div class="empty-state py-4"><i class="bi bi-person-x" style="font-size:3.5rem;color:#cbd5e1"></i><h5 class="mt-3">No Supervisor Assigned</h5><p class="text-muted small mb-3">Search and select an existing supervisor, or register a new one</p><div class="d-flex flex-column gap-3 align-items-center" style="max-width:400px;margin:0 auto;width:100%"><button class="bsc w-100" onclick="searchSupervisor()"><i class="bi bi-search"></i> Search Existing Supervisor</button><div class="text-muted small">— or —</div><button class="bsc-outline w-100" onclick="eMS()"><i class="bi bi-person-plus"></i> Register New Supervisor</button></div></div></div>`}return`<div class="cc"><h5 class="fw-bold mb-3">👨‍🏫 My Supervisor</h5><div class="border rounded-3 p-4 mb-3" style="background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(16,185,129,0.05));border-color:rgba(59,130,246,0.2)"><div class="d-flex align-items-center gap-3 mb-3"><div style="width:55px;height:55px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;font-weight:700">${U.supName.charAt(0).toUpperCase()}</div><div><h6 class="fw-bold mb-0">${U.supName}</h6><small class="text-muted">${U.supEmail||'N/A'}</small></div><span class="ms-auto badge bg-${U.supStatus===ST.A?'success':U.supStatus===ST.P?'warning':'danger'} bst">${U.supStatus===ST.A?'Approved':U.supStatus===ST.P?'Pending':'Not Approved'}</span></div><div class="border-top pt-3"><p class="small mb-2"><strong>📍 Region:</strong> ${U.supRegion||'N/A'}</p><p class="small mb-0"><strong>Status:</strong> ${U.supStatus===ST.A?'<span class="text-success">✅ Approved</span>':U.supStatus===ST.P?'<span class="text-warning">⏳ Pending Approval</span>':'<span class="text-danger">❌ Not Approved</span>'}</p></div></div><button class="bsc-outline w-100" onclick="searchSupervisor()"><i class="bi bi-arrow-repeat"></i> Change Supervisor</button></div>`}
+
+// ============ PROFILE IMEREKEBISHWA: Supervisor anaweza kubadili password ============
+async function rp(){
+    let h=`<div class="cc">
+        <div class="text-center mb-4">
+            <img src="${LOGO}" style="width:75px;height:75px;border-radius:50%;border:3px solid var(--p);box-shadow:0 4px 15px rgba(0,0,0,0.1)">
+            <h5 class="fw-bold mt-3 mb-1">${U.fullName}</h5>
+            <span class="tag" style="background:var(--s);color:#fff">${U.role.toUpperCase()}</span>
+        </div>
+        <div class="border rounded-3 p-3 mb-3">
+            <p class="small mb-2"><strong>📧 Email:</strong> ${U.email}</p>`;
+    
+    if(U.phone)h+=`<p class="small mb-2"><strong>📱 Phone:</strong> ${U.phone}</p>`;
+    if(U.regNum)h+=`<p class="small mb-2"><strong>🆔 Reg No:</strong> ${U.regNum}</p>`;
+    if(U.institution)h+=`<p class="small mb-2"><strong>🏛 Institution:</strong> ${U.institution}</p>`;
+    if(U.region)h+=`<p class="small mb-2"><strong>📍 Region:</strong> ${U.region}${U.district?', '+U.district:''}</p>`;
+    
+    h+='</div>';
+    
+    if(U.role==='student'){
+        h+=`<div class="border rounded-3 p-3 mb-3">
+            <p class="small mb-2"><strong>Supervisor Status:</strong> ${U.supStatus===ST.A?'<span class="text-success">✅ Approved</span>':U.supStatus===ST.P?'<span class="text-warning">⏳ Pending Approval</span>':'<span class="text-danger">⚠ Not Submitted</span>'}</p>`;
+        if(U.supName)h+=`<p class="small mb-0"><strong>👨‍🏫 Supervisor:</strong> ${U.supName} (${U.supEmail||'N/A'})</p>`;
+        h+=`</div>
+        <button class="bsc mt-2" onclick="lp('view_supervisors')"><i class="bi bi-pencil"></i>Manage Supervisor</button>`;
+    }
+    
+    // Supervisor profile - ongeza change password button
+    if(U.role==='supervisor'){
+        h+=`<div class="border rounded-3 p-3 mb-3" style="background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(16,185,129,0.05))">
+            <p class="small mb-2"><strong>🔐 Account Security</strong></p>
+            <p class="small text-muted mb-2">Last password change: ${U.pwChanged?new Date(U.pwChanged).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}):'Not yet changed'}</p>
+            <button class="bsc-outline w-100" onclick="changePasswordFromProfile()">
+                <i class="bi bi-shield-lock"></i> Change Password
+            </button>
+        </div>`;
+    }
+    
+    // Admin profile - ongeza change password button
+    if(U.role==='admin'){
+        h+=`<div class="border rounded-3 p-3 mb-3" style="background:linear-gradient(135deg,rgba(239,68,68,0.05),rgba(59,130,246,0.05))">
+            <p class="small mb-2"><strong>🔐 Account Security</strong></p>
+            <button class="bsc-outline w-100" onclick="changePasswordFromProfile()">
+                <i class="bi bi-shield-lock"></i> Change Password
+            </button>
+        </div>`;
+    }
+    
+    return h+'</div>';
+}
+// ============ MWISHO WA PROFILE ============
+
+function rvs(){if(!U.supName){return`<div class="cc"><h5 class="fw-bold mb-3">👨‍🏫 My Supervisor</h5><div class="empty-state py-4"><i class="bi bi-person-x" style="font-size:3.5rem;color:#cbd5e1"></i><h5 class="mt-3">No Supervisor Assigned</h5><p class="text-muted small mb-3">Search and select an existing supervisor, or register a new one</p><div class="d-flex flex-column gap-3 align-items-center" style="max-width:400px;margin:0 auto;width:100%"><button class="bsc w-100" onclick="searchSupervisor()"><i class="bi bi-search"></i> Search Existing Supervisor</button><div class="text-muted small">— or —</div><button class="bsc-outline w-100" onclick="eMS()"><i class="bi bi-person-plus"></i> Register New Supervisor</button></div></div></div>`}return`<div class="cc"><h5 class="fw-bold mb-3">👨‍🏫 My Supervisor</h5><div class="border rounded-3 p-4 mb-3" style="background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(16,185,129,0.05));border-color:rgba(59,130,246,0.2)"><div class="d-flex align-items-center gap-3 mb-3"><div style="width:55px;height:55px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;just-content:center;color:#fff;font-size:1.5rem;font-weight:700">${U.supName.charAt(0).toUpperCase()}</div><div><h6 class="fw-bold mb-0">${U.supName}</h6><small class="text-muted">${U.supEmail||'N/A'}</small></div><span class="ms-auto badge bg-${U.supStatus===ST.A?'success':U.supStatus===ST.P?'warning':'danger'} bst">${U.supStatus===ST.A?'Approved':U.supStatus===ST.P?'Pending':'Not Approved'}</span></div><div class="border-top pt-3"><p class="small mb-2"><strong>📍 Region:</strong> ${U.supRegion||'N/A'}</p><p class="small mb-0"><strong>Status:</strong> ${U.supStatus===ST.A?'<span class="text-success">✅ Approved</span>':U.supStatus===ST.P?'<span class="text-warning">⏳ Pending Approval</span>':'<span class="text-danger">❌ Not Approved</span>'}</p></div></div><button class="bsc-outline w-100" onclick="searchSupervisor()"><i class="bi bi-arrow-repeat"></i> Change Supervisor</button></div>`}
 async function searchSupervisor(){const{value:searchTerm}=await Swal.fire({title:'🔍 Search Supervisor',html:`<div class="text-start"><p class="small text-muted mb-3">Type the supervisor's name to search (minimum 3 characters):</p><input id="ssi" class="fc" placeholder="e.g. John, Dr. Mary..." autocomplete="off"><div id="ssr" class="mt-3" style="max-height:300px;overflow-y:auto"></div></div>`,showCancelButton:!0,confirmButtonText:'Confirm Selection',confirmButtonColor:'#1a5276',cancelButtonText:'Cancel',width:'700px',didOpen:()=>{const input=document.getElementById('ssi');const resultDiv=document.getElementById('ssr');let selectedSupervisor=null;let searchTimeout;async function performSearch(query){if(!query||query.length<3){resultDiv.innerHTML='<p class="text-muted text-center py-3 small">Type at least 3 characters to search...</p>';return}resultDiv.innerHTML='<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary"></div><p class="small text-muted mt-2">Searching...</p></div>';try{const supervisors=await db.listDocuments(D,C.U,[Appwrite.Query.equal('role','supervisor'),Appwrite.Query.equal('isActive',!0),Appwrite.Query.limit(100)]);const q=query.toLowerCase();const results=supervisors.documents.filter(s=>(s.fullName||'').toLowerCase().includes(q)||(s.email||'').toLowerCase().includes(q)||(s.region||'').toLowerCase().includes(q));if(results.length===0){resultDiv.innerHTML=`<div class="text-center py-4"><i class="bi bi-person-x" style="font-size:2rem;color:#cbd5e1"></i><p class="text-muted small mt-2">No supervisor found with that name</p><button class="bsc-outline btn-sm mt-2" onclick="eMS();Swal.close()"><i class="bi bi-person-plus"></i> Register New Supervisor</button></div>`;return}let html='';results.forEach(s=>{html+=`<div class="border rounded-3 p-3 mb-2 supervisor-card" data-id="${s.userId}" data-name="${s.fullName}" data-email="${s.email}" data-region="${s.region||''}" style="cursor:pointer;transition:all 0.2s ease" onmouseover="this.style.borderColor='var(--s)';this.style.background='rgba(59,130,246,0.03)'" onmouseout="if(!this.classList.contains('selected')){this.style.borderColor='var(--border)';this.style.background='var(--card)'}"><div class="d-flex align-items-center gap-3"><div style="width:40px;height:40px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0">${s.fullName.charAt(0).toUpperCase()}</div><div style="flex:1"><strong style="font-size:0.9rem">${s.fullName}</strong><br><small class="text-muted">${s.email} • ${s.region||'No region'}</small></div><i class="bi bi-check-circle text-muted" style="font-size:1.2rem"></i></div></div>`});resultDiv.innerHTML=html;document.querySelectorAll('.supervisor-card').forEach(card=>{card.addEventListener('click',function(){document.querySelectorAll('.supervisor-card').forEach(c=>{c.style.borderColor='var(--border)';c.style.background='var(--card)';c.classList.remove('selected');const icon=c.querySelector('i');icon.className='bi bi-check-circle text-muted';icon.style.color=''});this.style.borderColor='var(--s)';this.style.background='rgba(59,130,246,0.06)';this.classList.add('selected');const icon=this.querySelector('i');icon.className='bi bi-check-circle-fill';icon.style.color='var(--s)';selectedSupervisor={id:this.dataset.id,name:this.dataset.name,email:this.dataset.email,region:this.dataset.region}})})}catch(e){resultDiv.innerHTML='<p class="text-danger text-center py-3 small">Search failed. Please try again.</p>'}}input.addEventListener('input',function(){clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>performSearch(this.value),400)});setTimeout(()=>input.focus(),300);Swal.getPopup().__selectedSupervisor=()=>selectedSupervisor},preConfirm:()=>{const selected=Swal.getPopup().__selectedSupervisor();if(!selected){Swal.showValidationMessage('Please select a supervisor first');return!1}return selected}});if(!searchTerm)return;const confirmResult=await Swal.fire({title:'Confirm Selection',html:`<div class="text-start"><p class="mb-2">You are about to select:</p><div class="border rounded-3 p-3 mb-3" style="background:rgba(59,130,246,0.05)"><div class="d-flex align-items-center gap-3"><div style="width:50px;height:50px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.2rem">${searchTerm.name.charAt(0).toUpperCase()}</div><div><strong>${searchTerm.name}</strong><br><small class="text-muted">${searchTerm.email} • ${searchTerm.region||'No region'}</small></div></div></div><div class="alert alert-warning small py-2"><i class="bi bi-info-circle"></i> The supervisor will receive a notification and will be able to review your logbooks.</div></div>`,icon:'question',showCancelButton:!0,confirmButtonText:'✅ Yes, Select This Supervisor',cancelButtonText:'Cancel',confirmButtonColor:'#10b981',cancelButtonColor:'#6b7280'});if(!confirmResult.isConfirmed)return;try{sl();const now=new Date().toISOString();await db.updateDocument(D,C.U,U.userId,{supName:searchTerm.name,supEmail:searchTerm.email,supRegion:searchTerm.region,supId:searchTerm.id,supStatus:ST.A,updatedAt:now});const existingAssignment=await db.listDocuments(D,C.A,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('supervisorId',searchTerm.id),Appwrite.Query.limit(1)]);if(existingAssignment.total===0){const aid=Appwrite.ID.unique();await db.createDocument(D,C.A,aid,{assignmentId:aid,studentId:U.userId,supervisorId:searchTerm.id,region:searchTerm.region||U.region||'',status:'active',createdAt:now,updatedAt:now})}await cn(searchTerm.id,'👨‍🎓 New Student Assigned',`${U.fullName} (${U.institution||'N/A'}) has selected you as their supervisor. You can now review their logbooks.`);U={...U,supName:searchTerm.name,supEmail:searchTerm.email,supRegion:searchTerm.region,supId:searchTerm.id,supStatus:ST.A};hl();await Swal.fire({icon:'success',title:'✅ Supervisor Selected!',html:`<div class="text-start"><div class="border rounded-3 p-3 mb-2" style="background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.3)"><strong>${searchTerm.name}</strong><br><small class="text-muted">${searchTerm.email}</small></div><p class="small text-muted mb-0"><i class="bi bi-check-circle text-success"></i> Successfully connected! Your supervisor can now review your logbooks.</p></div>`,confirmButtonColor:'#10b981',confirmButtonText:'OK, Got It'});lp('view_supervisors')}catch(e){hl();Swal.fire({icon:'error',title:'Connection Failed',text:e.message||'Please try again.'})}}
 async function eMS(){let rOpts='<option value="">Select Region</option>';Object.keys(TZ).sort().forEach(r=>{rOpts+=`<option value="${r}" ${U.supRegion===r?'selected':''}>${r}</option>`});const{value}=await Swal.fire({title:'📝 Register New Supervisor',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-info-circle"></i> <strong>Fill in your supervisor's details from your institution</strong></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Full Name *</label><input id="sn" class="fc" value="${U.supName||''}" placeholder="e.g. Dr. John Makonda"></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Email *</label><input id="se" class="fc" value="${U.supEmail||''}" placeholder="e.g. john@sua.ac.tz" type="email"></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Password * (min 8 characters)</label><input id="sp" class="fc" type="password" placeholder="Set a password for the supervisor"><small class="text-muted">The supervisor will use this to log into the system</small></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Region *</label><select id="sr" class="fc">${rOpts}</select></div></div>`,showCancelButton:!0,confirmButtonText:'<i class="bi bi-person-plus"></i> Register Supervisor',confirmButtonColor:'#1a5276',cancelButtonText:'Cancel',width:'650px',preConfirm:()=>{const sn=document.getElementById('sn')?.value?.trim();const se=document.getElementById('se')?.value?.trim();const sp=document.getElementById('sp')?.value;const sr=document.getElementById('sr')?.value;if(!sn||!se||!sp||!sr){Swal.showValidationMessage('Please fill in all required fields (*)');return!1}if(sp.length<8){Swal.showValidationMessage('Password must be at least 8 characters');return!1}if(!se.includes('@')||!se.includes('.')){Swal.showValidationMessage('Please enter a valid email address');return!1}return{sn,se,sp,sr}}});if(!value)return;try{sl();const now=new Date().toISOString();const existingSupervisor=await db.listDocuments(D,C.U,[Appwrite.Query.equal('email',value.se),Appwrite.Query.equal('role','supervisor'),Appwrite.Query.limit(1)]);if(existingSupervisor.total>0){hl();const existing=existingSupervisor.documents[0];const useExisting=await Swal.fire({title:'⚠️ Supervisor Already Exists',html:`<div class="text-start"><p>A supervisor with that email already exists in the system:</p><div class="border rounded-3 p-3 mb-2"><strong>${existing.fullName}</strong><br><small class="text-muted">${existing.email} • ${existing.region||'No region'}</small></div><p class="small">Would you like to connect with them directly?</p></div>`,icon:'info',showCancelButton:!0,confirmButtonText:'✅ Yes, Connect With Them',cancelButtonText:'No, Cancel',confirmButtonColor:'#10b981'});if(!useExisting.isConfirmed)return;await db.updateDocument(D,C.U,U.userId,{supName:existing.fullName,supEmail:existing.email,supRegion:existing.region||value.sr,supId:existing.userId,supStatus:ST.A,updatedAt:now});const existingAssignment=await db.listDocuments(D,C.A,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('supervisorId',existing.userId),Appwrite.Query.limit(1)]);if(existingAssignment.total===0){const aid=Appwrite.ID.unique();await db.createDocument(D,C.A,aid,{assignmentId:aid,studentId:U.userId,supervisorId:existing.userId,region:existing.region||value.sr,status:'active',createdAt:now,updatedAt:now})}await cn(existing.userId,'👨‍🎓 New Student Assigned',`${U.fullName} (${U.institution||'N/A'}) has registered you as their supervisor.`);U={...U,supName:existing.fullName,supEmail:existing.email,supRegion:existing.region||value.sr,supId:existing.userId,supStatus:ST.A};hl();st('Successfully connected to supervisor! ✅');lp('view_supervisors');return}const sup=await rSup(value.sn,value.se,value.sp,value.sr);if(!sup){hl();return Swal.fire({icon:'error',title:'Registration Failed',text:'Could not create supervisor account. Please try again.'})}await db.updateDocument(D,C.U,U.userId,{supName:value.sn,supEmail:value.se,supRegion:value.sr,supId:sup.userId,supStatus:ST.P,updatedAt:now});const aid=Appwrite.ID.unique();await db.createDocument(D,C.A,aid,{assignmentId:aid,studentId:U.userId,supervisorId:sup.userId,region:value.sr,status:'active',createdAt:now,updatedAt:now});const admins=await db.listDocuments(D,C.U,[Appwrite.Query.equal('role','admin'),Appwrite.Query.equal('isActive',!0),Appwrite.Query.limit(5)]);for(const admin of admins.documents){await cn(admin.userId,'🆕 New Supervisor Registered',`${value.sn} (${value.se}) was registered by ${U.fullName}. Requires approval.`)}U={...U,supName:value.sn,supEmail:value.se,supRegion:value.sr,supId:sup.userId,supStatus:ST.P};hl();await Swal.fire({icon:'success',title:'✅ Supervisor Registered!',html:`<div class="text-start"><p class="mb-2">Supervisor <strong>${value.sn}</strong> has been registered successfully.</p><div class="alert alert-warning small py-2 mb-0"><i class="bi bi-hourglass-split"></i> <strong>Pending admin approval</strong> before they can start using the system. You will be notified once approved.</div></div>`,confirmButtonColor:'#10b981',confirmButtonText:'OK, Got It'});lp('view_supervisors')}catch(e){hl();Swal.fire({icon:'error',title:'Registration Failed',text:e.message||'Please try again.'})}}
-
-// ============================================
-// PASSWORD RECOVERY BY USERNAME + SECURITY QUESTION
-// ============================================
-async function forgotPasswordByUsername(){
-    const{value:username}=await Swal.fire({title:'🔑 Forgot Password',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-info-circle"></i> <strong>Enter your username</strong> to recover your password.</div><input id="fpu" class="fc" placeholder="Enter your username" autocomplete="off"></div>`,showCancelButton:!0,confirmButtonText:'Next <i class="bi bi-arrow-right"></i>',confirmButtonColor:'#1a5276',cancelButtonText:'Cancel',preConfirm:()=>{const usr=document.getElementById('fpu')?.value?.trim()?.toLowerCase();if(!usr){Swal.showValidationMessage('Please enter your username');return!1}return usr}});
-    if(!username)return;
-    try{
-        sl();
-        const userDocs=await db.listDocuments(D,C.U,[Appwrite.Query.equal('username',username),Appwrite.Query.limit(1)]);
-        if(userDocs.total===0){hl();await Swal.fire({icon:'error',title:'Username Not Found',text:'No account found with that username.',confirmButtonColor:'#1a5276',footer:'<a href="#" onclick="forgotPasswordByUsername();Swal.close()" style="color:var(--s)">Try again</a>'});return}
-        const user=userDocs.documents[0];hl();
-        const questionMap={mother:"What is your mother's maiden name?",city:"What city were you born in?",pet:"What is the name of your first pet?",teacher:"What is your favorite teacher's name?",nickname:"What is your childhood nickname?"};
-        const question=questionMap[user.securityQuestion]||user.securityQuestion;
-        const{value:answer}=await Swal.fire({title:'🔐 Security Verification',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-shield-lock"></i> <strong>Answer your security question</strong></div><p class="fw-semibold mb-2">${question}</p><input id="fpa" class="fc" placeholder="Your answer" autocomplete="off"></div>`,showCancelButton:!0,confirmButtonText:'Verify <i class="bi bi-arrow-right"></i>',confirmButtonColor:'#1a5276',cancelButtonText:'Cancel',preConfirm:()=>{const ans=document.getElementById('fpa')?.value?.trim()?.toLowerCase();if(!ans){Swal.showValidationMessage('Please enter your answer');return!1}return ans}});
-        if(!answer)return;
-        if(answer!==user.securityAnswer){await Swal.fire({icon:'error',title:'Wrong Answer',text:'Security answer is incorrect.',confirmButtonColor:'#1a5276',footer:'<a href="#" onclick="forgotPasswordByUsername();Swal.close()" style="color:var(--s)">Try again</a>'});return}
-        const{value:newPassword}=await Swal.fire({title:'🔒 Set New Password',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-key"></i> <strong>Create a new password</strong> for <span class="fw-bold">${user.fullName}</span></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">New Password *</label><input id="fpn" class="fc" type="password" placeholder="Min 8 characters"></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Confirm Password *</label><input id="fpc" class="fc" type="password" placeholder="Re-enter password"></div></div>`,showCancelButton:!0,confirmButtonText:'<i class="bi bi-check-circle"></i> Reset Password',confirmButtonColor:'#10b981',cancelButtonText:'Cancel',preConfirm:()=>{const np=document.getElementById('fpn')?.value;const cp=document.getElementById('fpc')?.value;if(!np||!cp){Swal.showValidationMessage('All fields are required');return!1}if(np.length<8){Swal.showValidationMessage('Password must be at least 8 characters');return!1}if(np!==cp){Swal.showValidationMessage('Passwords do not match');return!1}return np}});
-        if(!newPassword)return;
-        sl();
-        try{
-            await ac.createRecovery(user.email,window.location.origin+window.location.pathname);
-            hl();await Swal.fire({icon:'success',title:'✅ Recovery Email Sent!',html:`<div class="text-start"><p class="mb-2">For security, a password reset link has been sent to:</p><div class="border rounded-3 p-3 mb-2" style="background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.3)"><strong>📧 ${user.email.replace(/(.{2})(.*)(@.*)/,'$1****$3')}</strong></div><p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> Click the link in the email to complete your password reset.<br><br><strong>Username:</strong> ${username}</p></div>`,confirmButtonColor:'#10b981',confirmButtonText:'OK, Got It'});
-        }catch(e){hl();Swal.fire({icon:'error',title:'Reset Failed',text:e.message||'Could not send recovery email. Please try again.',confirmButtonColor:'#1a5276'})}
-    }catch(e){hl();Swal.fire({icon:'error',title:'Error',text:'Something went wrong. Please try again.',confirmButtonColor:'#1a5276'})}
-}
-
-async function completePasswordRecovery(userId,secret){
-    const{value:formData}=await Swal.fire({title:'🔒 Reset Your Password',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-shield-check"></i> <strong>Create a new password</strong></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">New Password *</label><input id="rp_np" class="fc" type="password" placeholder="Min 8 characters"></div><div class="mb-3"><label class="small fw-semibold text-muted mb-1">Confirm Password *</label><input id="rp_cp" class="fc" type="password" placeholder="Re-enter password"></div></div>`,showCancelButton:!1,allowOutsideClick:!1,confirmButtonText:'<i class="bi bi-key"></i> Reset Password',confirmButtonColor:'#10b981',preConfirm:()=>{const np=document.getElementById('rp_np')?.value;const cp=document.getElementById('rp_cp')?.value;if(!np||!cp){Swal.showValidationMessage('All fields required');return!1}if(np.length<8){Swal.showValidationMessage('Min 8 characters');return!1}if(np!==cp){Swal.showValidationMessage('Passwords do not match');return!1}return{newPassword:np}}});
-    if(!formData)return;
-    try{sl();await ac.updateRecovery(userId,secret,formData.newPassword);hl();await Swal.fire({icon:'success',title:'✅ Password Reset!',text:'You can now login with your new password.',confirmButtonColor:'#10b981',confirmButtonText:'Go to Login'});document.getElementById('ac').style.display='flex';document.getElementById('dc').style.display='none';document.getElementById('lf').style.display='block';document.getElementById('rf').style.display='none';cF()}catch(e){hl();Swal.fire({icon:'error',title:'Reset Failed',text:'Link expired. Please request a new one.',confirmButtonColor:'#1a5276',footer:'<a href="#" onclick="forgotPasswordByUsername();Swal.close()" style="color:var(--s)">Request again</a>'})}
-}
-
-function checkRecoveryLink(){const urlParams=new URLSearchParams(window.location.search);const userId=urlParams.get('userId');const secret=urlParams.get('secret');if(userId&&secret){setTimeout(()=>{completePasswordRecovery(userId,secret)},500);if(window.history&&window.history.replaceState){window.history.replaceState({},document.title,window.location.pathname)}}}
-
-// HOW IT WORKS
-function showHowItWorks(){const roleSteps=U?.role==='student'?`<div class="border rounded-3 p-3 mb-2" style="background:rgba(59,130,246,0.04);border-left:3px solid var(--s)"><strong style="color:var(--s)">Step 1:</strong> Set up your supervisor from <strong>My Supervisor</strong> page</div><div class="border rounded-3 p-3 mb-2" style="background:rgba(16,185,129,0.04);border-left:3px solid var(--g)"><strong style="color:var(--g)">Step 2:</strong> <strong>Check In</strong> daily via Attendance (once per day)</div><div class="border rounded-3 p-3 mb-2" style="background:rgba(245,158,11,0.04);border-left:3px solid var(--w)"><strong style="color:var(--w)">Step 3:</strong> Write <strong>Daily Entry</strong> every working day</div><div class="border rounded-3 p-3 mb-2" style="background:rgba(139,92,246,0.04);border-left:3px solid #8b5cf6"><strong style="color:#8b5cf6">Step 4:</strong> On <strong>Friday</strong> — Submit <strong>Weekly Summary</strong></div><div class="border rounded-3 p-3" style="background:rgba(239,68,68,0.04);border-left:3px solid var(--d)"><strong style="color:var(--d)">Step 5:</strong> Track progress via <strong>Weekly Reports</strong> & <strong>Full Report</strong></div>`:U?.role==='supervisor'?`<div class="border rounded-3 p-3 mb-2" style="background:rgba(245,158,11,0.04);border-left:3px solid var(--w)"><strong style="color:var(--w)">Step 1:</strong> Receive notifications when students submit weekly reports</div><div class="border rounded-3 p-3 mb-2" style="background:rgba(245,158,11,0.04);border-left:3px solid var(--w)"><strong style="color:var(--w)">Step 2:</strong> Go to <strong>Action Required</strong> to review & approve/reject</div><div class="border rounded-3 p-3" style="background:rgba(245,158,11,0.04);border-left:3px solid var(--w)"><strong style="color:var(--w)">Step 3:</strong> Submit <strong>Final Assessment</strong> at end of internship</div>`:`<div class="border rounded-3 p-3 mb-2" style="background:rgba(239,68,68,0.04);border-left:3px solid var(--d)"><strong style="color:var(--d)">Step 1:</strong> Approve pending supervisors</div><div class="border rounded-3 p-3 mb-2" style="background:rgba(239,68,68,0.04);border-left:3px solid var(--d)"><strong style="color:var(--d)">Step 2:</strong> Manage users & assignments</div><div class="border rounded-3 p-3" style="background:rgba(239,68,68,0.04);border-left:3px solid var(--d)"><strong style="color:var(--d)">Step 3:</strong> View analytics & export data</div>`;Swal.fire({title:'📖 How It Works',html:`<div class="text-start" style="max-height:55vh;overflow-y:auto;padding-right:0.3rem"><div class="alert-info-custom mb-3"><i class="bi bi-person-check"></i> <strong>Your Role:</strong> ${U?.role?.toUpperCase()||'USER'}</div>${roleSteps}<hr class="my-3"><h6 style="font-weight:700;font-size:0.85rem">✨ Key Features</h6><ul class="small text-muted mb-0" style="padding-left:1.2rem;line-height:1.8"><li><strong>Auto Week Tracking</strong> — Week updates every 7 days</li><li><strong>Digital Signatures</strong> — Sign entries electronically</li><li><strong>PDF Export</strong> — Download logbooks as PDF</li><li><strong>Real-time Notifications</strong> — Instant alerts on reviews</li><li><strong>Username Recovery</strong> — Reset password with username + security question</li><li><strong>Dark Mode</strong> — Toggle from sidebar menu</li><li><strong>PWA Ready</strong> — Install on phone/desktop</li><li><strong>Mobile Responsive</strong> — Works on all devices</li></ul></div>`,icon:'info',confirmButtonText:'Got It! 👍',confirmButtonColor:'#1a5276',width:'700px',customClass:{popup:'text-start'}})}
-
-// DAILY ENTRY SYSTEM
-async function rde(){const today=new Date();const todayStr=today.toISOString().split('T')[0];const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];const todayName=dayNames[today.getDay()];const todayDate=today.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'});if(!U.fieldStartDate){const{value:startDate}=await Swal.fire({title:'📅 Field Start Date',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-info-circle"></i> <strong>Enter the date you started your field reporting (once only)</strong></div><input id="fsd" class="fc" type="date" value="${todayStr}"></div>`,showCancelButton:!1,allowOutsideClick:!1,allowEscapeKey:!1,confirmButtonText:'Save Date',confirmButtonColor:'#1a5276',preConfirm:()=>{const d=document.getElementById('fsd')?.value;if(!d)return Swal.showValidationMessage('Please select a date');return d}});if(!startDate)return;try{const now=new Date().toISOString();await db.updateDocument(D,C.U,U.userId,{fieldStartDate:startDate,updatedAt:now});U.fieldStartDate=startDate;st('Date saved! ✅')}catch(e){Swal.fire({icon:'error',text:e.message});return}}const start=new Date(U.fieldStartDate);const diffDays=Math.floor((today-start)/(1000*60*60*24));const autoWeek=Math.floor(diffDays/7)+1;const weekStart=new Date(start.getTime()+((autoWeek-1)*7*24*60*60*1000));const weekEnd=new Date(weekStart.getTime()+(6*24*60*60*1000));let todayEntry=null;try{const existing=await db.listDocuments(D,C.DL,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('date',todayStr),Appwrite.Query.limit(1)]);if(existing.total>0)todayEntry=existing.documents[0]}catch(e){}const dailyHistory=[];try{const hist=await db.listDocuments(D,C.DL,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('weekNumber',autoWeek),Appwrite.Query.orderAsc('date'),Appwrite.Query.limit(7)]);dailyHistory.push(...hist.documents)}catch(e){}let h=`<div class="cc"><div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"><div><h5 class="fw-bold mb-1">📝 Daily Entry</h5><small class="text-muted">${todayName}, ${todayDate}</small></div><span class="week-badge">Week ${autoWeek}</span></div><div class="alert-info-custom mb-4"><div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-calendar-week"></i><strong>Week ${autoWeek}</strong></div><span class="text-muted" style="font-size:0.78rem">${weekStart.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${weekEnd.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</span></div>`;if(todayEntry){h+=`<div class="alert alert-success small mb-4"><i class="bi bi-check-circle"></i> <strong>Today's entry submitted!</strong><br><small>${(todayEntry.activities||'').substring(0,100)}...</small></div>`}else{h+=`<button class="bg mb-4 pulse" onclick="cDE()" style="max-width:350px;margin:0 auto;display:block"><i class="bi bi-pencil-square"></i> Write Today's Entry (${todayName})</button>`}if(dailyHistory.length>0){h+=`<h6 class="fw-bold mb-3">📅 This Week's Entries</h6>`;const sc={pending:'warning',approved:'success',rejected:'danger'};dailyHistory.forEach(d=>{const dd=new Date(d.date);const dn=dayNames[dd.getDay()];h+=`<div class="border rounded-3 p-3 mb-2 small"><div class="d-flex justify-content-between"><strong>${dn} (${dd.toLocaleDateString('en-US',{day:'numeric',month:'short'})})</strong><span class="badge bg-${sc[d.status]||'secondary'} bst">${d.status}</span></div><p class="text-muted mb-0 mt-1">${(d.activities||'').substring(0,100)}...</p></div>`})}if(today.getDay()===5&&dailyHistory.length>=4){h+=`<div class="mt-4 text-center"><div class="alert alert-warning small mb-3"><i class="bi bi-info-circle"></i> <strong>It's Friday!</strong> Submit your weekly summary to your supervisor.</div><button class="bsc" onclick="sWS(${autoWeek})"><i class="bi bi-send"></i> Submit Weekly Summary</button></div>`}return h+'</div>'}
-async function cDE(){const today=new Date();const todayStr=today.toISOString().split('T')[0];const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];const todayName=dayNames[today.getDay()];const todayDate=today.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'});const start=new Date(U.fieldStartDate);const diffDays=Math.floor((today-start)/(1000*60*60*24));const autoWeek=Math.floor(diffDays/7)+1;const{value:form}=await Swal.fire({title:`📝 Daily Entry — ${todayName}, ${todayDate}`,html:`<div class="text-start"><div class="alert-info-custom mb-3"><span class="week-badge">Week ${autoWeek}</span><span class="ms-2 text-muted small">${todayName}</span></div><div class="mb-3"><label class="small fw-semibold text-muted">📌 Activities for ${todayName} *</label><textarea id="da" class="fc auto-expand" rows="5" placeholder="Describe your field activities for ${todayName}..."></textarea></div><div class="mb-3"><label class="small fw-semibold text-danger">✍️ Your Signature *</label><canvas id="ssc" class="sp-sm"></canvas></div></div>`,didOpen:()=>{const cv=document.getElementById('ssc');if(cv)sp=new SignaturePad(cv)},showCancelButton:!0,confirmButtonText:'<i class="bi bi-send"></i> Submit',confirmButtonColor:'#1a5276',width:'750px',preConfirm:()=>{const acts=document.getElementById('da')?.value?.trim();if(!acts)return Swal.showValidationMessage('Please write your activities');if(sp?.isEmpty())return Swal.showValidationMessage('Please provide your signature');return{activities:acts,sig:sp?.toDataURL()||''}}});if(!form)return;try{sl();const did=Appwrite.ID.unique();const now=new Date().toISOString();await db.createDocument(D,C.DL,did,{dailyLogId:did,studentId:U.userId,weekNumber:autoWeek,date:todayStr,dayName:todayName,activities:form.activities,signature:form.sig,status:'pending',submittedAt:now,createdAt:now,updatedAt:now});sp=null;hl();st('Daily entry submitted! ✅');lp('daily_entry')}catch(e){hl();Swal.fire({icon:'error',text:e.message||'Failed to submit. Please try again.'})}}
-async function sWS(weekNum){const start=new Date(U.fieldStartDate);const weekStart=new Date(start.getTime()+((weekNum-1)*7*24*60*60*1000));const weekEnd=new Date(weekStart.getTime()+(6*24*60*60*1000));let weekEntries='';try{const entries=await db.listDocuments(D,C.DL,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('weekNumber',weekNum),Appwrite.Query.orderAsc('date'),Appwrite.Query.limit(7)]);entries.documents.forEach(d=>{const dd=new Date(d.date);const dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][dd.getDay()];weekEntries+=`${dn} (${dd.toLocaleDateString('en-US',{day:'numeric',month:'short'})}): ${d.activities}\n\n`})}catch(e){}const{value:form}=await Swal.fire({title:`📅 Submit Weekly Summary — Week ${weekNum}`,html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-info-circle"></i> This summary will be sent to your supervisor along with all your daily entries.</div><div class="mb-3"><label class="small fw-semibold text-muted">📝 Weekly Activities Summary</label><textarea id="ws" class="fc auto-expand" rows="6" placeholder="Summarize your week's activities...">${weekEntries.trim()}</textarea></div><div class="mb-3"><label class="small fw-semibold text-muted">💡 Recommendations / Challenges (Optional)</label><textarea id="wr" class="fc auto-expand" rows="3" placeholder="Any recommendations or challenges faced this week..."></textarea></div><div class="mb-3"><label class="small fw-semibold text-danger">✍️ Your Signature *</label><canvas id="ssc" class="sp-sm"></canvas></div></div>`,didOpen:()=>{const cv=document.getElementById('ssc');if(cv)sp=new SignaturePad(cv)},showCancelButton:!0,confirmButtonText:'<i class="bi bi-send"></i> Submit to Supervisor',confirmButtonColor:'#1a5276',width:'800px',preConfirm:()=>{const acts=document.getElementById('ws')?.value?.trim();if(!acts)return Swal.showValidationMessage('Please write your weekly summary');if(sp?.isEmpty())return Swal.showValidationMessage('Please provide your signature');return{activities:acts,recommendations:document.getElementById('wr')?.value||'',sig:sp?.toDataURL()||''}}});if(!form)return;try{sl();const lid=Appwrite.ID.unique();const now=new Date().toISOString();await db.createDocument(D,C.L,lid,{logbookId:lid,studentId:U.userId,weekNumber:weekNum,activities:form.activities,recommendations:form.recommendations,studentSignature:form.sig,status:'pending',submittedAt:now,createdAt:now,updatedAt:now});const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('status','active'),Appwrite.Query.limit(1)]);if(asgn.total>0){const a=asgn.documents[0];if(a.supervisorId){await cn(a.supervisorId,'📝 Weekly Report Submitted',`${U.fullName} submitted Week ${weekNum} report`)}}sp=null;hl();st('Weekly summary submitted! ✅');lp('my_logbooks')}catch(e){hl();Swal.fire({icon:'error',text:e.message||'Failed to submit. Please try again.'})}}
-
-// ATTENDANCE SYSTEM
-async function ratt(){const today=new Date().toISOString().split('T')[0];let alreadyCheckedIn=!1,todayRecord=null;try{const existing=await db.listDocuments(D,C.ATT,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('date',today),Appwrite.Query.limit(1)]);if(existing.total>0){alreadyCheckedIn=!0;todayRecord=existing.documents[0]}}catch(e){}const attendanceHistory=[];try{const records=await db.listDocuments(D,C.ATT,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderDesc('date'),Appwrite.Query.limit(30)]);attendanceHistory.push(...records.documents)}catch(e){}const totalDays=attendanceHistory.length;const presentDays=attendanceHistory.filter(a=>a.status==='present').length;let h=`<div class="cc"><h5 class="fw-bold mb-4">📋 Attendance Record</h5><div class="sg mb-4"><div class="sc"><h2 style="color:#3b82f6">${totalDays}</h2><p>Total Days</p></div><div class="sc"><h2 style="color:#10b981">${presentDays}</h2><p>Present</p></div><div class="sc"><h2 style="color:#f59e0b">${totalDays-presentDays}</h2><p>Absent</p></div></div>`;if(!alreadyCheckedIn){h+=`<div class="text-center mb-4"><button class="bg pulse" onclick="checkIn()" style="max-width:300px;margin:0 auto"><i class="bi bi-calendar-check"></i> Check In for Today (${new Date().toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long'})})</button><p class="text-muted small mt-2"><i class="bi bi-clock"></i> ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</p></div>`}else{h+=`<div class="alert-info-custom mb-4 text-center"><div class="d-flex align-items-center justify-content-center gap-2 mb-1"><i class="bi bi-check-circle-fill text-success" style="font-size:1.5rem"></i><strong>Checked In Today!</strong></div><span class="text-muted" style="font-size:0.78rem">Time: ${new Date(todayRecord.checkInTime).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span></div>`}h+=`<h6 class="fw-bold mb-3">📅 Recent Attendance</h6><div class="d-flex flex-wrap gap-2 mb-4">`;const todayDate=new Date();for(let i=29;i>=0;i--){const d=new Date(todayDate);d.setDate(d.getDate()-i);const dateStr=d.toISOString().split('T')[0];const record=attendanceHistory.find(a=>a.date===dateStr);const isPresent=record&&record.status==='present';const isToday=dateStr===today;h+=`<div style="text-align:center;min-width:36px" title="${d.toLocaleDateString('en-US',{weekday:'short',day:'numeric',month:'short'})}"><div class="attendance-dot ${isPresent?'attendance-present':'attendance-absent'} ${isToday?'pulse':''}" style="margin:0 auto 3px;${isToday?'width:14px;height:14px':''}"></div><small style="font-size:0.6rem;color:var(--muted)">${d.getDate()}</small></div>`}h+='</div>';if(attendanceHistory.length>0){h+=`<h6 class="fw-bold mb-3">📜 History</h6><div class="table-responsive"><table class="table table-sm small"><thead><tr><th>Date</th><th>Day</th><th>Time</th><th>Status</th></tr></thead><tbody>`;attendanceHistory.slice(0,10).forEach(a=>{const d=new Date(a.date);h+=`<tr><td>${d.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</td><td>${d.toLocaleDateString('en-US',{weekday:'long'})}</td><td>${new Date(a.checkInTime).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</td><td><span class="badge bg-${a.status==='present'?'success':'danger'} bst">${a.status}</span></td></tr>`});h+='</tbody></table></div>'}return h+'</div>'}
-async function checkIn(){try{sl();const now=new Date();const today=now.toISOString().split('T')[0];const nowISO=now.toISOString();const existing=await db.listDocuments(D,C.ATT,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('date',today),Appwrite.Query.limit(1)]);if(existing.total>0){hl();st('You have already checked in today!','warning');lp('attendance');return}const aid=Appwrite.ID.unique();await db.createDocument(D,C.ATT,aid,{attendanceId:aid,studentId:U.userId,date:today,checkInTime:nowISO,status:'present',createdAt:nowISO,updatedAt:nowISO});hl();await Swal.fire({icon:'success',title:'✅ Checked In!',html:`<div class="text-center"><div style="font-size:3rem">🕐</div><h5>Attendance Recorded</h5><p class="text-muted">${now.toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p><p class="text-muted">Time: ${now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</p></div>`,confirmButtonColor:'#10b981',confirmButtonText:'OK'});lp('attendance')}catch(e){hl();Swal.fire({icon:'error',title:'Check-in Failed',text:e.message||'Please try again.'})}}
-
-// WEEKLY REPORTS
-async function rml(){try{const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderDesc('$createdAt'),Appwrite.Query.limit(52)]);const startDate=U.fieldStartDate?new Date(U.fieldStartDate):null;let h=`<div class="cc"><div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"><div><h5 class="fw-bold mb-1" style="letter-spacing:-0.2px">📝 Weekly Reports</h5>${startDate?`<small class="text-muted">Since: ${startDate.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</small>`:''}</div></div>`;if(logs.total===0){return h+`<div class="empty-state"><i class="bi bi-journal-x" style="font-size:3.5rem;color:#cbd5e1"></i><h5 class="mt-3">No Weekly Reports Yet</h5><p class="text-muted small">Daily entries are submitted throughout the week. Weekly summaries are submitted on Fridays.</p><button class="bsc mt-3" onclick="lp('daily_entry')"><i class="bi bi-pencil-square"></i> Go to Daily Entry</button></div>`}const sc={pending:'warning',approved:'success',rejected:'danger'};logs.documents.forEach(log=>{const ws=startDate?new Date(startDate.getTime()+((log.weekNumber-1)*7*24*60*60*1000)):null;const we=ws?new Date(ws.getTime()+(6*24*60*60*1000)):null;h+=`<div class="act-card" onclick="vL('${log.$id}')"><div style="flex:1"><div class="d-flex justify-content-between align-items-start"><div><strong>📅 Week ${log.weekNumber}</strong>${ws?`<br><small class="text-muted" style="font-size:0.72rem">${ws.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${we.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</small>`:''}</div><span class="badge bg-${sc[log.status]||'secondary'} bst">${log.status}</span></div><p class="small text-muted mb-0 mt-1">${(log.activities||'').substring(0,80)}...</p></div><div class="d-flex gap-1 ms-2"><button class="bsc btn-sm" onclick="event.stopPropagation();vL('${log.$id}')" title="View"><i class="bi bi-eye"></i></button><button class="bxsw btn-sm" onclick="event.stopPropagation();eP('${log.$id}')" title="PDF"><i class="bi bi-file-pdf"></i></button>${log.status==='pending'?`<button class="bxsd btn-sm" onclick="event.stopPropagation();dL('${log.$id}')" title="Delete"><i class="bi bi-trash"></i></button>`:''}</div></div>`});return h+'</div>'}catch(e){return'<div class="cc">Error loading logbooks</div>'}}
-async function dL(lid){const r=await Swal.fire({title:'Delete Report?',text:'This action cannot be undone.',icon:'warning',showCancelButton:!0,confirmButtonColor:'#ef4444',confirmButtonText:'Yes, delete'});if(!r.isConfirmed)return;try{await db.deleteDocument(D,C.L,lid);st('Report deleted!');lp('my_logbooks')}catch(e){Swal.fire({icon:'error',text:e.message})}}
+async function cLB(){if(!U.fieldStartDate){const{value:startDate}=await Swal.fire({title:'📅 Field Start Date',html:`<div class="text-start"><div class="alert-info-custom mb-3"><i class="bi bi-info-circle"></i> <strong>Enter the date you started your field reporting (once only)</strong></div><input id="fsd" class="fc" type="date" value="${new Date().toISOString().split('T')[0]}"></div>`,showCancelButton:!1,allowOutsideClick:!1,allowEscapeKey:!1,confirmButtonText:'Save Date',confirmButtonColor:'#1a5276',preConfirm:()=>{const d=document.getElementById('fsd')?.value;if(!d)return Swal.showValidationMessage('Please select a date');return d}});if(!startDate)return;try{const now=new Date().toISOString();await db.updateDocument(D,C.U,U.userId,{fieldStartDate:startDate,updatedAt:now});U.fieldStartDate=startDate;st('Date saved! ✅')}catch(e){Swal.fire({icon:'error',text:e.message});return}}const start=new Date(U.fieldStartDate);const today=new Date();const diffTime=today-start;const diffDays=Math.floor(diffTime/(1000*60*60*24));const autoWeek=Math.floor(diffDays/7)+1;if(autoWeek<1)return st('Week 1 has not started yet from your start date','warning');const weekStart=new Date(start.getTime()+((autoWeek-1)*7*24*60*60*1000));const weekEnd=new Date(weekStart.getTime()+(6*24*60*60*1000));const days=[{en:'Monday',sw:'Monday'},{en:'Tuesday',sw:'Tuesday'},{en:'Wednesday',sw:'Wednesday'},{en:'Thursday',sw:'Thursday'},{en:'Friday',sw:'Friday'}];const todayDay=new Date().getDay();const canSubmitFullWeek=(todayDay===5);const dayDates={};days.forEach((d,i)=>{const dt=new Date(weekStart);dt.setDate(weekStart.getDate()+i);dayDates[d.en]=dt.toLocaleDateString('en-US',{day:'numeric',month:'short'})});let dH='';if(canSubmitFullWeek){dH=days.map(d=>`<div class="mb-3"><label class="small fw-semibold text-muted">📌 ${d.sw} <span class="text-primary">(${dayDates[d.en]})</span></label><textarea id="day_${d.en}" class="fc auto-expand" rows="3" placeholder="Activities for ${d.sw}..."></textarea></div>`).join('')}else{const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];const todayName=dayNames[todayDay];const todayDate=new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'});dH=`<div class="mb-3"><label class="small fw-semibold text-muted">📌 ${todayName} <span class="text-primary">(${todayDate})</span></label><textarea id="day_today" class="fc auto-expand" rows="4" placeholder="Activities for ${todayName}..."></textarea></div>`}const{value:form}=await Swal.fire({title:canSubmitFullWeek?`📅 Week ${autoWeek} — Full Week Report`:`📝 Week ${autoWeek} — Daily Entry`,html:`<div class="text-start"><div class="alert-info-custom mb-3"><div class="d-flex align-items-center gap-2 mb-1"><span class="week-badge">Week ${autoWeek}</span></div><span class="text-muted" style="font-size:0.78rem">${weekStart.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${weekEnd.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</span></div>${dH}${canSubmitFullWeek?`<div class="mb-3"><label class="small fw-semibold text-muted">📝 Weekly Summary</label><textarea id="sr" class="fc auto-expand" rows="3" placeholder="Summary of the week's activities (optional)..."></textarea></div>`:''}<div class="mb-3"><label class="small fw-semibold text-danger">✍️ Your Signature *</label><canvas id="ssc" class="sp-sm"></canvas></div></div>`,didOpen:()=>{const cv=document.getElementById('ssc');if(cv)sp=new SignaturePad(cv)},showCancelButton:!0,confirmButtonText:'<i class="bi bi-send"></i> Submit',confirmButtonColor:'#1a5276',width:'800px',preConfirm:()=>{let acts='',hasActivity=!1;if(canSubmitFullWeek){days.forEach(d=>{const v=document.getElementById('day_'+d.en)?.value||'';if(v.trim()){hasActivity=!0;acts+=`${d.sw}: ${v}\n`}})}else{const v=document.getElementById('day_today')?.value||'';if(v.trim()){hasActivity=!0;acts=v}}if(!hasActivity)return Swal.showValidationMessage('Please write at least one activity');if(sp?.isEmpty())return Swal.showValidationMessage('Please provide your signature');return{week:autoWeek,activities:acts,summary:canSubmitFullWeek?(document.getElementById('sr')?.value||''):'',sig:sp?.toDataURL()||''}}});if(!form)return;try{sl();const did=Appwrite.ID.unique();const now=new Date().toISOString();await db.createDocument(D,C.L,did,{logbookId:did,studentId:U.userId,weekNumber:form.week,activities:form.activities,recommendations:form.summary,studentSignature:form.sig,status:'pending',submittedAt:now,createdAt:now,updatedAt:now});const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.equal('status','active'),Appwrite.Query.limit(1)]);if(asgn.total>0){const a=asgn.documents[0];if(a.supervisorId){await cn(a.supervisorId,'📝 New Logbook Entry',`${U.fullName} submitted Week ${form.week}`)}}sp=null;hl();st(`Week ${form.week} submitted successfully! ✅`);lp('my_logbooks')}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
+async function rml(){try{const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderDesc('$createdAt'),Appwrite.Query.limit(52)]);const startDate=U.fieldStartDate?new Date(U.fieldStartDate):null;let h=`<div class="cc"><div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"><div><h5 class="fw-bold mb-1" style="letter-spacing:-0.2px">📝 My Logbooks</h5>${startDate?`<small class="text-muted">Since: ${startDate.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</small>`:''}</div><button class="bsc" onclick="cLB()"><i class="bi bi-plus-lg"></i> New Entry</button></div>`;if(logs.total===0){return h+`<div class="empty-state"><i class="bi bi-journal-x" style="font-size:3.5rem;color:#cbd5e1"></i><h5 class="mt-3">No Logbooks Yet</h5><p class="text-muted small">Start creating your first logbook entry</p><button class="bsc mt-3" onclick="cLB()"><i class="bi bi-plus-lg"></i> Create Logbook</button></div>`}const sc={pending:'warning',approved:'success',rejected:'danger'};logs.documents.forEach(log=>{const ws=startDate?new Date(startDate.getTime()+((log.weekNumber-1)*7*24*60*60*1000)):null;const we=ws?new Date(ws.getTime()+(6*24*60*60*1000)):null;h+=`<div class="act-card" onclick="vL('${log.$id}')"><div style="flex:1"><div class="d-flex justify-content-between align-items-start"><div><strong>📅 Week ${log.weekNumber}</strong>${ws?`<br><small class="text-muted" style="font-size:0.72rem">${ws.toLocaleDateString('en-US',{day:'numeric',month:'short'})} — ${we.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</small>`:''}</div><span class="badge bg-${sc[log.status]||'secondary'} bst">${log.status}</span></div><p class="small text-muted mb-0 mt-1">${(log.activities||'').substring(0,80)}...</p></div><div class="d-flex gap-1 ms-2"><button class="bsc btn-sm" onclick="event.stopPropagation();vL('${log.$id}')" title="View"><i class="bi bi-eye"></i></button><button class="bxsw btn-sm" onclick="event.stopPropagation();eP('${log.$id}')" title="PDF"><i class="bi bi-file-pdf"></i></button>${log.status==='pending'?`<button class="bxsd btn-sm" onclick="event.stopPropagation();dL('${log.$id}')" title="Delete"><i class="bi bi-trash"></i></button>`:''}</div></div>`});return h+'</div>'}catch(e){return'<div class="cc">Error loading logbooks</div>'}}
+async function dL(lid){const r=await Swal.fire({title:'Delete Logbook?',text:'This action cannot be undone.',icon:'warning',showCancelButton:!0,confirmButtonColor:'#ef4444',confirmButtonText:'Yes, delete'});if(!r.isConfirmed)return;try{await db.deleteDocument(D,C.L,lid);st('Logbook deleted!');lp('my_logbooks')}catch(e){Swal.fire({icon:'error',text:e.message})}}
 async function vL(lid){try{const log=await db.getDocument(D,C.L,lid);await Swal.fire({title:`Week ${log.weekNumber} Details`,html:`<div class="text-start"><pre style="font-size:.8rem;background:#f8fafc;padding:1rem;border-radius:12px;max-height:250px;overflow-y:auto;white-space:pre-wrap">${log.activities||'N/A'}</pre>${log.recommendations?`<h6 class="mt-3">📝 Summary</h6><p class="small">${log.recommendations}</p>`:''}</div>`,width:'800px',confirmButtonColor:'#1a5276'})}catch(e){}}
 function eP(lid){db.getDocument(D,C.L,lid).then(log=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();doc.setFontSize(16);doc.text('Behsit Field System',20,20);doc.setFontSize(12);doc.text(`Week ${log.weekNumber} - Logbook`,20,30);doc.setFontSize(9);doc.text(log.activities||'',20,40,{maxWidth:170});doc.save(`week_${log.weekNumber}.pdf`);st('PDF exported! 📄')}).catch(e=>Swal.fire({icon:'error',text:e.message}))}
-async function ract(){if(U.role!=='supervisor')return'<div class="cc"><div class="empty-state"><i class="bi bi-lock"></i><p>Access denied</p></div></div>';try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);const sids=asgn.documents.map(a=>a.studentId);const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);const fl=logs.documents.filter(l=>sids.includes(l.studentId));let h=`<div class="cc"><div class="d-flex justify-content-between align-items-center mb-4"><h5 class="fw-bold mb-0">📋 Action Required</h5><span class="badge bg-warning bst">${fl.length} pending</span></div>`;if(!fl.length)return h+'<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:3rem"></i><p class="mt-3">No pending reviews 🎉</p></div></div>';for(const log of fl){let sn=log.studentId;try{const su=await db.getDocument(D,C.U,log.studentId);sn=su.fullName}catch(e){}h+=`<div class="act-card"><div style="flex:1"><strong>📝 Week ${log.weekNumber}</strong><br><small class="text-muted">${sn} • ${new Date(log.submittedAt).toLocaleDateString()}</small></div><button class="bsc" onclick="rvL('${log.$id}')"><i class="bi bi-eye"></i>Review</button></div>`}return h+'</div>'}catch(e){return'<div class="cc">Error</div>'}}
-async function rvL(lid){try{const log=await db.getDocument(D,C.L,lid);const result=await Swal.fire({title:`Review Week ${log.weekNumber}`,html:`<div class="text-start"><div style="background:#f8fafc;padding:1rem;border-radius:12px;max-height:180px;overflow-y:auto;margin-bottom:1rem"><pre style="font-size:.75rem;white-space:pre-wrap;margin:0">${log.activities||'N/A'}</pre></div>${log.recommendations?`<div style="background:#f0fdf4;padding:.8rem;border-radius:12px;margin-bottom:1rem"><strong>📝 Summary:</strong><br>${log.recommendations}</div>`:''}<textarea id="rc" class="form-control form-control-sm mb-3" rows="3" placeholder="Your review comment *"></textarea><label class="small fw-semibold text-danger mb-1">Your Signature *</label><canvas id="scv" class="sp-sm mb-1"></canvas><div class="review-actions"></div></div>`,didOpen:()=>{const cv=document.getElementById('scv');if(cv)window.tsp=new SignaturePad(cv)},showCancelButton:!0,showDenyButton:!0,confirmButtonText:'✓ Approve',denyButtonText:'✕ Reject',cancelButtonText:'Close',confirmButtonColor:'#10b981',denyButtonColor:'#ef4444',cancelButtonColor:'#6b7280',width:'800px',preConfirm:()=>{const cm=document.getElementById('rc')?.value;if(!cm){Swal.showValidationMessage('Comment required');return!1}if(window.tsp?.isEmpty()){Swal.showValidationMessage('Signature required');return!1}return{comment:cm,sig:window.tsp?.toDataURL()||'',decision:'approved'}},preDeny:()=>{const cm=document.getElementById('rc')?.value;if(!cm){Swal.showValidationMessage('Comment required');return!1}if(window.tsp?.isEmpty()){Swal.showValidationMessage('Signature required');return!1}return{comment:cm,sig:window.tsp?.toDataURL()||'',decision:'rejected'}}});if(result.isDismissed)return;if(!result.isConfirmed&&!result.isDenied)return;const rd=result.isConfirmed?result.value:(result.isDenied?result.value:null);if(!rd)return;sl();const now=new Date().toISOString();const ns=rd.decision==='rejected'?'rejected':'approved';await db.createDocument(D,C.R,Appwrite.ID.unique(),{logbookId:lid,reviewerId:U.userId,comment:rd.comment,decision:rd.decision,createdAt:now,updatedAt:now});await db.updateDocument(D,C.L,lid,{status:ns,updatedAt:now});await cn(log.studentId,rd.decision==='rejected'?'❌ Rejected':'✅ Approved',`Week ${log.weekNumber}: ${rd.comment}`);hl();st(`${rd.decision==='rejected'?'Rejected':'Approved'}!`);lp('action_reviews')}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
+
+// ============ ACTION REVIEWS IMEREKEBISHWA KWA REVIEW NZURI ============
+async function ract(){
+    if(U.role!=='supervisor')return'<div class="cc"><div class="empty-state"><i class="bi bi-lock"></i><p>Access denied</p></div></div>';
+    try{
+        const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);
+        const sids=asgn.documents.map(a=>a.studentId);
+        const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('status','pending'),Appwrite.Query.limit(100)]);
+        const fl=logs.documents.filter(l=>sids.includes(l.studentId));
+        
+        let h=`<div class="cc">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">📋 Action Required</h5>
+                <span class="badge bg-warning bst">${fl.length} pending</span>
+            </div>`;
+        
+        if(!fl.length)return h+'<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:3rem"></i><p class="mt-3">No pending reviews 🎉</p></div></div>';
+        
+        // Group by student
+        const studentGroups={};
+        for(const log of fl){
+            if(!studentGroups[log.studentId]){
+                studentGroups[log.studentId]={name:log.studentId,logs:[]};
+                try{
+                    const su=await db.getDocument(D,C.U,log.studentId);
+                    studentGroups[log.studentId].name=su.fullName;
+                }catch(e){}
+            }
+            studentGroups[log.studentId].logs.push(log);
+        }
+        
+        // Display grouped
+        for(const[sid,group]of Object.entries(studentGroups)){
+            h+=`<div class="border rounded-3 p-3 mb-3" style="background:var(--card)">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div style="width:35px;height:35px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.8rem">${group.name.charAt(0).toUpperCase()}</div>
+                    <strong>${group.name}</strong>
+                    <span class="badge bg-warning bst ms-2">${group.logs.length} pending</span>
+                </div>`;
+            
+            for(const log of group.logs){
+                h+=`<div class="act-card mb-2" onclick="rvL('${log.$id}')">
+                    <div style="flex:1">
+                        <strong>📝 Week ${log.weekNumber}</strong>
+                        <br><small class="text-muted">Submitted: ${new Date(log.submittedAt).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}</small>
+                        <p class="small text-muted mb-0 mt-1">${(log.activities||'').substring(0,60)}...</p>
+                    </div>
+                    <div class="d-flex gap-1">
+                        <button class="bsc btn-sm" onclick="event.stopPropagation();rvL('${log.$id}')">
+                            <i class="bi bi-eye"></i> Review
+                        </button>
+                    </div>
+                </div>`;
+            }
+            h+=`</div>`;
+        }
+        
+        return h+'</div>';
+    }catch(e){return'<div class="cc">Error</div>'}
+}
+// ============ MWISHO WA ACTION REVIEWS ============
+
+async function rvL(lid){try{const log=await db.getDocument(D,C.L,lid);let studentName=log.studentId;try{const su=await db.getDocument(D,C.U,log.studentId);studentName=su.fullName}catch(e){}const result=await Swal.fire({title:`Review: ${studentName} - Week ${log.weekNumber}`,html:`<div class="text-start"><div style="background:#f8fafc;padding:1rem;border-radius:12px;max-height:180px;overflow-y:auto;margin-bottom:1rem"><pre style="font-size:.75rem;white-space:pre-wrap;margin:0">${log.activities||'N/A'}</pre></div>${log.recommendations?`<div style="background:#f0fdf4;padding:.8rem;border-radius:12px;margin-bottom:1rem"><strong>📝 Summary:</strong><br>${log.recommendations}</div>`:''}<textarea id="rc" class="form-control form-control-sm mb-3" rows="3" placeholder="Your review comment *"></textarea><label class="small fw-semibold text-danger mb-1">Your Signature *</label><canvas id="scv" class="sp-sm mb-1"></canvas><div class="review-actions"></div></div>`,didOpen:()=>{const cv=document.getElementById('scv');if(cv)window.tsp=new SignaturePad(cv)},showCancelButton:!0,showDenyButton:!0,confirmButtonText:'✓ Approve',denyButtonText:'✕ Reject',cancelButtonText:'Close',confirmButtonColor:'#10b981',denyButtonColor:'#ef4444',cancelButtonColor:'#6b7280',width:'800px',preConfirm:()=>{const cm=document.getElementById('rc')?.value;if(!cm){Swal.showValidationMessage('Comment required');return!1}if(window.tsp?.isEmpty()){Swal.showValidationMessage('Signature required');return!1}return{comment:cm,sig:window.tsp?.toDataURL()||'',decision:'approved'}},preDeny:()=>{const cm=document.getElementById('rc')?.value;if(!cm){Swal.showValidationMessage('Comment required');return!1}if(window.tsp?.isEmpty()){Swal.showValidationMessage('Signature required');return!1}return{comment:cm,sig:window.tsp?.toDataURL()||'',decision:'rejected'}}});if(result.isDismissed)return;if(!result.isConfirmed&&!result.isDenied)return;const rd=result.isConfirmed?result.value:(result.isDenied?result.value:null);if(!rd)return;sl();const now=new Date().toISOString();const ns=rd.decision==='rejected'?'rejected':'approved';await db.createDocument(D,C.R,Appwrite.ID.unique(),{logbookId:lid,reviewerId:U.userId,comment:rd.comment,decision:rd.decision,createdAt:now,updatedAt:now});await db.updateDocument(D,C.L,lid,{status:ns,updatedAt:now});await cn(log.studentId,rd.decision==='rejected'?'❌ Rejected':'✅ Approved',`Week ${log.weekNumber}: ${rd.comment}`);hl();st(`${rd.decision==='rejected'?'Rejected':'Approved'}!`);lp('action_reviews')}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
 function rpt(){let h=`<div class="cc"><h5 class="fw-bold mb-4">📋 PT Checklist</h5><p class="text-muted small mb-3">Click categories to expand</p>`;for(const[cat,acts]of Object.entries(PT)){h+=`<div class="pt-ch" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"><i class="bi bi-chevron-down"></i> ${cat} <span class="badge bg-light text-dark ms-2">${acts.length}</span></div><div style="display:none">${acts.map((a,i)=>`<div class="pt-it"><span class="text-muted">${i+1}.</span> ${a}</div>`).join('')}</div>`}return h+'</div>'}
 async function rfa(){if(U.role==='student'){try{const d=await db.listDocuments(D,C.F,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.limit(1)]);if(d.total===0)return'<div class="cc empty-state"><i class="bi bi-star" style="font-size:3rem"></i><h5 class="mt-2">No Assessment Yet</h5><p class="text-muted small">Your supervisor has not submitted your assessment</p></div>';const fa=d.documents[0];return`<div class="cc"><h5 class="fw-bold">⭐ Final Assessment</h5><div class="text-center py-3"><div style="font-size:3.5rem;font-weight:800;color:${fa.marks>=50?'#10b981':'#ef4444'}">${fa.marks}/100</div><span class="badge bg-${fa.status==='submitted'?'success':'warning'} bst">${fa.status}</span></div>${fa.comments?`<div class="border rounded-3 p-3 mt-3"><strong>Comments:</strong><p class="mb-0 small">${fa.comments}</p></div>`:''}</div>`}catch(e){return'<div class="cc">Error</div>'}}if(U.role==='supervisor'){try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);let h=`<div class="cc"><h5 class="fw-bold mb-4">Final Assessment</h5><p class="text-muted small mb-3">Assess your assigned students</p>`;for(const a of asgn.documents){let sn=a.studentId;try{const su=await db.getDocument(D,C.U,a.studentId);sn=su.fullName}catch(e){}const ex=await db.listDocuments(D,C.F,[Appwrite.Query.equal('studentId',a.studentId),Appwrite.Query.limit(1)]);h+=`<div class="border rounded-3 p-3 mb-2"><div class="d-flex justify-content-between"><strong>${sn}</strong>${ex.total>0?`<span class="badge bg-success bst">${ex.documents[0].marks}/100</span>`:'<span class="badge bg-secondary bst">Not assessed</span>'}</div><button class="bsc btn-sm mt-2" onclick="cFA('${a.studentId}')"><i class="bi bi-plus"></i>Assess Student</button></div>`}return h+'</div>'}catch(e){return'<div class="cc">Error</div>'}}return'<div class="cc">Access denied</div>'}
 async function cFA(sid){const r=await Swal.fire({title:'Final Assessment',html:`<div class="text-start"><input id="fm" class="form-control form-control-sm mb-2" type="number" min="0" max="100" placeholder="Marks (0-100) *"><textarea id="fc" class="form-control form-control-sm mb-2" rows="3" placeholder="Comments (Optional)"></textarea></div>`,showCancelButton:!0,confirmButtonText:'Submit',confirmButtonColor:'#1a5276',preConfirm:()=>{const m=document.getElementById('fm')?.value;if(!m||m<0||m>100)return Swal.showValidationMessage('Valid marks (0-100) required');return{marks:parseInt(m),comments:document.getElementById('fc')?.value||''}}});if(!r)return;try{sl();const now=new Date().toISOString();await db.createDocument(D,C.F,Appwrite.ID.unique(),{studentId:sid,supervisorId:U.userId,marks:r.value.marks,comments:r.value.comments,status:'submitted',createdAt:now,updatedAt:now});await cn(sid,'📝 Assessment','Your supervisor assessed you: '+r.value.marks+'/100');hl();st('Submitted! ✅');lp('final_assessment')}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
-async function rcr(){try{const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderAsc('weekNumber'),Appwrite.Query.limit(52)]);if(logs.total===0)return`<div class="cc empty-state"><i class="bi bi-file-earmark-text" style="font-size:3rem"></i><h5 class="mt-2">No Reports Yet</h5><p class="text-muted small">Submit logbooks to see your full report</p></div>`;const approved=logs.documents.filter(l=>l.status==='approved').length;const pending=logs.documents.filter(l=>l.status==='pending').length;const rejected=logs.documents.filter(l=>l.status==='rejected').length;let faMarks='N/A';try{const fa=await db.listDocuments(D,C.F,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.limit(1)]);if(fa.total>0)faMarks=fa.documents[0].marks+'/100'}catch(e){}let h=`<div class="cc"><h5 class="fw-bold mb-4">📊 Comprehensive Report</h5><div class="sg"><div class="sc"><h2>${logs.total}</h2><p>Total Weeks</p></div><div class="sc"><h2 style="color:#10b981">${approved}</h2><p>Approved</p></div><div class="sc"><h2 style="color:#f59e0b">${pending}</h2><p>Pending</p></div><div class="sc"><h2 style="color:#ef4444">${rejected}</h2><p>Rejected</p></div><div class="sc"><h2 style="color:#8b5cf6">${faMarks}</h2><p>Final Marks</p></div></div><h6 class="fw-bold mt-4 mb-3">📅 Weekly Activities</h6>`;const sc={pending:'warning',approved:'success',rejected:'danger'};logs.documents.forEach(log=>{h+=`<div class="border rounded-3 p-3 mb-2" style="border-left:4px solid ${log.status==='approved'?'#10b981':log.status==='rejected'?'#ef4444':'#f59e0b'}"><div class="d-flex justify-content-between"><strong>Week ${log.weekNumber}</strong><span class="badge bg-${sc[log.status]||'secondary'} bst">${log.status}</span></div><pre style="font-size:.75rem;background:#f8fafc;padding:.8rem;border-radius:8px;margin-top:.8rem;white-space:pre-wrap;max-height:200px;overflow-y:auto">${log.activities||'No activities'}</pre>${log.recommendations?`<p class="small mt-2 mb-0"><strong>📝 Summary:</strong> ${log.recommendations}</p>`:''}<small class="text-muted">Submitted: ${log.submittedAt?new Date(log.submittedAt).toLocaleDateString():'N/A'}</small></div>`});h+=`<div class="d-flex gap-2 mt-4"><button class="bsc" onclick="exportFP()"><i class="bi bi-file-pdf"></i>Export PDF</button></div></div>`;return h}catch(e){return'<div class="cc">Error loading report</div>'}}
+async function rcr(){try{const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderAsc('weekNumber'),Appwrite.Query.limit(52)]);if(logs.total===0)return`<div class="cc empty-state"><i class="bi bi-file-earmark-text" style="font-size:3rem"></i><h5 class="mt-2">No Reports Yet</h5><p class="text-muted small">Submit logbooks to see your full report</p></div>`;const approved=logs.documents.filter(l=>l.status==='approved').length;const pending=logs.documents.filter(l=>l.status==='pending').length;const rejected=logs.documents.filter(l=>l.status==='rejected').length;let faMarks='N/A';try{const fa=await db.listDocuments(D,C.F,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.limit(1)]);if(fa.total>0)faMarks=fa.documents[0].marks+'/100'}catch(e){}let h=`<div class="cc"><h5 class="fw-bold mb-4">📊 Comprehensive Report</h5><div class="sg"><div class="sc"><h2>${logs.total}</h2><p>Total Weeks</p></div><div class="sc"><h2 style="color:#10b981">${approved}</h2><p>Approved</p></div><div class="sc"><h2 style="color:#f59e0b">${pending}</h2><p>Pending</p></div><div class="sc"><h2 style="color:#ef4444">${rejected}</h2><p>Rejected</p></div><div class="sc"><h2 style="color:#8b5cf6">${faMarks}</h2><p>Final Marks</p></div></div><h6 class="fw-bold mt-4 mb-3">📅 Weekly Activities</h6>`;logs.documents.forEach(log=>{const sc={pending:'warning',approved:'success',rejected:'danger'};h+=`<div class="border rounded-3 p-3 mb-2" style="border-left:4px solid ${log.status==='approved'?'#10b981':log.status==='rejected'?'#ef4444':'#f59e0b'}"><div class="d-flex justify-content-between"><strong>Week ${log.weekNumber}</strong><span class="badge bg-${sc[log.status]||'secondary'} bst">${log.status}</span></div><pre style="font-size:.75rem;background:#f8fafc;padding:.8rem;border-radius:8px;margin-top:.8rem;white-space:pre-wrap;max-height:200px;overflow-y:auto">${log.activities||'No activities'}</pre>${log.recommendations?`<p class="small mt-2 mb-0"><strong>📝 Summary:</strong> ${log.recommendations}</p>`:''}<small class="text-muted">Submitted: ${log.submittedAt?new Date(log.submittedAt).toLocaleDateString():'N/A'}</small></div>`});h+=`<div class="d-flex gap-2 mt-4"><button class="bsc" onclick="exportFP()"><i class="bi bi-file-pdf"></i>Export PDF</button></div></div>`;return h}catch(e){return'<div class="cc">Error loading report</div>'}}
 async function exportFP(){try{const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',U.userId),Appwrite.Query.orderAsc('weekNumber'),Appwrite.Query.limit(52)]);const{jsPDF}=window.jspdf;const doc=new jsPDF();let y=15;doc.setFontSize(16);doc.text('BEHSIT FIELD SYSTEM - Full Report',20,y);y+=8;doc.setFontSize(10);doc.text(`Student: ${U.fullName} | Date: ${new Date().toLocaleDateString()}`,20,y);y+=8;logs.documents.forEach(log=>{if(y>270){doc.addPage();y=15}doc.setFontSize(8);doc.text(`Week ${log.weekNumber} - ${log.status}: ${(log.activities||'').substring(0,150)}`,22,y);y+=6});doc.save(`${U.fullName}_Full_Report.pdf`);st('PDF exported! 📄')}catch(e){Swal.fire({icon:'error',text:e.message})}}
 async function rsr(){if(U.role!=='supervisor')return'<div class="cc">Access denied</div>';try{const asgn=await db.listDocuments(D,C.A,[Appwrite.Query.equal('supervisorId',U.userId)]);if(asgn.total===0)return`<div class="cc empty-state"><i class="bi bi-people" style="font-size:3rem"></i><h5 class="mt-2">No Students Assigned</h5><p class="text-muted small">You have no students assigned yet</p></div>`;let h=`<div class="cc"><h5 class="fw-bold mb-4">📊 Student Reports (${asgn.total})</h5>`;for(const a of asgn.documents){let sn=a.studentId;try{const su=await db.getDocument(D,C.U,a.studentId);sn=su.fullName}catch(e){}const logs=await db.listDocuments(D,C.L,[Appwrite.Query.equal('studentId',a.studentId),Appwrite.Query.orderAsc('weekNumber'),Appwrite.Query.limit(52)]);const approved=logs.documents.filter(l=>l.status==='approved').length;h+=`<div class="report-section"><div class="report-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"><span>👤 ${sn}</span><span class="badge bg-success bst">${approved}/${logs.total} approved</span></div><div class="report-body" style="display:none">`;if(logs.total===0)h+='<p class="text-muted small">No logbooks submitted</p>';else{logs.documents.forEach(log=>{h+=`<div class="border rounded-3 p-2 mb-2 small"><strong>Week ${log.weekNumber}</strong> - <span class="badge bg-${log.status==='approved'?'success':log.status==='pending'?'warning':'danger'} bst">${log.status}</span><pre style="font-size:.7rem;background:#f8fafc;padding:.5rem;border-radius:6px;margin-top:.5rem;max-height:80px;overflow-y:auto">${(log.activities||'').substring(0,200)}</pre></div>`})}h+=`</div></div>`}return h+'</div>'}catch(e){return'<div class="cc">Error</div>'}}
 function rs(){return`<div class="cc"><h5 class="fw-bold mb-4">🔍 Search</h5><input id="si" class="fc mb-3" placeholder="Search users..."><button class="bsc btn-sm" onclick="pS()"><i class="bi bi-search"></i>Search</button><div id="srr" class="mt-3"></div></div>`}
 async function pS(){const q=document.getElementById('si')?.value?.trim()?.toLowerCase();if(!q||q.length<2)return st('Enter 2+ characters','warning');sl();let r=[];try{const users=await db.listDocuments(D,C.U,[Appwrite.Query.limit(100)]);for(const u of users.documents)if((u.fullName||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))r.push({icon:'👤',title:u.fullName,sub:`${u.email} • ${u.role}`});hl();document.getElementById('srr').innerHTML=r.length?r.map(x=>`<div class="border rounded-3 p-3 mb-2 small"><strong>${x.icon} ${x.title}</strong><br><span class="text-muted">${x.sub}</span></div>`).join(''):'<p class="text-muted text-center py-4">No results found</p>'}catch(e){hl()}}
-async function ru(){try{const users=await db.listDocuments(D,C.U,[Appwrite.Query.limit(200)]);let h=`<div class="cc"><h5 class="fw-bold mb-4">👥 Users (${users.total})</h5><div class="table-responsive"><table class="table table-sm small"><thead><tr><th>Name</th><th>Email</th><th>Username</th><th>Role</th><th>Status</th></tr></thead><tbody>`;for(const u of users.documents)h+=`<tr><td>${u.fullName}</td><td>${u.email}</td><td>${u.username||'N/A'}</td><td><span class="badge bg-${u.role==='admin'?'danger':u.role==='supervisor'?'warning':'primary'} bst">${u.role}</span></td><td>${u.isActive!==!1?'<span class="badge-dot bg-success d-inline-block"></span>Active':'<span class="badge-dot bg-danger d-inline-block"></span>Inactive'}</td></tr>`;return h+'</tbody></table></div></div>'}catch(e){return'<div class="cc">Error</div>'}}
+async function ru(){try{const users=await db.listDocuments(D,C.U,[Appwrite.Query.limit(200)]);let h=`<div class="cc"><h5 class="fw-bold mb-4">👥 Users (${users.total})</h5><div class="table-responsive"><table class="table table-sm small"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>`;for(const u of users.documents)h+=`<tr><td>${u.fullName}</td><td>${u.email}</td><td><span class="badge bg-${u.role==='admin'?'danger':u.role==='supervisor'?'warning':'primary'} bst">${u.role}</span></td><td>${u.isActive!==!1?'<span class="badge-dot bg-success d-inline-block"></span>Active':'<span class="badge-dot bg-danger d-inline-block"></span>Inactive'}</td></tr>`;return h+'</tbody></table></div></div>'}catch(e){return'<div class="cc">Error</div>'}}
 async function rpa(){try{const sups=await db.listDocuments(D,C.U,[Appwrite.Query.equal('role','supervisor'),Appwrite.Query.equal('isActive',!1)]);let h=`<div class="cc"><h5 class="fw-bold mb-4">⏳ Pending Approvals (${sups.total})</h5>`;if(sups.total===0)return h+'<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:3rem"></i><p class="mt-3">All supervisors approved 🎉</p></div></div>';for(const s of sups.documents){let sn='N/A';try{const st=await db.listDocuments(D,C.U,[Appwrite.Query.equal('supId',s.userId)]);if(st.total>0)sn=st.documents[0].fullName}catch(e){}h+=`<div class="border rounded-3 p-3 mb-3"><div class="d-flex justify-content-between"><strong>${s.fullName}</strong><span class="badge bg-warning bst">Pending</span></div><small class="text-muted">Email: ${s.email} | Region: ${s.region||'N/A'}</small><br><small class="text-muted">Registered by: ${sn}</small><div class="mt-3"><button class="bsc btn-sm" onclick="aSU('${s.$id}')"><i class="bi bi-check"></i>Approve</button><button class="bxsd btn-sm ms-2" onclick="rSU('${s.$id}')"><i class="bi bi-x"></i>Reject</button></div></div>`}return h+'</div>'}catch(e){return'<div class="cc">Error</div>'}}
 async function aSU(uid){const r=await Swal.fire({title:'Approve Supervisor?',text:'This will activate the account.',icon:'question',showCancelButton:!0,confirmButtonColor:'#10b981',confirmButtonText:'Yes, Approve'});if(!r.isConfirmed)return;try{sl();const now=new Date().toISOString();await db.updateDocument(D,C.U,uid,{isActive:!0,updatedAt:now});const sts=await db.listDocuments(D,C.U,[Appwrite.Query.equal('supId',uid)]);if(sts.total>0){const st=sts.documents[0];const aid=Appwrite.ID.unique();await db.createDocument(D,C.A,aid,{assignmentId:aid,studentId:st.userId,supervisorId:uid,region:st.region||'',status:'active',createdAt:now,updatedAt:now});await db.updateDocument(D,C.U,st.userId,{supStatus:ST.A,updatedAt:now});await cn(st.userId,'✅ Supervisor Approved','Your supervisor has been approved!')}await cn(uid,'✅ Account Approved','Your account is now active.');hl();st('Approved! ✅');lp('pending_approvals');uB()}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
 async function rSU(uid){const r=await Swal.fire({title:'Reject Supervisor?',text:'This will delete the supervisor account.',icon:'warning',showCancelButton:!0,confirmButtonColor:'#ef4444',confirmButtonText:'Yes, Reject'});if(!r.isConfirmed)return;try{sl();const now=new Date().toISOString();await db.deleteDocument(D,C.U,uid);const sts=await db.listDocuments(D,C.U,[Appwrite.Query.equal('supId',uid)]);if(sts.total>0){await db.updateDocument(D,C.U,sts.documents[0].userId,{supStatus:ST.R,supId:null,supName:null,supEmail:null,supRegion:null,updatedAt:now});await cn(sts.documents[0].userId,'❌ Supervisor Rejected','Please register a different supervisor.')}hl();st('Rejected');lp('pending_approvals');uB()}catch(e){hl();Swal.fire({icon:'error',text:e.message})}}
@@ -393,8 +734,8 @@ function rbd(){return`<div class="cc empty-state"><i class="bi bi-trash" style="
 function red(){return`<div class="cc empty-state"><i class="bi bi-download" style="font-size:3rem"></i><h5 class="mt-2">Export Data</h5><p class="text-muted small">Coming soon</p></div>`}
 let dp;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;setTimeout(()=>{Swal.fire({title:'Install App',text:'Add to home screen for better experience',icon:'info',showCancelButton:!0,confirmButtonText:'Install',cancelButtonText:'Later',confirmButtonColor:'#1a5276'}).then(r=>{if(r.isConfirmed&&dp){dp.prompt();dp.userChoice.then(c=>{if(c.outcome==='accepted')st('✓ Installed!');dp=null})}})},1500)});
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
-document.addEventListener('DOMContentLoaded',()=>{pR();document.getElementById('lb').addEventListener('click',function(){this.disabled=!0;login().finally(()=>{setTimeout(()=>this.disabled=!1,300)})});document.getElementById('rb').addEventListener('click',function(){this.disabled=!0;reg().finally(()=>{setTimeout(()=>this.disabled=!1,300)})});document.getElementById('srl').addEventListener('click',()=>{cF();document.getElementById('lf').style.display='none';document.getElementById('rf').style.display='block';pR()});document.getElementById('btl').addEventListener('click',()=>{cF();document.getElementById('rf').style.display='none';document.getElementById('lf').style.display='block'});document.getElementById('fpl').addEventListener('click',forgotPasswordByUsername);document.getElementById('mLogout').addEventListener('click',logout);document.getElementById('hb').addEventListener('click',tS);document.getElementById('smo').addEventListener('click',cS);document.getElementById('mDark').addEventListener('click',()=>{document.body.classList.toggle('dm');cS()});document.getElementById('mHowItWorks').addEventListener('click',()=>{showHowItWorks();cS()});document.getElementById('mContact').addEventListener('click',()=>{Swal.fire({title:'📞 Help & Support',html:'<h4 style="color:#3b82f6;font-weight:700">0624887209</h4><a href="https://wa.link/epddi1" target="_blank" class="btn btn-success btn-sm mt-3"><i class="bi bi-whatsapp"></i> WhatsApp</a>',confirmButtonColor:'#1a5276'});cS()});document.querySelectorAll('.smi[data-p]').forEach(item=>{item.addEventListener('click',function(){lp(this.dataset.p)})});checkRecoveryLink();ck()});
-window.lp=lp;window.cDE=cDE;window.sWS=sWS;window.rvL=rvL;window.vL=vL;window.eP=eP;window.dL=dL;window.cFA=cFA;window.eMS=eMS;window.searchSupervisor=searchSupervisor;window.aSU=aSU;window.rSU=rSU;window.pS=pS;window.tP=tP;window.uD=uD;window.pR=pR;window.pop=pop;window.exportFP=exportFP;window.checkIn=checkIn;window.showHowItWorks=showHowItWorks;window.forgotPasswordByUsername=forgotPasswordByUsername;window.completePasswordRecovery=completePasswordRecovery;window.checkRecoveryLink=checkRecoveryLink;
+document.addEventListener('DOMContentLoaded',()=>{pR();document.getElementById('lb').addEventListener('click',function(){this.disabled=!0;login().finally(()=>{setTimeout(()=>this.disabled=!1,300)})});document.getElementById('rb').addEventListener('click',function(){this.disabled=!0;reg().finally(()=>{setTimeout(()=>this.disabled=!1,300)})});document.getElementById('srl').addEventListener('click',()=>{cF();document.getElementById('lf').style.display='none';document.getElementById('rf').style.display='block';pR()});document.getElementById('btl').addEventListener('click',()=>{cF();document.getElementById('rf').style.display='none';document.getElementById('lf').style.display='block'});document.getElementById('mLogout').addEventListener('click',logout);document.getElementById('hb').addEventListener('click',tS);document.getElementById('smo').addEventListener('click',cS);document.getElementById('mDark').addEventListener('click',()=>{document.body.classList.toggle('dm');cS()});document.getElementById('mContact').addEventListener('click',()=>{Swal.fire({title:'📞 Help & Support',html:'<h4 style="color:#3b82f6;font-weight:700">0624887209</h4><a href="https://wa.link/epddi1" target="_blank" class="btn btn-success btn-sm mt-3"><i class="bi bi-whatsapp"></i> WhatsApp</a>',confirmButtonColor:'#1a5276'});cS()});document.querySelectorAll('.smi[data-p]').forEach(item=>{item.addEventListener('click',function(){lp(this.dataset.p)})});ck()});
+window.lp=lp;window.cLB=cLB;window.rvL=rvL;window.vL=vL;window.eP=eP;window.dL=dL;window.cFA=cFA;window.eMS=eMS;window.searchSupervisor=searchSupervisor;window.aSU=aSU;window.rSU=rSU;window.pS=pS;window.tP=tP;window.uD=uD;window.pR=pR;window.pop=pop;window.exportFP=exportFP;window.changePasswordFromProfile=changePasswordFromProfile;
 </script>
 </body>
 </html>
