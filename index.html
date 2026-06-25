@@ -250,7 +250,7 @@ var chk = null;
 var sp = null;
 var isNotifShowing = false;
 var notifiedLogIds = new Set();
-var dp = null; // PWA deferred prompt - FIXED: moved declaration here
+var dp = null; // PWA deferred prompt
 
 // ============================================================
 // DATA
@@ -456,6 +456,28 @@ async function cn(uid, t, m) {
     } catch (e) {}
 }
 
+// ============================================================
+// BATCH USER LOOKUP (PERFORMANCE OPTIMIZATION)
+// ============================================================
+async function getUserNames(ids) {
+    var map = {};
+    var uniq = Array.from(new Set(ids)).filter(Boolean);
+    if (!uniq.length) return map;
+    try {
+        for (var i = 0; i < uniq.length; i += 100) {
+            var chunk = uniq.slice(i, i + 100);
+            var res = await db.listDocuments(D, C.U, [
+                Appwrite.Query.equal('userId', chunk),
+                Appwrite.Query.limit(100)
+            ]);
+            for (var j = 0; j < res.documents.length; j++) {
+                map[res.documents[j].userId] = res.documents[j].fullName;
+            }
+        }
+    } catch (e) {}
+    return map;
+}
+
 function highlightMatch(text, query) {
     if (!text || !query) return text || '';
     var eq = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -506,16 +528,14 @@ async function pop() {
         for (var i = 0; i < newLogs.length; i++) {
             notifiedLogIds.add(newLogs[i].$id);
         }
+        var namesMap = await getUserNames(newLogs.slice(0, 5).map(function(l) { return l.studentId; }));
         var names = [];
         for (var j = 0; j < Math.min(newLogs.length, 5); j++) {
-            try {
-                var su = await db.getDocument(D, C.U, newLogs[j].studentId);
-                names.push({
-                    name: su.fullName,
-                    week: newLogs[j].weekNumber,
-                    id: newLogs[j].$id
-                });
-            } catch (e) {}
+            names.push({
+                name: namesMap[newLogs[j].studentId] || newLogs[j].studentId,
+                week: newLogs[j].weekNumber,
+                id: newLogs[j].$id
+            });
         }
         var nameList = '';
         for (var k = 0; k < names.length; k++) {
@@ -1673,7 +1693,7 @@ function eP(lid) {
 }
 
 // ============================================================
-// ACTION REQUIRED (SUPERVISOR)
+// ACTION REQUIRED (SUPERVISOR) - OPTIMIZED
 // ============================================================
 async function ract() {
     if (U.role !== 'supervisor') return '<div class="cc">Access denied</div>';
@@ -1687,16 +1707,15 @@ async function ract() {
         var fl = logs.documents.filter(function(l) { return sids.indexOf(l.studentId) > -1; });
         var h = '<div class="cc"><div class="d-flex justify-content-between align-items-center mb-2"><h5 class="fw-bold mb-0" style="font-size:0.82rem">Action Required</h5><span class="badge bg-warning bst">' + fl.length + ' pending</span></div>';
         if (!fl.length) return h + '<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:1.6rem"></i><p>All clear!</p></div></div>';
-        
+
+        var flSids = fl.map(function(l) { return l.studentId; });
+        var namesMap = await getUserNames(flSids);
+
         var sg = {};
         for (var i = 0; i < fl.length; i++) {
             var log = fl[i];
             if (!sg[log.studentId]) {
-                sg[log.studentId] = { name: log.studentId, logs: [] };
-                try {
-                    var su = await db.getDocument(D, C.U, log.studentId);
-                    sg[log.studentId].name = su.fullName;
-                } catch (e) {}
+                sg[log.studentId] = { name: namesMap[log.studentId] || log.studentId, logs: [] };
             }
             sg[log.studentId].logs.push(log);
         }
@@ -1991,38 +2010,44 @@ async function exportFP() {
 }
 
 // ============================================================
-// STUDENT REPORTS (SUPERVISOR)
+// STUDENT REPORTS (SUPERVISOR) - OPTIMIZED
 // ============================================================
 async function rsr() {
     if (U.role !== 'supervisor') return '<div class="cc">Access denied</div>';
     try {
         var asgn = await db.listDocuments(D, C.A, [Appwrite.Query.equal('supervisorId', U.userId)]);
         if (asgn.total === 0) return '<div class="cc empty-state"><i class="bi bi-people" style="font-size:1.6rem"></i><h5 class="mt-2">No Students</h5></div>';
-        
+
+        var sids = asgn.documents.map(function(a) { return a.studentId; });
+        var namesMap = await getUserNames(sids);
+        var allLogs = await db.listDocuments(D, C.L, [
+            Appwrite.Query.equal('studentId', sids),
+            Appwrite.Query.orderAsc('weekNumber'),
+            Appwrite.Query.limit(500)
+        ]);
+        var logsByStudent = {};
+        for (var x = 0; x < allLogs.documents.length; x++) {
+            var ld = allLogs.documents[x];
+            if (!logsByStudent[ld.studentId]) logsByStudent[ld.studentId] = [];
+            logsByStudent[ld.studentId].push(ld);
+        }
+
         var h = '<div class="cc"><h5 class="fw-bold mb-2" style="font-size:0.82rem">Student Reports (' + asgn.total + ')</h5>';
         for (var i = 0; i < asgn.documents.length; i++) {
             var a = asgn.documents[i];
-            var sn = a.studentId;
-            try {
-                var su = await db.getDocument(D, C.U, a.studentId);
-                sn = su.fullName;
-            } catch (e) {}
-            var logs = await db.listDocuments(D, C.L, [
-                Appwrite.Query.equal('studentId', a.studentId),
-                Appwrite.Query.orderAsc('weekNumber'),
-                Appwrite.Query.limit(52)
-            ]);
+            var sn = namesMap[a.studentId] || a.studentId;
+            var logs = logsByStudent[a.studentId] || [];
             var appr = 0, rej = 0;
-            for (var j = 0; j < logs.documents.length; j++) {
-                if (logs.documents[j].status === 'approved') appr++;
-                if (logs.documents[j].status === 'rejected') rej++;
+            for (var j = 0; j < logs.length; j++) {
+                if (logs[j].status === 'approved') appr++;
+                if (logs[j].status === 'rejected') rej++;
             }
-            h += '<div class="report-section"><div class="report-header" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'block\':\'none\'"><span>' + sn + '</span><span class="badge bg-success bst">' + appr + '/' + logs.total + '</span></div><div class="report-body" style="display:none">';
-            if (logs.total === 0) h += '<p class="text-muted small">No logbooks</p>';
+            h += '<div class="report-section"><div class="report-header" onclick="var n=this.nextElementSibling;n.style.display=n.style.display===\'none\'?\'block\':\'none\'"><span>' + sn + '</span><span class="badge bg-success bst">' + appr + '/' + logs.length + '</span></div><div class="report-body" style="display:none">';
+            if (logs.length === 0) h += '<p class="text-muted small">No logbooks</p>';
             else {
                 var allActs = [];
-                for (var k = 0; k < logs.documents.length; k++) {
-                    var acts = (logs.documents[k].activities || '').split('\n');
+                for (var k = 0; k < logs.length; k++) {
+                    var acts = (logs[k].activities || '').split('\n');
                     for (var m = 0; m < acts.length; m++) {
                         if (acts[m].trim()) allActs.push(acts[m].trim());
                     }
@@ -2077,7 +2102,7 @@ async function exportStudentFP(sid, sn) {
 }
 
 // ============================================================
-// SEARCH
+// SEARCH - OPTIMIZED
 // ============================================================
 function rs() {
     return '<div class="cc"><h5 class="fw-bold mb-2">Search</h5><p class="text-muted small mb-2">Search by name or activity keyword</p><input id="si" class="fc mb-2" placeholder="e.g. John, meat inspection..."><button class="bsc btn-sm" onclick="pS()" type="button"><i class="bi bi-search"></i> Search</button><div id="srr" class="mt-2"></div></div>';
@@ -2100,6 +2125,8 @@ async function pS() {
         var ml = logbooks.documents.filter(function(l) {
             return (l.activities || '').toLowerCase().indexOf(q) > -1;
         });
+        var mlSids = ml.map(function(l) { return l.studentId; });
+        var namesMap = await getUserNames(mlSids);
         hl();
         var hr = false;
         if (mu.length > 0) {
@@ -2118,11 +2145,7 @@ async function pS() {
             rh += '<div class="mb-2"><h6 class="fw-bold mb-1" style="font-size:0.68rem">Activities (' + ml.length + ')</h6>';
             for (var j = 0; j < Math.min(ml.length, 15); j++) {
                 var l = ml[j];
-                var sn = l.studentId;
-                try {
-                    var su = await db.getDocument(D, C.U, l.studentId);
-                    sn = su.fullName;
-                } catch (e) {}
+                var sn = namesMap[l.studentId] || l.studentId;
                 var sc = { pending: 'warning', approved: 'success', rejected: 'danger' };
                 rh += '<div class="border rounded p-2 mb-1" style="cursor:pointer;border-radius:10px" onclick="vL(\'' + l.$id + '\')"><div class="d-flex justify-content-between align-items-start mb-1"><div><strong style="font-size:0.7rem">' + sn + '</strong><span class="badge bg-primary bst ms-1">W' + l.weekNumber + '</span></div><span class="badge bg-' + (sc[l.status] || 'secondary') + ' bst">' + l.status + '</span></div><div style="font-size:0.62rem;background:var(--bg);padding:0.4rem 0.5rem;border-radius:6px;max-height:160px;overflow-y:auto">' + highlightMatch((l.activities || '').replace(/\n/g, '<br>'), q) + '</div><small class="text-muted" style="font-size:0.56rem">' + (l.submittedAt ? new Date(l.submittedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A') + '</small></div>';
             }
@@ -2157,7 +2180,7 @@ async function ru() {
 }
 
 // ============================================================
-// PENDING APPROVALS (ADMIN)
+// PENDING APPROVALS (ADMIN) - OPTIMIZED
 // ============================================================
 async function rpa() {
     try {
@@ -2167,14 +2190,22 @@ async function rpa() {
         ]);
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Pending Approvals (' + sups.total + ')</h5>';
         if (sups.total === 0) return h + '<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:1.6rem"></i><p>All approved</p></div></div>';
-        
+
+        var supIds = sups.documents.map(function(s) { return s.userId; });
+        var byMap = {};
+        try {
+            var sts = await db.listDocuments(D, C.U, [
+                Appwrite.Query.equal('supId', supIds),
+                Appwrite.Query.limit(200)
+            ]);
+            for (var x = 0; x < sts.documents.length; x++) {
+                byMap[sts.documents[x].supId] = sts.documents[x].fullName;
+            }
+        } catch (e) {}
+
         for (var i = 0; i < sups.documents.length; i++) {
             var s = sups.documents[i];
-            var sn = 'N/A';
-            try {
-                var st = await db.listDocuments(D, C.U, [Appwrite.Query.equal('supId', s.userId)]);
-                if (st.total > 0) sn = st.documents[0].fullName;
-            } catch (e) {}
+            var sn = byMap[s.userId] || 'N/A';
             h += '<div class="border rounded p-2 mb-1"><div class="d-flex justify-content-between"><strong>' + s.fullName + '</strong><span class="badge bg-warning bst">Pending</span></div><small>' + s.email + ' | ' + (s.region || 'N/A') + ' | By: ' + sn + '</small><div class="mt-1"><button class="bsc btn-sm" onclick="aSU(\'' + s.$id + '\')" type="button">Approve</button><button class="bxsd btn-sm ms-1" onclick="rSU(\'' + s.$id + '\')" type="button">Reject</button></div></div>';
         }
         return h + '</div>';
@@ -2273,14 +2304,12 @@ async function rSU(uid) {
 async function ral() {
     try {
         var logs = await db.listDocuments(D, C.L, [Appwrite.Query.limit(50)]);
+        var sids = logs.documents.map(function(l) { return l.studentId; });
+        var namesMap = await getUserNames(sids);
         var h = '<div class="cc"><h5 class="fw-bold mb-2">All Logbooks</h5>';
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = l.studentId;
-            try {
-                var su = await db.getDocument(D, C.U, l.studentId);
-                sn = su.fullName;
-            } catch (e) {}
+            var sn = namesMap[l.studentId] || l.studentId;
             h += '<div class="border rounded p-1 mb-1 small">W' + l.weekNumber + ' | ' + sn + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></div>';
         }
         return h + '</div>';
@@ -2290,26 +2319,20 @@ async function ral() {
 }
 
 // ============================================================
-// ASSIGNMENTS (ADMIN)
+// ASSIGNMENTS (ADMIN) - OPTIMIZED
 // ============================================================
 async function ras() {
     try {
         var as = await db.listDocuments(D, C.A, [Appwrite.Query.limit(100)]);
+        var sids = as.documents.map(function(a) { return a.studentId; });
+        var spids = as.documents.map(function(a) { return a.supervisorId; }).filter(Boolean);
+        var namesMap = await getUserNames(sids.concat(spids));
+
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Assignments</h5>';
         for (var i = 0; i < as.documents.length; i++) {
             var a = as.documents[i];
-            var sn = a.studentId;
-            var sp = 'N/A';
-            try {
-                var su = await db.getDocument(D, C.U, a.studentId);
-                sn = su.fullName;
-            } catch (e) {}
-            try {
-                if (a.supervisorId) {
-                    var su2 = await db.getDocument(D, C.U, a.supervisorId);
-                    sp = su2.fullName;
-                }
-            } catch (e) {}
+            var sn = namesMap[a.studentId] || a.studentId;
+            var sp = namesMap[a.supervisorId] || 'N/A';
             h += '<div class="border rounded p-1 mb-1 small">' + sn + ' → ' + sp + ' | <span class="badge bg-' + (a.status === 'active' ? 'success' : 'secondary') + ' bst">' + a.status + '</span></div>';
         }
         return h + '</div>';
@@ -2364,14 +2387,12 @@ async function rc() {
 async function rbd() {
     try {
         var logs = await db.listDocuments(D, C.L, [Appwrite.Query.limit(200)]);
+        var sids = logs.documents.map(function(l) { return l.studentId; });
+        var namesMap = await getUserNames(sids);
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Bulk Delete</h5><div class="mb-1"><button class="bsc-outline btn-sm me-1" onclick="toggleAll()" type="button">All</button><button class="bsc-outline btn-sm me-1" onclick="togglePending()" type="button">Pending</button><button class="bsc-outline btn-sm me-1" onclick="toggleRejected()" type="button">Rejected</button><button class="bsc-outline btn-sm" onclick="toggleNone()" type="button">None</button></div><div style="max-height:300px;overflow-y:auto" id="bulkList">';
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = l.studentId;
-            try {
-                var su = await db.getDocument(D, C.U, l.studentId);
-                sn = su.fullName;
-            } catch (e) {}
+            var sn = namesMap[l.studentId] || l.studentId;
             h += '<div class="border rounded p-1 mb-1 small d-flex align-items-center gap-2"><input type="checkbox" class="bulk-check" data-id="' + l.$id + '" onchange="updateBulkCount()"><span>W' + l.weekNumber + ' | ' + sn + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></span></div>';
         }
         h += '</div><div class="mt-1 d-flex justify-content-between align-items-center"><span class="small" id="bulkCount">0 selected</span><button class="bxsd" onclick="bulkDelete()" type="button"><i class="bi bi-trash"></i> Delete</button></div></div>';
@@ -2695,16 +2716,14 @@ async function exportAllLogbooks() {
     try {
         sl();
         var logs = await db.listDocuments(D, C.L, [Appwrite.Query.limit(500)]);
+        var sids = logs.documents.map(function(l) { return l.studentId; });
+        var namesMap = await getUserNames(sids);
         var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
         var y = 10;
         var allActs = [];
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = l.studentId;
-            try {
-                var su = await db.getDocument(D, C.U, l.studentId);
-                sn = su.fullName;
-            } catch (e) {}
+            var sn = namesMap[l.studentId] || l.studentId;
             var acts = (l.activities || '').split('\n');
             for (var j = 0; j < acts.length; j++) {
                 if (acts[j].trim()) allActs.push(sn + ' (W' + l.weekNumber + '): ' + acts[j].trim());
@@ -2761,7 +2780,7 @@ function downloadFile(c, f, m) {
 // ============================================================
 window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
-    dp = e; // FIXED: dp is now declared at top
+    dp = e;
     setTimeout(function() {
         Swal.fire({
             title: 'Install App',
@@ -2794,7 +2813,6 @@ if ('serviceWorker' in navigator) {
 document.addEventListener('DOMContentLoaded', function() {
     pR();
     
-    // Login button - FIXED: proper async handling
     document.getElementById('lb').addEventListener('click', function() {
         var btn = this;
         if (btn.disabled) return;
@@ -2806,7 +2824,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Register button - FIXED: proper async handling
     document.getElementById('rb').addEventListener('click', function() {
         var btn = this;
         if (btn.disabled) return;
