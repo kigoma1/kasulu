@@ -16,9 +16,16 @@
 <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- FIREBASE SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+<!-- ONESIGNAL PUSH NOTIFICATIONS SDK -->
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+<script>
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "f85b90b9-2c0d-48cb-a419-419707b5ab75",
+    });
+  });
+</script>
 
 <style>
 :root{--p:#0f172a;--s:#3b82f6;--g:#10b981;--w:#f59e0b;--d:#ef4444;--card:#fff;--ch:#f8fafc;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--shadow:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 12px rgba(0,0,0,0.06);--shadow-lg:0 12px 40px rgba(0,0,0,0.08);--gradient:linear-gradient(135deg,#0f172a,#1e3a5f 50%,#1a5276);--glass:rgba(255,255,255,0.88)}
@@ -124,7 +131,7 @@ label.small.fw-semibold{margin-bottom:0.4rem !important;display:block;color:var(
 <div class="ab">
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Full Name</label><input type="text" id="rfn" class="fc" placeholder="John Doe"></div>
 <div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Email</label><input type="email" id="re" class="fc"></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Phone</label><input type="tel" id="rp" class="fc" placeholder="0712345678"></div></div>
-<div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Reg No.</label><input type="text" id="rrn" class="fc" placeholder="RU/BEHSIT/2023/1234"></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Institution</label><input type="text" id="ri" class="fc" placeholder="University name"></div></div>
+<div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Reg No.</label><input type="text" id="rrn" class="fc" placeholder="RU/BEHSIT/2024/1234"></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Institution</label><input type="text" id="ri" class="fc" placeholder="University name"></div></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Department</label><input type="text" id="rd" class="fc" placeholder="Computer Science"></div>
 <div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Region</label><select id="regR" class="fc" onchange="uD()"><option value="">Select</option></select></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">District</label><select id="regD" class="fc"><option value="">Select</option></select></div></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Password</label><input type="password" id="rpw" class="fc" placeholder="Min 6 chars, A-Z, a-z, 0-9"></div>
@@ -193,151 +200,7 @@ label.small.fw-semibold{margin-bottom:0.4rem !important;display:block;color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-// ============================================================
-// FIREBASE INITIALIZATION
-// ============================================================
-firebase.initializeApp({
-    apiKey: "AIzaSyBxVQIOUJ3GpTLewkeOicYsRJgsOx_2tJ8",
-    authDomain: "logbook-20424.firebaseapp.com",
-    databaseURL: "https://logbook-20424-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "logbook-20424",
-    storageBucket: "logbook-20424.firebasestorage.app",
-    messagingSenderId: "1018154189026",
-    appId: "1:1018154189026:web:6a7b5c97e5b2f5f756debb"
-});
-
-const messaging = firebase.messaging();
-const VAPID_KEY = "BBEyixhR10lNOiNel340i0g2fQmL12zpKFbXosjOqHL6SG0D3Oqowi6M953CsRR4vV111izX6qz8qHMIeMRFZUY";
-
 "use strict";
-
-// ============================================================
-// FCM PUSH NOTIFICATIONS
-// ============================================================
-async function requestNotificationPermission() {
-    try {
-        if (!('Notification' in window)) {
-            console.log('Browser does not support notifications');
-            return false;
-        }
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            console.log('✅ Notification permission granted');
-            return true;
-        } else {
-            console.log('❌ Notification permission denied');
-            return false;
-        }
-    } catch (error) {
-        console.error('Permission error:', error);
-        return false;
-    }
-}
-
-async function getFCMToken() {
-    try {
-        const currentToken = await messaging.getToken({ vapidKey: VAPID_KEY });
-        if (currentToken) {
-            console.log('📱 FCM Token:', currentToken);
-            if (U && U.userId) {
-                try {
-                    await db.updateDocument(D, C.U, U.userId, {
-                        fcmToken: currentToken,
-                        fcmPlatform: 'web',
-                        fcmUpdatedAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    });
-                    console.log('✅ FCM token saved to Appwrite');
-                } catch (e) {
-                    console.error('Failed to save FCM token:', e);
-                }
-            }
-            return currentToken;
-        } else {
-            console.log('No registration token available');
-            return null;
-        }
-    } catch (error) {
-        console.error('Error getting FCM token:', error);
-        return null;
-    }
-}
-
-function setupTokenRefresh() {
-    messaging.onTokenRefresh(async () => {
-        console.log('🔄 FCM Token refreshed');
-        const newToken = await getFCMToken();
-        if (newToken && U && U.userId) {
-            try {
-                await db.updateDocument(D, C.U, U.userId, {
-                    fcmToken: newToken,
-                    fcmUpdatedAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                });
-            } catch (e) {}
-        }
-    });
-}
-
-function setupForegroundMessages() {
-    messaging.onMessage(async (payload) => {
-        console.log('📨 Foreground message:', payload);
-        const title = payload.notification?.title || 'Behsit Field';
-        const body = payload.notification?.body || 'Una ujumbe mpya!';
-        
-        showToast(title + ': ' + body, 'info');
-        
-        if (payload.notification) {
-            Swal.fire({
-                title: title,
-                text: body,
-                icon: 'info',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer);
-                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-                }
-            });
-        }
-        
-        if (payload.data?.type === 'new_logbook' && U && U.role === 'supervisor') {
-            pop();
-        }
-    });
-}
-
-async function initFCM() {
-    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-        console.log('Push notifications not supported');
-        return;
-    }
-    const permitted = await requestNotificationPermission();
-    if (permitted) {
-        await getFCMToken();
-        setupTokenRefresh();
-        setupForegroundMessages();
-    }
-}
-
-async function deleteFCMToken() {
-    try {
-        if (U && U.userId) {
-            await db.updateDocument(D, C.U, U.userId, {
-                fcmToken: null,
-                fcmUpdatedAt: null,
-                updatedAt: new Date().toISOString()
-            });
-        }
-        await messaging.deleteToken();
-        console.log('🗑️ FCM Token deleted');
-    } catch (e) {
-        console.error('Failed to delete token:', e);
-    }
-}
 
 // ============================================================
 // TOAST FUNCTION
@@ -350,9 +213,7 @@ function showToast(message, type) {
         warning: '#f59e0b',
         info: '#3b82f6'
     };
-    
     var bgColor = colors[type] || '#1a5276';
-    
     Toastify({
         text: message,
         duration: 2500,
@@ -503,15 +364,11 @@ function sl() {
     Swal.fire({
         title: 'Please wait...',
         allowOutsideClick: false,
-        didOpen: function() {
-            Swal.showLoading();
-        }
+        didOpen: function() { Swal.showLoading(); }
     });
 }
 
-function hl() {
-    Swal.close();
-}
+function hl() { Swal.close(); }
 
 function tP() {
     var p = document.getElementById('lp');
@@ -608,14 +465,34 @@ async function cn(uid, t, m) {
             updatedAt: new Date().toISOString()
         });
         
+        // Send push notification via OneSignal
+        if (window.OneSignal) {
+            try {
+                window.OneSignal.push(function() {
+                    window.OneSignal.sendSelfNotification(
+                        t,
+                        m,
+                        '/',
+                        LOGO,
+                        { userId: uid }
+                    );
+                });
+            } catch (e) {
+                console.log('OneSignal notification skipped:', e);
+            }
+        }
+        
+        // Show in-app toast if user is online
         if (U && U.userId === uid) {
             showToast(t, 'info');
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error('Notification error:', e);
+    }
 }
 
 // ============================================================
-// BATCH USER LOOKUP (PERFORMANCE OPTIMIZATION)
+// BATCH USER LOOKUP
 // ============================================================
 async function getUserNames(ids) {
     var map = {};
@@ -1076,8 +953,6 @@ async function changePwProfile() {
 // LOGOUT
 // ============================================================
 async function logout() {
-    await deleteFCMToken();
-    
     try { await ac.deleteSession('current'); } catch (e) {}
     if (chk) clearInterval(chk);
     U = null;
@@ -1130,8 +1005,6 @@ function sD() {
         setTimeout(pop, 3000);
     }
     if (U.role === 'admin') setTimeout(uB, 1000);
-    
-    initFCM();
 }
 
 async function uB() {
@@ -1525,7 +1398,7 @@ async function eMS() {
 }
 
 // ============================================================
-// CREATE LOGBOOK
+// CREATE LOGBOOK - IMEREKEBISHWA (Siku zote 5 + tarehe halisi)
 // ============================================================
 async function cLB() {
     if (!U.fieldStartDate) {
@@ -1574,66 +1447,75 @@ async function cLB() {
         { en: 'Thursday', sw: 'Thursday' },
         { en: 'Friday', sw: 'Friday' }
     ];
-    var td = new Date().getDay();
-    var cfw = (td === 5);
+    
+    // Calculate real dates for each day
     var dd = {};
     for (var i = 0; i < days.length; i++) {
         var dt = new Date(wd.start);
         dt.setDate(wd.start.getDate() + i);
-        dd[days[i].en] = dt.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+        dd[days[i].en] = dt.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            day: 'numeric', 
+            month: 'short', 
+            year: 'numeric' 
+        });
     }
     
+    // Show all 5 days with their real dates
     var dH = '';
-    if (cfw) {
-        for (var j = 0; j < days.length; j++) {
-            dH += '<div class="mb-2"><label class="small fw-semibold text-muted">' + days[j].sw + ' <span class="text-primary">(' + dd[days[j].en] + ')</span></label><textarea id="day_' + days[j].en + '" class="fc" rows="2" style="min-height:42px;font-size:0.74rem" placeholder="Activities..."></textarea></div>';
-        }
-    } else {
-        var dn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        dH = '<div class="mb-2"><label class="small fw-semibold text-muted">' + dn[td] + '</label><textarea id="day_today" class="fc" rows="3" style="min-height:52px;font-size:0.74rem" placeholder="Activities..."></textarea></div>';
+    for (var j = 0; j < days.length; j++) {
+        dH += '<div class="mb-2">';
+        dH += '<label class="small fw-semibold text-muted">' + days[j].sw + ' <span class="text-primary">(' + dd[days[j].en] + ')</span></label>';
+        dH += '<textarea id="day_' + days[j].en + '" class="fc" rows="2" style="min-height:42px;font-size:0.74rem" placeholder="Activities for ' + days[j].sw + '..."></textarea>';
+        dH += '</div>';
     }
     
     var formResult = await Swal.fire({
-        title: 'Week ' + aw,
-        html: '<div class="text-start"><div class="alert-info-custom mb-2"><span class="week-badge">Week ' + aw + '</span> <span class="text-muted" style="font-size:0.6rem">' + wd.start.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) + ' — ' + wd.end.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) + '</span></div>' + dH + (cfw ? '<div class="mb-2"><label class="small fw-semibold text-muted">Summary</label><textarea id="sr" class="fc" rows="2" style="min-height:42px;font-size:0.74rem" placeholder="Optional..."></textarea></div>' : '') + '<div class="mb-2"><label class="small fw-semibold text-danger">Your Signature</label><canvas id="ssc" class="sp-sm"></canvas><button class="clear-sig-btn" onclick="if(sp){sp.clear();showToast(\'Cleared\',\'info\')}" type="button"><i class="bi bi-eraser"></i> Clear</button></div></div>',
+        title: 'Week ' + aw + ' - Daily Activities',
+        html: '<div class="text-start">' +
+            '<div class="alert-info-custom mb-2">' +
+                '<span class="week-badge">Week ' + aw + '</span> ' +
+                '<span class="text-muted" style="font-size:0.6rem">' + 
+                    wd.start.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) + 
+                    ' — ' + 
+                    wd.end.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) + 
+                '</span>' +
+            '</div>' +
+            '<p class="small text-muted mb-2">Fill in activities for each day. Leave blank if no activities.</p>' +
+            dH +
+            '<div class="mb-2"><label class="small fw-semibold text-muted">Weekly Summary (Optional)</label><textarea id="sr" class="fc" rows="2" style="min-height:42px;font-size:0.74rem" placeholder="Summary of the week..."></textarea></div>' +
+            '<div class="mb-2"><label class="small fw-semibold text-danger">Your Signature</label><canvas id="ssc" class="sp-sm"></canvas><button class="clear-sig-btn" onclick="if(sp){sp.clear();showToast(\'Cleared\',\'info\')}" type="button"><i class="bi bi-eraser"></i> Clear</button></div>' +
+        '</div>',
         didOpen: function() {
             var cv = document.getElementById('ssc');
             if (cv) sp = new SignaturePad(cv, { minWidth: 1, maxWidth: 2 });
         },
         showCancelButton: true,
-        confirmButtonText: 'Submit',
+        confirmButtonText: 'Submit Week ' + aw,
         confirmButtonColor: '#1a5276',
         width: '650px',
         preConfirm: function() {
             var acts = '';
             var ha = false;
-            if (cfw) {
-                for (var k = 0; k < days.length; k++) {
-                    var v = document.getElementById('day_' + days[k].en).value;
-                    if (v.trim()) {
-                        ha = true;
-                        acts += days[k].sw + ': ' + v + '\n';
-                    }
-                }
-            } else {
-                var v2 = document.getElementById('day_today').value;
-                if (v2.trim()) {
+            for (var k = 0; k < days.length; k++) {
+                var v = document.getElementById('day_' + days[k].en).value;
+                if (v.trim()) {
                     ha = true;
-                    acts = v2;
+                    acts += days[k].sw + ' (' + dd[days[k].en] + '): ' + v + '\n';
                 }
             }
             if (!ha) {
-                Swal.showValidationMessage('Write at least one activity');
+                Swal.showValidationMessage('Please write at least one activity for any day');
                 return false;
             }
             if (sp.isEmpty()) {
-                Swal.showValidationMessage('Provide your signature');
+                Swal.showValidationMessage('Please provide your signature');
                 return false;
             }
             return {
                 week: aw,
                 activities: acts,
-                summary: cfw ? (document.getElementById('sr').value || '') : '',
+                summary: document.getElementById('sr').value || '',
                 sig: sp.toDataURL() || ''
             };
         }
@@ -1735,12 +1617,9 @@ async function deleteAllRejected() {
             confirmButtonText: 'Delete'
         });
         if (!r.isConfirmed) return;
-        
         sl();
         var ids = [];
-        for (var i = 0; i < logs.documents.length; i++) {
-            ids.push(logs.documents[i].$id);
-        }
+        for (var i = 0; i < logs.documents.length; i++) ids.push(logs.documents[i].$id);
         for (var j = 0; j < ids.length; j++) {
             await db.deleteDocument(D, C.L, ids[j]);
             notifiedLogIds.delete(ids[j]);
@@ -1774,12 +1653,9 @@ async function deleteAllRejectedForStudent(sid, sname) {
             confirmButtonText: 'Delete'
         });
         if (!r.isConfirmed) return;
-        
         sl();
         var ids = [];
-        for (var i = 0; i < logs.documents.length; i++) {
-            ids.push(logs.documents[i].$id);
-        }
+        for (var i = 0; i < logs.documents.length; i++) ids.push(logs.documents[i].$id);
         for (var j = 0; j < ids.length; j++) {
             await db.deleteDocument(D, C.L, ids[j]);
             notifiedLogIds.delete(ids[j]);
@@ -1855,7 +1731,7 @@ function eP(lid) {
 }
 
 // ============================================================
-// ACTION REQUIRED (SUPERVISOR) - OPTIMIZED
+// ACTION REQUIRED (SUPERVISOR)
 // ============================================================
 async function ract() {
     if (U.role !== 'supervisor') return '<div class="cc">Access denied</div>';
@@ -1876,9 +1752,7 @@ async function ract() {
         var sg = {};
         for (var i = 0; i < fl.length; i++) {
             var log = fl[i];
-            if (!sg[log.studentId]) {
-                sg[log.studentId] = { name: namesMap[log.studentId] || log.studentId, logs: [] };
-            }
+            if (!sg[log.studentId]) sg[log.studentId] = { name: namesMap[log.studentId] || log.studentId, logs: [] };
             sg[log.studentId].logs.push(log);
         }
         var keys = Object.keys(sg);
@@ -1924,26 +1798,14 @@ async function rvL(lid) {
             width: '600px',
             preConfirm: function() {
                 var cm = document.getElementById('rc').value;
-                if (!cm) {
-                    Swal.showValidationMessage('Comment required');
-                    return false;
-                }
-                if (window.tsp.isEmpty()) {
-                    Swal.showValidationMessage('Signature required');
-                    return false;
-                }
+                if (!cm) { Swal.showValidationMessage('Comment required'); return false; }
+                if (window.tsp.isEmpty()) { Swal.showValidationMessage('Signature required'); return false; }
                 return { comment: cm, sig: window.tsp.toDataURL() || '', decision: 'approved' };
             },
             preDeny: function() {
                 var cm = document.getElementById('rc').value;
-                if (!cm) {
-                    Swal.showValidationMessage('Comment required');
-                    return false;
-                }
-                if (window.tsp.isEmpty()) {
-                    Swal.showValidationMessage('Signature required');
-                    return false;
-                }
+                if (!cm) { Swal.showValidationMessage('Comment required'); return false; }
+                if (window.tsp.isEmpty()) { Swal.showValidationMessage('Signature required'); return false; }
                 return { comment: cm, sig: window.tsp.toDataURL() || '', decision: 'rejected' };
             }
         });
@@ -2000,10 +1862,7 @@ function rpt() {
 async function rfa() {
     if (U.role === 'student') {
         try {
-            var d = await db.listDocuments(D, C.F, [
-                Appwrite.Query.equal('studentId', U.userId),
-                Appwrite.Query.limit(1)
-            ]);
+            var d = await db.listDocuments(D, C.F, [Appwrite.Query.equal('studentId', U.userId), Appwrite.Query.limit(1)]);
             if (d.total === 0) return '<div class="cc empty-state"><i class="bi bi-star" style="font-size:1.6rem"></i><h5 class="mt-2">No Assessment</h5></div>';
             var fa = d.documents[0];
             return '<div class="cc"><h5 class="fw-bold">Assessment</h5><div class="text-center py-2"><div style="font-size:2rem;font-weight:800;color:' + (fa.marks >= 50 ? '#10b981' : '#ef4444') + '">' + fa.marks + '/100</div></div>' + (fa.comments ? '<div class="border rounded p-2 mt-2"><small>' + fa.comments + '</small></div>' : '') + '</div>';
@@ -2018,14 +1877,8 @@ async function rfa() {
             for (var i = 0; i < asgn.documents.length; i++) {
                 var a = asgn.documents[i];
                 var sn = a.studentId;
-                try {
-                    var su = await db.getDocument(D, C.U, a.studentId);
-                    sn = su.fullName;
-                } catch (e) {}
-                var ex = await db.listDocuments(D, C.F, [
-                    Appwrite.Query.equal('studentId', a.studentId),
-                    Appwrite.Query.limit(1)
-                ]);
+                try { var su = await db.getDocument(D, C.U, a.studentId); sn = su.fullName; } catch (e) {}
+                var ex = await db.listDocuments(D, C.F, [Appwrite.Query.equal('studentId', a.studentId), Appwrite.Query.limit(1)]);
                 h += '<div class="border rounded p-2 mb-1"><div class="d-flex justify-content-between"><strong style="font-size:0.7rem">' + sn + '</strong>' + (ex.total > 0 ? '<span class="badge bg-success bst">' + ex.documents[0].marks + '/100</span>' : '<span class="badge bg-secondary bst">N/A</span>') + '</div><button class="bsc btn-sm mt-1" onclick="cFA(\'' + a.studentId + '\')" type="button">Assess</button></div>';
             }
             return h + '</div>';
@@ -2036,9 +1889,6 @@ async function rfa() {
     return '<div class="cc">Access denied</div>';
 }
 
-// ============================================================
-// CREATE FINAL ASSESSMENT
-// ============================================================
 async function cFA(sid) {
     var r = await Swal.fire({
         title: 'Assessment',
@@ -2048,15 +1898,11 @@ async function cFA(sid) {
         confirmButtonColor: '#1a5276',
         preConfirm: function() {
             var m = document.getElementById('fm').value;
-            if (!m || m < 0 || m > 100) {
-                Swal.showValidationMessage('Valid marks');
-                return false;
-            }
+            if (!m || m < 0 || m > 100) { Swal.showValidationMessage('Valid marks'); return false; }
             return { marks: parseInt(m), comments: document.getElementById('fc').value || '' };
         }
     });
     if (!r.value) return;
-    
     try {
         sl();
         var now = new Date().toISOString();
@@ -2084,15 +1930,10 @@ async function cFA(sid) {
 // ============================================================
 async function rcr() {
     try {
-        var logs = await db.listDocuments(D, C.L, [
-            Appwrite.Query.equal('studentId', U.userId),
-            Appwrite.Query.orderAsc('weekNumber'),
-            Appwrite.Query.limit(52)
-        ]);
+        var logs = await db.listDocuments(D, C.L, [Appwrite.Query.equal('studentId', U.userId), Appwrite.Query.orderAsc('weekNumber'), Appwrite.Query.limit(52)]);
         var tw = calcTotalWeeks();
         var cw = calcWeek();
         if (logs.total === 0 && tw === 0) return '<div class="cc empty-state"><i class="bi bi-file-earmark-text" style="font-size:1.6rem"></i><h5 class="mt-2">No Reports</h5></div>';
-        
         var approved = 0, pending = 0, rejected = 0;
         for (var i = 0; i < logs.documents.length; i++) {
             if (logs.documents[i].status === 'approved') approved++;
@@ -2100,18 +1941,12 @@ async function rcr() {
             if (logs.documents[i].status === 'rejected') rejected++;
         }
         var sw = new Set();
-        for (var j = 0; j < logs.documents.length; j++) {
-            sw.add(logs.documents[j].weekNumber);
-        }
+        for (var j = 0; j < logs.documents.length; j++) sw.add(logs.documents[j].weekNumber);
         var fm = 'N/A';
         try {
-            var fa = await db.listDocuments(D, C.F, [
-                Appwrite.Query.equal('studentId', U.userId),
-                Appwrite.Query.limit(1)
-            ]);
+            var fa = await db.listDocuments(D, C.F, [Appwrite.Query.equal('studentId', U.userId), Appwrite.Query.limit(1)]);
             if (fa.total > 0) fm = fa.documents[0].marks + '/100';
         } catch (e) {}
-        
         var h = '<div class="cc"><h5 class="fw-bold mb-2" style="font-size:0.82rem">Full Report</h5><div class="sg"><div class="sc"><h2 style="color:#3b82f6">' + tw + '</h2><p>Total Weeks</p></div><div class="sc"><h2>' + sw.size + '</h2><p>Submitted</p></div><div class="sc"><h2 style="color:#10b981">' + approved + '</h2><p>Approved</p></div><div class="sc"><h2 style="color:#f59e0b">' + pending + '</h2><p>Pending</p></div><div class="sc"><h2 style="color:#ef4444">' + rejected + '</h2><p>Rejected</p></div><div class="sc"><h2 style="color:#8b5cf6">' + fm + '</h2><p>Marks</p></div></div><div class="alert-info-custom mb-2"><strong>Week ' + cw + ' of ' + tw + '</strong></div><h6 class="fw-bold mt-2 mb-1">Activities</h6>';
         if (logs.total === 0) {
             h += '<p class="text-muted text-center py-2">No logbooks yet.</p>';
@@ -2119,9 +1954,7 @@ async function rcr() {
             var allActs = [];
             for (var k = 0; k < logs.documents.length; k++) {
                 var acts = (logs.documents[k].activities || '').split('\n');
-                for (var m = 0; m < acts.length; m++) {
-                    if (acts[m].trim()) allActs.push(acts[m].trim());
-                }
+                for (var m = 0; m < acts.length; m++) { if (acts[m].trim()) allActs.push(acts[m].trim()); }
             }
             h += '<div class="border rounded p-2 mb-2" style="max-height:220px;overflow-y:auto;font-size:0.62rem">';
             for (var n = 0; n < allActs.length; n++) {
@@ -2141,11 +1974,7 @@ async function rcr() {
 // ============================================================
 async function exportFP() {
     try {
-        var logs = await db.listDocuments(D, C.L, [
-            Appwrite.Query.equal('studentId', U.userId),
-            Appwrite.Query.orderAsc('weekNumber'),
-            Appwrite.Query.limit(52)
-        ]);
+        var logs = await db.listDocuments(D, C.L, [Appwrite.Query.equal('studentId', U.userId), Appwrite.Query.orderAsc('weekNumber'), Appwrite.Query.limit(52)]);
         var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
         var y = 10;
         doc.setFontSize(8);
@@ -2154,9 +1983,7 @@ async function exportFP() {
         var allActs = [];
         for (var i = 0; i < logs.documents.length; i++) {
             var acts = (logs.documents[i].activities || '').split('\n');
-            for (var j = 0; j < acts.length; j++) {
-                if (acts[j].trim()) allActs.push(acts[j].trim());
-            }
+            for (var j = 0; j < acts.length; j++) { if (acts[j].trim()) allActs.push(acts[j].trim()); }
         }
         doc.setFontSize(7);
         for (var k = 0; k < allActs.length; k++) {
@@ -2172,28 +1999,22 @@ async function exportFP() {
 }
 
 // ============================================================
-// STUDENT REPORTS (SUPERVISOR) - OPTIMIZED
+// STUDENT REPORTS (SUPERVISOR)
 // ============================================================
 async function rsr() {
     if (U.role !== 'supervisor') return '<div class="cc">Access denied</div>';
     try {
         var asgn = await db.listDocuments(D, C.A, [Appwrite.Query.equal('supervisorId', U.userId)]);
         if (asgn.total === 0) return '<div class="cc empty-state"><i class="bi bi-people" style="font-size:1.6rem"></i><h5 class="mt-2">No Students</h5></div>';
-
         var sids = asgn.documents.map(function(a) { return a.studentId; });
         var namesMap = await getUserNames(sids);
-        var allLogs = await db.listDocuments(D, C.L, [
-            Appwrite.Query.equal('studentId', sids),
-            Appwrite.Query.orderAsc('weekNumber'),
-            Appwrite.Query.limit(500)
-        ]);
+        var allLogs = await db.listDocuments(D, C.L, [Appwrite.Query.equal('studentId', sids), Appwrite.Query.orderAsc('weekNumber'), Appwrite.Query.limit(500)]);
         var logsByStudent = {};
         for (var x = 0; x < allLogs.documents.length; x++) {
             var ld = allLogs.documents[x];
             if (!logsByStudent[ld.studentId]) logsByStudent[ld.studentId] = [];
             logsByStudent[ld.studentId].push(ld);
         }
-
         var h = '<div class="cc"><h5 class="fw-bold mb-2" style="font-size:0.82rem">Student Reports (' + asgn.total + ')</h5>';
         for (var i = 0; i < asgn.documents.length; i++) {
             var a = asgn.documents[i];
@@ -2210,14 +2031,10 @@ async function rsr() {
                 var allActs = [];
                 for (var k = 0; k < logs.length; k++) {
                     var acts = (logs[k].activities || '').split('\n');
-                    for (var m = 0; m < acts.length; m++) {
-                        if (acts[m].trim()) allActs.push(acts[m].trim());
-                    }
+                    for (var m = 0; m < acts.length; m++) { if (acts[m].trim()) allActs.push(acts[m].trim()); }
                 }
                 h += '<div style="max-height:160px;overflow-y:auto;font-size:0.58rem">';
-                for (var n = 0; n < allActs.length; n++) {
-                    h += '<div class="py-1 border-bottom">' + (n + 1) + '. ' + allActs[n] + '</div>';
-                }
+                for (var n = 0; n < allActs.length; n++) h += '<div class="py-1 border-bottom">' + (n + 1) + '. ' + allActs[n] + '</div>';
                 h += '</div>';
             }
             h += '<div class="d-flex gap-2 mt-1 flex-wrap"><button class="bsc btn-sm" onclick="exportStudentFP(\'' + a.studentId + '\',\'' + sn.replace(/'/g, "\\'") + '\')" type="button"><i class="bi bi-file-pdf"></i> Export</button>' + (rej > 0 ? '<button class="bxsd btn-sm" onclick="event.stopPropagation();deleteAllRejectedForStudent(\'' + a.studentId + '\',\'' + sn.replace(/'/g, "\\'") + '\')" type="button"><i class="bi bi-trash"></i> Delete Rejected (' + rej + ')</button>' : '') + '</div></div></div>';
@@ -2233,11 +2050,7 @@ async function rsr() {
 // ============================================================
 async function exportStudentFP(sid, sn) {
     try {
-        var logs = await db.listDocuments(D, C.L, [
-            Appwrite.Query.equal('studentId', sid),
-            Appwrite.Query.orderAsc('weekNumber'),
-            Appwrite.Query.limit(52)
-        ]);
+        var logs = await db.listDocuments(D, C.L, [Appwrite.Query.equal('studentId', sid), Appwrite.Query.orderAsc('weekNumber'), Appwrite.Query.limit(52)]);
         var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
         var y = 10;
         doc.setFontSize(8);
@@ -2246,9 +2059,7 @@ async function exportStudentFP(sid, sn) {
         var allActs = [];
         for (var i = 0; i < logs.documents.length; i++) {
             var acts = (logs.documents[i].activities || '').split('\n');
-            for (var j = 0; j < acts.length; j++) {
-                if (acts[j].trim()) allActs.push(acts[j].trim());
-            }
+            for (var j = 0; j < acts.length; j++) { if (acts[j].trim()) allActs.push(acts[j].trim()); }
         }
         doc.setFontSize(7);
         for (var k = 0; k < allActs.length; k++) {
@@ -2264,7 +2075,7 @@ async function exportStudentFP(sid, sn) {
 }
 
 // ============================================================
-// SEARCH - OPTIMIZED
+// SEARCH
 // ============================================================
 function rs() {
     return '<div class="cc"><h5 class="fw-bold mb-2">Search</h5><p class="text-muted small mb-2">Search by name or activity keyword</p><input id="si" class="fc mb-2" placeholder="e.g. John, meat inspection..."><button class="bsc btn-sm" onclick="pS()" type="button"><i class="bi bi-search"></i> Search</button><div id="srr" class="mt-2"></div></div>';
@@ -2272,21 +2083,14 @@ function rs() {
 
 async function pS() {
     var q = document.getElementById('si').value.trim().toLowerCase();
-    if (!q || q.length < 2) {
-        showToast('Enter 2+ characters', 'warning');
-        return;
-    }
+    if (!q || q.length < 2) { showToast('Enter 2+ characters', 'warning'); return; }
     sl();
     var rh = '';
     try {
         var users = await db.listDocuments(D, C.U, [Appwrite.Query.limit(100)]);
         var logbooks = await db.listDocuments(D, C.L, [Appwrite.Query.limit(200)]);
-        var mu = users.documents.filter(function(u) {
-            return (u.fullName || '').toLowerCase().indexOf(q) > -1;
-        });
-        var ml = logbooks.documents.filter(function(l) {
-            return (l.activities || '').toLowerCase().indexOf(q) > -1;
-        });
+        var mu = users.documents.filter(function(u) { return (u.fullName || '').toLowerCase().indexOf(q) > -1; });
+        var ml = logbooks.documents.filter(function(l) { return (l.activities || '').toLowerCase().indexOf(q) > -1; });
         var mlSids = ml.map(function(l) { return l.studentId; });
         var namesMap = await getUserNames(mlSids);
         hl();
@@ -2313,9 +2117,7 @@ async function pS() {
             }
             rh += '</div>';
         }
-        if (!hr) {
-            rh = '<div class="text-center py-4"><i class="bi bi-search" style="font-size:2.2rem;color:#cbd5e1"></i><h5 class="mt-2">No Results</h5></div>';
-        }
+        if (!hr) rh = '<div class="text-center py-4"><i class="bi bi-search" style="font-size:2.2rem;color:#cbd5e1"></i><h5 class="mt-2">No Results</h5></div>';
         document.getElementById('srr').innerHTML = rh;
     } catch (e) {
         hl();
@@ -2342,29 +2144,19 @@ async function ru() {
 }
 
 // ============================================================
-// PENDING APPROVALS (ADMIN) - OPTIMIZED
+// PENDING APPROVALS (ADMIN)
 // ============================================================
 async function rpa() {
     try {
-        var sups = await db.listDocuments(D, C.U, [
-            Appwrite.Query.equal('role', 'supervisor'),
-            Appwrite.Query.equal('isActive', false)
-        ]);
+        var sups = await db.listDocuments(D, C.U, [Appwrite.Query.equal('role', 'supervisor'), Appwrite.Query.equal('isActive', false)]);
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Pending Approvals (' + sups.total + ')</h5>';
         if (sups.total === 0) return h + '<div class="empty-state"><i class="bi bi-check-circle" style="color:#10b981;font-size:1.6rem"></i><p>All approved</p></div></div>';
-
         var supIds = sups.documents.map(function(s) { return s.userId; });
         var byMap = {};
         try {
-            var sts = await db.listDocuments(D, C.U, [
-                Appwrite.Query.equal('supId', supIds),
-                Appwrite.Query.limit(200)
-            ]);
-            for (var x = 0; x < sts.documents.length; x++) {
-                byMap[sts.documents[x].supId] = sts.documents[x].fullName;
-            }
+            var sts = await db.listDocuments(D, C.U, [Appwrite.Query.equal('supId', supIds), Appwrite.Query.limit(200)]);
+            for (var x = 0; x < sts.documents.length; x++) byMap[sts.documents[x].supId] = sts.documents[x].fullName;
         } catch (e) {}
-
         for (var i = 0; i < sups.documents.length; i++) {
             var s = sups.documents[i];
             var sn = byMap[s.userId] || 'N/A';
@@ -2376,88 +2168,40 @@ async function rpa() {
     }
 }
 
-// ============================================================
-// APPROVE / REJECT SUPERVISOR (ADMIN)
-// ============================================================
 async function aSU(uid) {
-    var r = await Swal.fire({
-        title: 'Approve Supervisor?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#10b981',
-        confirmButtonText: 'Yes'
-    });
+    var r = await Swal.fire({ title: 'Approve Supervisor?', icon: 'question', showCancelButton: true, confirmButtonColor: '#10b981', confirmButtonText: 'Yes' });
     if (!r.isConfirmed) return;
-    
     try {
         sl();
         var now = new Date().toISOString();
-        await db.updateDocument(D, C.U, uid, {
-            isActive: true,
-            updatedAt: now
-        });
-        
+        await db.updateDocument(D, C.U, uid, { isActive: true, updatedAt: now });
         var sts = await db.listDocuments(D, C.U, [Appwrite.Query.equal('supId', uid)]);
         if (sts.total > 0) {
             var st = sts.documents[0];
-            await db.createDocument(D, C.A, Appwrite.ID.unique(), {
-                assignmentId: Appwrite.ID.unique(),
-                studentId: st.userId,
-                supervisorId: uid,
-                region: st.region || '',
-                status: 'active',
-                createdAt: now,
-                updatedAt: now
-            });
-            await db.updateDocument(D, C.U, st.userId, {
-                supStatus: ST.A,
-                updatedAt: now
-            });
+            await db.createDocument(D, C.A, Appwrite.ID.unique(), { assignmentId: Appwrite.ID.unique(), studentId: st.userId, supervisorId: uid, region: st.region || '', status: 'active', createdAt: now, updatedAt: now });
+            await db.updateDocument(D, C.U, st.userId, { supStatus: ST.A, updatedAt: now });
         }
         hl();
         showToast('Supervisor Approved!', 'success');
         lp('pending_approvals');
         uB();
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 async function rSU(uid) {
-    var r = await Swal.fire({
-        title: 'Reject Supervisor?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        confirmButtonText: 'Yes'
-    });
+    var r = await Swal.fire({ title: 'Reject Supervisor?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Yes' });
     if (!r.isConfirmed) return;
-    
     try {
         sl();
         var now = new Date().toISOString();
         await db.deleteDocument(D, C.U, uid);
-        
         var sts = await db.listDocuments(D, C.U, [Appwrite.Query.equal('supId', uid)]);
-        if (sts.total > 0) {
-            await db.updateDocument(D, C.U, sts.documents[0].userId, {
-                supStatus: ST.R,
-                supId: null,
-                supName: null,
-                supEmail: null,
-                supRegion: null,
-                updatedAt: now
-            });
-        }
+        if (sts.total > 0) await db.updateDocument(D, C.U, sts.documents[0].userId, { supStatus: ST.R, supId: null, supName: null, supEmail: null, supRegion: null, updatedAt: now });
         hl();
         showToast('Supervisor Rejected', 'error');
         lp('pending_approvals');
         uB();
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 // ============================================================
@@ -2471,17 +2215,14 @@ async function ral() {
         var h = '<div class="cc"><h5 class="fw-bold mb-2">All Logbooks</h5>';
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = namesMap[l.studentId] || l.studentId;
-            h += '<div class="border rounded p-1 mb-1 small">W' + l.weekNumber + ' | ' + sn + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></div>';
+            h += '<div class="border rounded p-1 mb-1 small">W' + l.weekNumber + ' | ' + (namesMap[l.studentId] || l.studentId) + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></div>';
         }
         return h + '</div>';
-    } catch (e) {
-        return '<div class="cc">Error</div>';
-    }
+    } catch (e) { return '<div class="cc">Error</div>'; }
 }
 
 // ============================================================
-// ASSIGNMENTS (ADMIN) - OPTIMIZED
+// ASSIGNMENTS (ADMIN)
 // ============================================================
 async function ras() {
     try {
@@ -2489,18 +2230,13 @@ async function ras() {
         var sids = as.documents.map(function(a) { return a.studentId; });
         var spids = as.documents.map(function(a) { return a.supervisorId; }).filter(Boolean);
         var namesMap = await getUserNames(sids.concat(spids));
-
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Assignments</h5>';
         for (var i = 0; i < as.documents.length; i++) {
             var a = as.documents[i];
-            var sn = namesMap[a.studentId] || a.studentId;
-            var sp = namesMap[a.supervisorId] || 'N/A';
-            h += '<div class="border rounded p-1 mb-1 small">' + sn + ' → ' + sp + ' | <span class="badge bg-' + (a.status === 'active' ? 'success' : 'secondary') + ' bst">' + a.status + '</span></div>';
+            h += '<div class="border rounded p-1 mb-1 small">' + (namesMap[a.studentId] || a.studentId) + ' → ' + (namesMap[a.supervisorId] || 'N/A') + ' | <span class="badge bg-' + (a.status === 'active' ? 'success' : 'secondary') + ' bst">' + a.status + '</span></div>';
         }
         return h + '</div>';
-    } catch (e) {
-        return '<div class="cc">Error</div>';
-    }
+    } catch (e) { return '<div class="cc">Error</div>'; }
 }
 
 // ============================================================
@@ -2530,15 +2266,7 @@ async function rc() {
                     backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']
                 }]
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { font: { size: 8 } }
-                    }
-                }
-            }
+            options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 8 } } } } }
         });
     } catch (e) {}
 }
@@ -2554,83 +2282,33 @@ async function rbd() {
         var h = '<div class="cc"><h5 class="fw-bold mb-2">Bulk Delete</h5><div class="mb-1"><button class="bsc-outline btn-sm me-1" onclick="toggleAll()" type="button">All</button><button class="bsc-outline btn-sm me-1" onclick="togglePending()" type="button">Pending</button><button class="bsc-outline btn-sm me-1" onclick="toggleRejected()" type="button">Rejected</button><button class="bsc-outline btn-sm" onclick="toggleNone()" type="button">None</button></div><div style="max-height:300px;overflow-y:auto" id="bulkList">';
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = namesMap[l.studentId] || l.studentId;
-            h += '<div class="border rounded p-1 mb-1 small d-flex align-items-center gap-2"><input type="checkbox" class="bulk-check" data-id="' + l.$id + '" onchange="updateBulkCount()"><span>W' + l.weekNumber + ' | ' + sn + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></span></div>';
+            h += '<div class="border rounded p-1 mb-1 small d-flex align-items-center gap-2"><input type="checkbox" class="bulk-check" data-id="' + l.$id + '" onchange="updateBulkCount()"><span>W' + l.weekNumber + ' | ' + (namesMap[l.studentId] || l.studentId) + ' | <span class="badge bg-' + (l.status === 'approved' ? 'success' : l.status === 'pending' ? 'warning' : 'danger') + ' bst">' + l.status + '</span></span></div>';
         }
         h += '</div><div class="mt-1 d-flex justify-content-between align-items-center"><span class="small" id="bulkCount">0 selected</span><button class="bxsd" onclick="bulkDelete()" type="button"><i class="bi bi-trash"></i> Delete</button></div></div>';
         return h;
-    } catch (e) {
-        return '<div class="cc">Error</div>';
-    }
+    } catch (e) { return '<div class="cc">Error</div>'; }
 }
 
-function toggleAll() {
-    var c = document.querySelectorAll('.bulk-check');
-    for (var i = 0; i < c.length; i++) c[i].checked = true;
-    updateBulkCount();
-}
-
-function togglePending() {
-    var c = document.querySelectorAll('.bulk-check');
-    for (var i = 0; i < c.length; i++) {
-        var b = c[i].closest('.border');
-        var badge = b ? b.querySelector('.bst') : null;
-        c[i].checked = (badge && badge.textContent.trim() === 'pending');
-    }
-    updateBulkCount();
-}
-
-function toggleRejected() {
-    var c = document.querySelectorAll('.bulk-check');
-    for (var i = 0; i < c.length; i++) {
-        var b = c[i].closest('.border');
-        var badge = b ? b.querySelector('.bst') : null;
-        c[i].checked = (badge && badge.textContent.trim() === 'rejected');
-    }
-    updateBulkCount();
-}
-
-function toggleNone() {
-    var c = document.querySelectorAll('.bulk-check');
-    for (var i = 0; i < c.length; i++) c[i].checked = false;
-    updateBulkCount();
-}
-
-function updateBulkCount() {
-    var cnt = document.querySelectorAll('.bulk-check:checked').length;
-    document.getElementById('bulkCount').textContent = cnt + ' selected';
-}
+function toggleAll() { var c = document.querySelectorAll('.bulk-check'); for (var i = 0; i < c.length; i++) c[i].checked = true; updateBulkCount(); }
+function togglePending() { var c = document.querySelectorAll('.bulk-check'); for (var i = 0; i < c.length; i++) { var b = c[i].closest('.border'); var badge = b ? b.querySelector('.bst') : null; c[i].checked = (badge && badge.textContent.trim() === 'pending'); } updateBulkCount(); }
+function toggleRejected() { var c = document.querySelectorAll('.bulk-check'); for (var i = 0; i < c.length; i++) { var b = c[i].closest('.border'); var badge = b ? b.querySelector('.bst') : null; c[i].checked = (badge && badge.textContent.trim() === 'rejected'); } updateBulkCount(); }
+function toggleNone() { var c = document.querySelectorAll('.bulk-check'); for (var i = 0; i < c.length; i++) c[i].checked = false; updateBulkCount(); }
+function updateBulkCount() { var cnt = document.querySelectorAll('.bulk-check:checked').length; document.getElementById('bulkCount').textContent = cnt + ' selected'; }
 
 async function bulkDelete() {
     var c = document.querySelectorAll('.bulk-check:checked');
-    if (c.length === 0) {
-        showToast('Select items first', 'warning');
-        return;
-    }
-    var r = await Swal.fire({
-        title: 'Delete ' + c.length + ' logbooks?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        confirmButtonText: 'Delete'
-    });
+    if (c.length === 0) { showToast('Select items first', 'warning'); return; }
+    var r = await Swal.fire({ title: 'Delete ' + c.length + ' logbooks?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Delete' });
     if (!r.isConfirmed) return;
-    
     try {
         sl();
         var ids = [];
         for (var i = 0; i < c.length; i++) ids.push(c[i].dataset.id);
-        for (var j = 0; j < ids.length; j++) {
-            await db.deleteDocument(D, C.L, ids[j]);
-            notifiedLogIds.delete(ids[j]);
-        }
+        for (var j = 0; j < ids.length; j++) { await db.deleteDocument(D, C.L, ids[j]); notifiedLogIds.delete(ids[j]); }
         hl();
         showToast(ids.length + ' deleted successfully!', 'success');
         lp('bulk_delete');
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 // ============================================================
@@ -2642,26 +2320,16 @@ async function rrp() {
         var users = await db.listDocuments(D, C.U, [Appwrite.Query.limit(200)]);
         window._resetUsers = users.documents;
         return '<div class="cc"><h5 class="fw-bold mb-2">Reset User Passwords</h5><p class="text-muted small mb-2">Set recovery password. User resets via "Forgot Password".</p><input id="rps" class="fc mb-2" placeholder="Search by name..." oninput="searchUsersForReset()"><div id="rpr" style="max-height:400px;overflow-y:auto"><p class="text-muted text-center small py-3">Type to search...</p></div></div>';
-    } catch (e) {
-        return '<div class="cc">Error</div>';
-    }
+    } catch (e) { return '<div class="cc">Error</div>'; }
 }
 
 function searchUsersForReset() {
     var q = document.getElementById('rps').value.trim().toLowerCase();
     var users = window._resetUsers || [];
     var rd = document.getElementById('rpr');
-    if (!q || q.length < 2) {
-        rd.innerHTML = '<p class="text-muted text-center small py-3">Type 2+ characters...</p>';
-        return;
-    }
-    var results = users.filter(function(u) {
-        return (u.fullName || '').toLowerCase().indexOf(q) > -1;
-    });
-    if (!results.length) {
-        rd.innerHTML = '<p class="text-muted text-center py-3">No users found</p>';
-        return;
-    }
+    if (!q || q.length < 2) { rd.innerHTML = '<p class="text-muted text-center small py-3">Type 2+ characters...</p>'; return; }
+    var results = users.filter(function(u) { return (u.fullName || '').toLowerCase().indexOf(q) > -1; });
+    if (!results.length) { rd.innerHTML = '<p class="text-muted text-center py-3">No users found</p>'; return; }
     var html = '';
     for (var i = 0; i < Math.min(results.length, 20); i++) {
         var u = results[i];
@@ -2683,45 +2351,23 @@ async function resetUserPassword(uid, uname) {
         preConfirm: function() {
             var np = document.getElementById('rnp').value;
             var cp = document.getElementById('rcp').value;
-            if (!np || !cp) {
-                Swal.showValidationMessage('All fields required');
-                return false;
-            }
-            if (np.length < 6) {
-                Swal.showValidationMessage('Password must be at least 6 characters');
-                return false;
-            }
-            if (np !== cp) {
-                Swal.showValidationMessage('Passwords do not match');
-                return false;
-            }
+            if (!np || !cp) { Swal.showValidationMessage('All fields required'); return false; }
+            if (np.length < 6) { Swal.showValidationMessage('Password must be at least 6 characters'); return false; }
+            if (np !== cp) { Swal.showValidationMessage('Passwords do not match'); return false; }
             return np;
         }
     });
     if (!result.value) return;
-    
     try {
         sl();
-        await db.updateDocument(D, C.U, uid, {
-            recoveryPassword: result.value,
-            needsPasswordReset: true,
-            updatedAt: new Date().toISOString()
-        });
+        await db.updateDocument(D, C.U, uid, { recoveryPassword: result.value, needsPasswordReset: true, updatedAt: new Date().toISOString() });
         hl();
-        await Swal.fire({
-            icon: 'success',
-            title: 'Recovery Set!',
-            html: '<p>Recovery password set for <strong>' + uname + '</strong>.</p>',
-            confirmButtonColor: '#10b981'
-        });
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: 'Failed' });
-    }
+        await Swal.fire({ icon: 'success', title: 'Recovery Set!', html: '<p>Recovery password set for <strong>' + uname + '</strong>.</p>', confirmButtonColor: '#10b981' });
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: 'Failed' }); }
 }
 
 // ============================================================
-// FORGOT PASSWORD (USER) - IMEREKEBISHWA
+// FORGOT PASSWORD (USER)
 // ============================================================
 async function forgotPassword() {
     var result = await Swal.fire({
@@ -2735,29 +2381,16 @@ async function forgotPassword() {
             var em = document.getElementById('fem').value.trim();
             var rn = document.getElementById('frn').value.trim();
             var rp = document.getElementById('frp').value;
-            if (!em) {
-                Swal.showValidationMessage('Enter email');
-                return false;
-            }
-            if (!rn) {
-                Swal.showValidationMessage('Enter reg number');
-                return false;
-            }
-            if (!rp) {
-                Swal.showValidationMessage('Enter recovery password');
-                return false;
-            }
+            if (!em) { Swal.showValidationMessage('Enter email'); return false; }
+            if (!rn) { Swal.showValidationMessage('Enter reg number'); return false; }
+            if (!rp) { Swal.showValidationMessage('Enter recovery password'); return false; }
             return { email: em, regNo: rn, recoveryPw: rp };
         }
     });
     if (!result.value) return;
-    
     var fd = result.value;
-    
     try {
         sl();
-        
-        // Step 1: Verify user exists with matching recovery details
         var res = await db.listDocuments(D, C.U, [
             Appwrite.Query.equal('email', fd.email),
             Appwrite.Query.equal('regNum', fd.regNo),
@@ -2765,25 +2398,16 @@ async function forgotPassword() {
             Appwrite.Query.equal('needsPasswordReset', true),
             Appwrite.Query.limit(1)
         ]);
-        
         if (res.total === 0) {
             hl();
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Details',
-                text: 'Email, Reg Number, or Recovery Password is incorrect. Contact Behsit Field Support: 0624887209',
-                confirmButtonColor: '#1a5276'
-            });
+            Swal.fire({ icon: 'error', title: 'Invalid Details', text: 'Email, Reg Number, or Recovery Password is incorrect. Contact Behsit Field Support: 0624887209', confirmButtonColor: '#1a5276' });
             return;
         }
-        
         var user = res.documents[0];
         hl();
-        
-        // Step 2: Ask for new password
         var pwResult = await Swal.fire({
             title: 'Identity Verified ✅',
-            html: '<div class="text-start"><p>Account: <strong>' + user.fullName + '</strong></p><p class="small text-muted">Set your new password below:</p><input id="fnp" class="fc mb-2" type="password" placeholder="New Password (min 6, A-Z, a-z, 0-9)"><input id="fcp" class="fc mb-2" type="password" placeholder="Confirm New Password"><div class="alert alert-warning small py-2 mt-2"><strong>KUMBUKA:</strong> Hii itakuwa password yako mpya ya kuingia. Chagua password utakayokumbuka.</div></div>',
+            html: '<div class="text-start"><p>Account: <strong>' + user.fullName + '</strong></p><p class="small text-muted">Set your new password below:</p><input id="fnp" class="fc mb-2" type="password" placeholder="New Password (min 6, A-Z, a-z, 0-9)"><input id="fcp" class="fc mb-2" type="password" placeholder="Confirm New Password"><div class="alert alert-warning small py-2 mt-2"><strong>NOTE:</strong> This will be your new login password. Choose a password you will remember.</div></div>',
             showCancelButton: true,
             confirmButtonText: 'Set New Password',
             cancelButtonText: 'Cancel',
@@ -2791,86 +2415,35 @@ async function forgotPassword() {
             preConfirm: function() {
                 var np = document.getElementById('fnp').value;
                 var cp = document.getElementById('fcp').value;
-                if (!np || !cp) {
-                    Swal.showValidationMessage('All fields required');
-                    return false;
-                }
+                if (!np || !cp) { Swal.showValidationMessage('All fields required'); return false; }
                 var pwErr = validatePassword(np, false);
-                if (pwErr) {
-                    Swal.showValidationMessage(pwErr);
-                    return false;
-                }
-                if (np !== cp) {
-                    Swal.showValidationMessage('Passwords do not match');
-                    return false;
-                }
+                if (pwErr) { Swal.showValidationMessage(pwErr); return false; }
+                if (np !== cp) { Swal.showValidationMessage('Passwords do not match'); return false; }
                 return np;
             }
         });
-        
         if (!pwResult.value) return;
-        
         var newPassword = pwResult.value;
-        
         sl();
-        
         try {
-            // Step 3: Login na recovery password kwenye Appwrite
             await ac.createEmailPasswordSession(user.email, fd.recoveryPw);
-            
-            // Step 4: Badilisha password Appwrite
             await ac.updatePassword(newPassword, fd.recoveryPw);
-            
-            // Step 5: Update database - futa recovery password
-            await db.updateDocument(D, C.U, user.$id, {
-                pwChanged: new Date().toISOString(),
-                recoveryPassword: null,
-                needsPasswordReset: false,
-                updatedAt: new Date().toISOString()
-            });
-            
-            // Step 6: Delete session so user logs in with new password
+            await db.updateDocument(D, C.U, user.$id, { pwChanged: new Date().toISOString(), recoveryPassword: null, needsPasswordReset: false, updatedAt: new Date().toISOString() });
             try { await ac.deleteSession('current'); } catch (e) {}
-            
             hl();
-            await Swal.fire({
-                icon: 'success',
-                title: 'Password Reset Successfully! ✅',
-                html: '<p>Password yako mpya imewekwa.</p><p class="small">Unaweza kuingia sasa na <strong>email yako</strong> na <strong>password mpya</strong> uliyoweka.</p>',
-                confirmButtonColor: '#10b981'
-            });
+            await Swal.fire({ icon: 'success', title: 'Password Reset Successfully! ✅', html: '<p>Your new password has been set.</p><p class="small">You can now login with your <strong>email</strong> and <strong>new password</strong>.</p>', confirmButtonColor: '#10b981' });
             cF();
-            
         } catch (loginError) {
             console.log('Recovery login failed:', loginError.message);
-            
-            // Recovery password haifanyi kazi kwenye Appwrite
-            await db.updateDocument(D, C.U, user.$id, {
-                recoveryPassword: newPassword,
-                pwChanged: 'reset_required',
-                needsPasswordReset: true,
-                updatedAt: new Date().toISOString()
-            });
-            
+            await db.updateDocument(D, C.U, user.$id, { recoveryPassword: newPassword, pwChanged: 'reset_required', needsPasswordReset: true, updatedAt: new Date().toISOString() });
             hl();
-            await Swal.fire({
-                icon: 'warning',
-                title: 'Password Update In Progress',
-                html: '<p>Password yako inasasishwa. Tafadhali wasiliana na <strong>Behsit Field Support: 0624887209</strong></p><p class="small">Admin atakusaidia kukamilisha mabadiliko ya password.</p>',
-                confirmButtonColor: '#f59e0b'
-            });
+            await Swal.fire({ icon: 'warning', title: 'Password Update In Progress', html: '<p>Your password is being updated. Please contact <strong>Behsit Field Support: 0624887209</strong></p><p class="small">Admin will assist you in completing the password change.</p>', confirmButtonColor: '#f59e0b' });
             cF();
         }
-        
     } catch (e) {
         hl();
         console.error('Forgot password error:', e);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something went wrong. Contact Behsit Field Support: 0624887209',
-            confirmButtonColor: '#1a5276'
-        });
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Contact Behsit Field Support: 0624887209', confirmButtonColor: '#1a5276' });
     }
 }
 
@@ -2891,18 +2464,13 @@ async function exportAllUsers() {
         for (var i = 0; i < users.documents.length; i++) {
             var u = users.documents[i];
             if (y > 285) { doc.addPage(); y = 10; }
-            var role = u.role || 'student';
-            var status = u.isActive !== false ? 'Active' : 'Inactive';
-            doc.text((u.fullName || 'N/A') + ' | ' + (u.email || 'N/A') + ' | ' + role + ' | ' + (u.region || 'N/A') + ' | ' + status, 10, y);
+            doc.text((u.fullName || 'N/A') + ' | ' + (u.email || 'N/A') + ' | ' + (u.role || 'student') + ' | ' + (u.region || 'N/A') + ' | ' + (u.isActive !== false ? 'Active' : 'Inactive'), 10, y);
             y += 4;
         }
         doc.save('Users_Report.pdf');
         hl();
         showToast('Users PDF exported!', 'success');
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 async function exportAllLogbooks() {
@@ -2916,11 +2484,8 @@ async function exportAllLogbooks() {
         var allActs = [];
         for (var i = 0; i < logs.documents.length; i++) {
             var l = logs.documents[i];
-            var sn = namesMap[l.studentId] || l.studentId;
             var acts = (l.activities || '').split('\n');
-            for (var j = 0; j < acts.length; j++) {
-                if (acts[j].trim()) allActs.push(sn + ' (W' + l.weekNumber + '): ' + acts[j].trim());
-            }
+            for (var j = 0; j < acts.length; j++) { if (acts[j].trim()) allActs.push((namesMap[l.studentId] || l.studentId) + ' (W' + l.weekNumber + '): ' + acts[j].trim()); }
         }
         doc.setFontSize(7);
         for (var k = 0; k < allActs.length; k++) {
@@ -2931,10 +2496,7 @@ async function exportAllLogbooks() {
         doc.save('Logbooks_Report.pdf');
         hl();
         showToast('Logbooks PDF exported!', 'success');
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 async function exportAllJSON() {
@@ -2942,30 +2504,19 @@ async function exportAllJSON() {
         sl();
         var u = await db.listDocuments(D, C.U, [Appwrite.Query.limit(500)]);
         var l = await db.listDocuments(D, C.L, [Appwrite.Query.limit(500)]);
-        var data = {
-            users: u.documents,
-            logbooks: l.documents,
-            exportedAt: new Date().toISOString()
-        };
         hl();
-        downloadFile(JSON.stringify(data, null, 2), 'behsit_data.json', 'application/json');
+        downloadFile(JSON.stringify({ users: u.documents, logbooks: l.documents, exportedAt: new Date().toISOString() }, null, 2), 'behsit_data.json', 'application/json');
         showToast('JSON exported!', 'success');
-    } catch (e) {
-        hl();
-        Swal.fire({ icon: 'error', text: e.message });
-    }
+    } catch (e) { hl(); Swal.fire({ icon: 'error', text: e.message }); }
 }
 
 function downloadFile(c, f, m) {
     var b = new Blob([c], { type: m || 'text/csv' });
-    var u = URL.createObjectURL(b);
+    var url = URL.createObjectURL(b);
     var a = document.createElement('a');
-    a.href = u;
-    a.download = f;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(u);
+    a.href = url; a.download = f;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 // ============================================================
@@ -2985,10 +2536,7 @@ window.addEventListener('beforeinstallprompt', function(e) {
         }).then(function(r) {
             if (r.isConfirmed && dp) {
                 dp.prompt();
-                dp.userChoice.then(function(c) {
-                    if (c.outcome === 'accepted') showToast('Installed!', 'success');
-                    dp = null;
-                });
+                dp.userChoice.then(function(c) { if (c.outcome === 'accepted') showToast('Installed!', 'success'); dp = null; });
             }
         });
     }, 1500);
@@ -3005,62 +2553,17 @@ if ('serviceWorker' in navigator) {
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     pR();
-    
-    document.getElementById('lb').addEventListener('click', function() {
-        var btn = this;
-        if (btn.disabled) return;
-        btn.disabled = true;
-        login().finally(function() {
-            setTimeout(function() {
-                btn.disabled = false;
-            }, 200);
-        });
-    });
-    
-    document.getElementById('rb').addEventListener('click', function() {
-        var btn = this;
-        if (btn.disabled) return;
-        btn.disabled = true;
-        reg().finally(function() {
-            setTimeout(function() {
-                btn.disabled = false;
-            }, 200);
-        });
-    });
-    
-    document.getElementById('srl').addEventListener('click', function() {
-        cF();
-        document.getElementById('lf').style.display = 'none';
-        document.getElementById('rf').style.display = 'block';
-        pR();
-    });
-    document.getElementById('fpl').addEventListener('click', function() {
-        forgotPassword();
-    });
-    document.getElementById('hlp').addEventListener('click', function() {
-        helpSupport();
-    });
-    document.getElementById('btl').addEventListener('click', function() {
-        cF();
-        document.getElementById('rf').style.display = 'none';
-        document.getElementById('lf').style.display = 'block';
-    });
+    document.getElementById('lb').addEventListener('click', function() { var btn = this; if (btn.disabled) return; btn.disabled = true; login().finally(function() { setTimeout(function() { btn.disabled = false; }, 200); }); });
+    document.getElementById('rb').addEventListener('click', function() { var btn = this; if (btn.disabled) return; btn.disabled = true; reg().finally(function() { setTimeout(function() { btn.disabled = false; }, 200); }); });
+    document.getElementById('srl').addEventListener('click', function() { cF(); document.getElementById('lf').style.display = 'none'; document.getElementById('rf').style.display = 'block'; pR(); });
+    document.getElementById('fpl').addEventListener('click', forgotPassword);
+    document.getElementById('hlp').addEventListener('click', helpSupport);
+    document.getElementById('btl').addEventListener('click', function() { cF(); document.getElementById('rf').style.display = 'none'; document.getElementById('lf').style.display = 'block'; });
     document.getElementById('mLogout').addEventListener('click', logout);
     document.getElementById('hb').addEventListener('click', tS);
     document.getElementById('smo').addEventListener('click', cS);
-    document.getElementById('mDark').addEventListener('click', function() {
-        document.body.classList.toggle('dm');
-        var dmStatus = document.getElementById('dmStatus');
-        if (dmStatus) {
-            dmStatus.textContent = document.body.classList.contains('dm') ? 'On' : 'Off';
-        }
-        cS();
-    });
-    document.querySelectorAll('.smi[data-p]').forEach(function(item) {
-        item.addEventListener('click', function() {
-            lp(this.dataset.p);
-        });
-    });
+    document.getElementById('mDark').addEventListener('click', function() { document.body.classList.toggle('dm'); var dmStatus = document.getElementById('dmStatus'); if (dmStatus) dmStatus.textContent = document.body.classList.contains('dm') ? 'On' : 'Off'; cS(); });
+    document.querySelectorAll('.smi[data-p]').forEach(function(item) { item.addEventListener('click', function() { lp(this.dataset.p); }); });
     ck();
 });
 
