@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+
 <style>
 :root{--p:#0f172a;--s:#3b82f6;--g:#10b981;--w:#f59e0b;--d:#ef4444;--card:#fff;--ch:#f8fafc;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--shadow:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 12px rgba(0,0,0,0.06);--shadow-lg:0 12px 40px rgba(0,0,0,0.08);--gradient:linear-gradient(135deg,#0f172a,#1e3a5f 50%,#1a5276);--glass:rgba(255,255,255,0.88)}
 body.dm{--card:#1e293b;--ch:#273548;--text:#e2e8f0;--muted:#94a3b8;--border:#334155;--bg:#0f172a;--glass:rgba(30,41,59,0.88)}
@@ -23,16 +28,18 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--gra
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:10px}
 .aw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
 .ac{background:var(--card);border-radius:24px;box-shadow:var(--shadow-lg);width:100%;max-width:440px;overflow:hidden;border:1px solid var(--border)}
-.ah{background:var(--gradient);padding:2.2rem 1.5rem;text-align:center;color:#fff;position:relative;overflow:hidden}
+.ah{background:var(--gradient);padding:2.5rem 1.5rem 2.8rem 1.5rem;text-align:center;color:#fff;position:relative;overflow:hidden}
 .ah::after{content:'';position:absolute;bottom:-18px;left:-18px;right:-18px;height:36px;background:var(--card);border-radius:50% 50% 0 0}
-.ab{padding:1.8rem}
-.fc{border:2px solid var(--border);border-radius:12px;padding:0.7rem 0.9rem;font-size:0.84rem;width:100%;background:var(--bg);transition:all 0.15s ease;color:var(--text);font-family:'Inter',sans-serif;outline:none}
-.fc:focus{border-color:var(--s);box-shadow:0 0 0 4px rgba(59,130,246,0.08);background:var(--card)}
-.bg{background:var(--gradient);color:#fff;border:none;border-radius:12px;padding:0.8rem;font-weight:600;font-size:0.88rem;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.4rem;transition:all 0.15s ease}
-.bg:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(15,23,42,0.3)}.bg:active{transform:scale(0.96)!important}
-.bg:disabled{opacity:0.5;pointer-events:none;transform:none!important}
-.bo{border:2px solid var(--s);color:var(--s);background:transparent;border-radius:12px;padding:0.75rem;font-weight:600;width:100%;cursor:pointer;transition:all 0.15s ease;font-size:0.85rem}
-.bo:hover{background:var(--s);color:#fff;transform:translateY(-1px)}.bo:active{transform:scale(0.96)!important}
+.ab{padding:1.8rem 1.8rem 0.5rem 1.8rem}
+.fc{border:1.5px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-size:0.85rem;width:100%;background:var(--bg);transition:all 0.2s ease;color:var(--text);font-family:'Inter',sans-serif;outline:none;box-shadow:0 1px 2px rgba(0,0,0,0.02)}
+.fc::placeholder{color:#94a3b8;opacity:0.8;font-weight:400}
+.fc:focus{border-color:var(--s);box-shadow:0 0 0 3px rgba(59,130,246,0.1),0 1px 3px rgba(0,0,0,0.04);background:var(--card)}
+label.small.fw-semibold{margin-bottom:0.4rem !important;display:block;color:var(--muted);font-weight:600 !important;font-size:0.7rem !important;letter-spacing:0.03em;text-transform:uppercase}
+.bg{background:var(--gradient);color:#fff;border:none;border-radius:10px;padding:0.85rem;font-weight:600;font-size:0.88rem;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s ease;letter-spacing:0.02em;box-shadow:0 4px 6px rgba(15,23,42,0.1)}
+.bg:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,23,42,0.2)}.bg:active{transform:scale(0.97)!important}
+.bg:disabled{opacity:0.5;pointer-events:none;transform:none!important;box-shadow:none}
+.bo{border:2px solid var(--s);color:var(--s);background:transparent;border-radius:10px;padding:0.75rem;font-weight:600;width:100%;cursor:pointer;transition:all 0.2s ease;font-size:0.85rem;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
+.bo:hover{background:var(--s);color:#fff;transform:translateY(-1px);box-shadow:0 4px 10px rgba(59,130,246,0.2)}.bo:active{transform:scale(0.97)!important}
 .dc{display:none;min-height:100vh}
 .mc{padding:0.5rem;min-height:100vh;max-width:1100px;margin:0 auto}
 .tb{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px;padding:0.5rem 0.8rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;box-shadow:var(--shadow-md);position:sticky;top:0.4rem;z-index:100;flex-wrap:wrap;border:1px solid rgba(255,255,255,0.15)}
@@ -94,20 +101,23 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--gra
 <div id="ac" class="aw">
 <div class="ac">
 <div class="ah">
-<img src="https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a36391e001202801f50/view?project=6a21b1440038c361fabb" alt="Logo" style="width:50px;height:50px;border-radius:50%;margin-bottom:0.5rem;border:2px solid rgba(255,255,255,0.3);box-shadow:0 4px 12px rgba(0,0,0,0.2)" loading="lazy">
-<h5 class="fw-bold mb-1" style="font-size:1rem">Behsit Field System</h5>
-<p class="mb-0 small opacity-75" style="font-size:0.68rem">Smart Internship Logbook</p>
+<div style="margin-bottom:1rem;">
+<img src="https://fra.cloud.appwrite.io/v1/storage/buckets/6a32ddf3000938f57fb8/files/6a36391e001202801f50/view?project=6a21b1440038c361fabb" alt="Logo" style="width:55px;height:55px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);box-shadow:0 8px 20px rgba(0,0,0,0.2);object-fit:cover;" loading="lazy">
+</div>
+<h5 class="fw-bold mb-1" style="font-size:1.1rem;letter-spacing:-0.01em;">Behsit Field System</h5>
+<p class="mb-0" style="font-size:0.7rem;opacity:0.85;font-weight:400;">Smart Internship Logbook</p>
 </div>
 <div id="lf">
 <div class="ab">
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Email Address</label><input type="email" id="le" class="fc" placeholder="your@email.com" autocomplete="email"></div>
-<div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Password</label><div style="position:relative"><input type="password" id="lp" class="fc" placeholder="••••••••" autocomplete="current-password"><i class="bi bi-eye-slash" id="tpi" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8;font-size:1rem" onclick="tP()"></i></div></div>
-<button id="lb" class="bg" type="button"><i class="bi bi-box-arrow-in-right"></i>Sign In</button>
+<div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Password</label><div style="position:relative"><input type="password" id="lp" class="fc" placeholder="••••••••" autocomplete="current-password"><i class="bi bi-eye-slash" id="tpi" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#64748b;font-size:1.1rem;padding:4px;border-radius:4px;transition:all 0.2s" onclick="tP()" onmouseover="this.style.color='var(--s)'" onmouseout="this.style.color='#64748b'"></i></div></div>
+<button id="lb" class="bg" type="button" style="margin-top:0.5rem;"><span>Sign In</span> <i class="bi bi-arrow-right-short" style="font-size:1.1rem;"></i></button>
 </div>
-<div class="text-center pb-4">
-<small class="text-muted">No account? <a id="srl" style="color:var(--s);cursor:pointer;font-weight:600;text-decoration:none">Register here</a></small>
-<br><small class="mt-1 d-inline-block"><a id="fpl" style="color:var(--w);cursor:pointer;font-weight:500;text-decoration:none">Forgot Password?</a></small>
-<br><small class="mt-1 d-inline-block"><a id="hlp" style="color:var(--g);cursor:pointer;font-weight:500;text-decoration:none"><i class="bi bi-headset"></i> Help & Support</a></small>
+<div style="border-top:1px solid var(--border);margin:0 1.8rem 1rem 1.8rem;opacity:0.6;"></div>
+<div class="text-center" style="padding-bottom:1.5rem;">
+<small class="d-block mb-2"><span class="text-muted">No account?</span> <a id="srl" style="color:var(--s);cursor:pointer;font-weight:600;text-decoration:none;margin-left:4px;">Register here</a></small>
+<small class="d-block mb-2"><a id="fpl" style="color:var(--w);cursor:pointer;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:3px;"><i class="bi bi-shield-lock" style="font-size:0.7rem;"></i> Forgot Password?</a></small>
+<small class="d-block"><a id="hlp" style="color:var(--g);cursor:pointer;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:3px;"><i class="bi bi-headset"></i> Help & Support</a></small>
 </div>
 </div>
 <div id="rf" style="display:none">
@@ -118,8 +128,8 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--gra
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Department</label><input type="text" id="rd" class="fc" placeholder="Computer Science"></div>
 <div class="row"><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Region</label><select id="regR" class="fc" onchange="uD()"><option value="">Select</option></select></div><div class="col-6 mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">District</label><select id="regD" class="fc"><option value="">Select</option></select></div></div>
 <div class="mb-3"><label class="small fw-semibold text-muted mb-1" style="font-size:0.72rem">Password</label><input type="password" id="rpw" class="fc" placeholder="Min 6 chars, A-Z, a-z, 0-9"></div>
-<button id="rb" class="bg" type="button"><i class="bi bi-person-plus"></i>Create Account</button>
-<button id="btl" class="bo mt-3" type="button"><i class="bi bi-arrow-left"></i>Back to Login</button>
+<button id="rb" class="bg" type="button" style="margin-top:0.5rem;"><span>Create Account</span> <i class="bi bi-person-plus-fill" style="font-size:0.9rem;"></i></button>
+<button id="btl" class="bo" type="button" style="margin-top:1rem;"><i class="bi bi-arrow-left"></i> <span>Back to Login</span></button>
 </div>
 </div>
 </div>
@@ -170,7 +180,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--gra
 <button class="smi" data-p="reset_passwords" type="button"><i class="bi bi-key"></i>Reset Passwords</button>
 </div>
 <div class="sd"></div>
-<button class="smi" id="mDark" type="button"><i class="bi bi-moon-stars"></i>Dark Mode</button>
+<button class="smi" id="mDark" type="button" style="margin-top:0.3rem;"><i class="bi bi-moon-stars"></i><span>Dark Mode</span><span id="dmStatus" style="margin-left:auto;font-size:0.55rem;opacity:0.8;background:var(--border);padding:1px 6px;border-radius:8px;">Off</span></button>
 <button class="smi" id="mLogout" type="button"><i class="bi bi-box-arrow-right"></i>Logout</button>
 </div>
 
@@ -183,7 +193,151 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--gra
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
+// ============================================================
+// FIREBASE INITIALIZATION
+// ============================================================
+firebase.initializeApp({
+    apiKey: "AIzaSyBxVQIOUJ3GpTLewkeOicYsRJgsOx_2tJ8",
+    authDomain: "logbook-20424.firebaseapp.com",
+    databaseURL: "https://logbook-20424-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "logbook-20424",
+    storageBucket: "logbook-20424.firebasestorage.app",
+    messagingSenderId: "1018154189026",
+    appId: "1:1018154189026:web:6a7b5c97e5b2f5f756debb"
+});
+
+const messaging = firebase.messaging();
+const VAPID_KEY = "BBEyixhR10lNOiNel340i0g2fQmL12zpKFbXosjOqHL6SG0D3Oqowi6M953CsRR4vV111izX6qz8qHMIeMRFZUY";
+
 "use strict";
+
+// ============================================================
+// FCM PUSH NOTIFICATIONS
+// ============================================================
+async function requestNotificationPermission() {
+    try {
+        if (!('Notification' in window)) {
+            console.log('Browser does not support notifications');
+            return false;
+        }
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            console.log('✅ Notification permission granted');
+            return true;
+        } else {
+            console.log('❌ Notification permission denied');
+            return false;
+        }
+    } catch (error) {
+        console.error('Permission error:', error);
+        return false;
+    }
+}
+
+async function getFCMToken() {
+    try {
+        const currentToken = await messaging.getToken({ vapidKey: VAPID_KEY });
+        if (currentToken) {
+            console.log('📱 FCM Token:', currentToken);
+            if (U && U.userId) {
+                try {
+                    await db.updateDocument(D, C.U, U.userId, {
+                        fcmToken: currentToken,
+                        fcmPlatform: 'web',
+                        fcmUpdatedAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    });
+                    console.log('✅ FCM token saved to Appwrite');
+                } catch (e) {
+                    console.error('Failed to save FCM token:', e);
+                }
+            }
+            return currentToken;
+        } else {
+            console.log('No registration token available');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting FCM token:', error);
+        return null;
+    }
+}
+
+function setupTokenRefresh() {
+    messaging.onTokenRefresh(async () => {
+        console.log('🔄 FCM Token refreshed');
+        const newToken = await getFCMToken();
+        if (newToken && U && U.userId) {
+            try {
+                await db.updateDocument(D, C.U, U.userId, {
+                    fcmToken: newToken,
+                    fcmUpdatedAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                });
+            } catch (e) {}
+        }
+    });
+}
+
+function setupForegroundMessages() {
+    messaging.onMessage(async (payload) => {
+        console.log('📨 Foreground message:', payload);
+        const title = payload.notification?.title || 'Behsit Field';
+        const body = payload.notification?.body || 'Una ujumbe mpya!';
+        
+        showToast(title + ': ' + body, 'info');
+        
+        if (payload.notification) {
+            Swal.fire({
+                title: title,
+                text: body,
+                icon: 'info',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        }
+        
+        if (payload.data?.type === 'new_logbook' && U && U.role === 'supervisor') {
+            pop();
+        }
+    });
+}
+
+async function initFCM() {
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        console.log('Push notifications not supported');
+        return;
+    }
+    const permitted = await requestNotificationPermission();
+    if (permitted) {
+        await getFCMToken();
+        setupTokenRefresh();
+        setupForegroundMessages();
+    }
+}
+
+async function deleteFCMToken() {
+    try {
+        if (U && U.userId) {
+            await db.updateDocument(D, C.U, U.userId, {
+                fcmToken: null,
+                fcmUpdatedAt: null,
+                updatedAt: new Date().toISOString()
+            });
+        }
+        await messaging.deleteToken();
+        console.log('🗑️ FCM Token deleted');
+    } catch (e) {
+        console.error('Failed to delete token:', e);
+    }
+}
 
 // ============================================================
 // TOAST FUNCTION
@@ -250,7 +404,7 @@ var chk = null;
 var sp = null;
 var isNotifShowing = false;
 var notifiedLogIds = new Set();
-var dp = null; // PWA deferred prompt
+var dp = null;
 
 // ============================================================
 // DATA
@@ -453,6 +607,10 @@ async function cn(uid, t, m) {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         });
+        
+        if (U && U.userId === uid) {
+            showToast(t, 'info');
+        }
     } catch (e) {}
 }
 
@@ -918,6 +1076,8 @@ async function changePwProfile() {
 // LOGOUT
 // ============================================================
 async function logout() {
+    await deleteFCMToken();
+    
     try { await ac.deleteSession('current'); } catch (e) {}
     if (chk) clearInterval(chk);
     U = null;
@@ -970,6 +1130,8 @@ function sD() {
         setTimeout(pop, 3000);
     }
     if (U.role === 'admin') setTimeout(uB, 1000);
+    
+    initFCM();
 }
 
 async function uB() {
@@ -2559,7 +2721,7 @@ async function resetUserPassword(uid, uname) {
 }
 
 // ============================================================
-// FORGOT PASSWORD (USER)
+// FORGOT PASSWORD (USER) - IMEREKEBISHWA
 // ============================================================
 async function forgotPassword() {
     var result = await Swal.fire({
@@ -2591,30 +2753,37 @@ async function forgotPassword() {
     if (!result.value) return;
     
     var fd = result.value;
+    
     try {
         sl();
+        
+        // Step 1: Verify user exists with matching recovery details
         var res = await db.listDocuments(D, C.U, [
             Appwrite.Query.equal('email', fd.email),
             Appwrite.Query.equal('regNum', fd.regNo),
             Appwrite.Query.equal('recoveryPassword', fd.recoveryPw),
+            Appwrite.Query.equal('needsPasswordReset', true),
             Appwrite.Query.limit(1)
         ]);
+        
         if (res.total === 0) {
             hl();
             Swal.fire({
                 icon: 'error',
-                title: 'Invalid',
-                text: 'Details do not match. Contact Behsit Field Support: 0624887209',
+                title: 'Invalid Details',
+                text: 'Email, Reg Number, or Recovery Password is incorrect. Contact Behsit Field Support: 0624887209',
                 confirmButtonColor: '#1a5276'
             });
             return;
         }
+        
         var user = res.documents[0];
         hl();
         
+        // Step 2: Ask for new password
         var pwResult = await Swal.fire({
-            title: 'Verified!',
-            html: '<div class="text-start"><p>Account: <strong>' + user.fullName + '</strong></p><input id="fnp" class="fc mb-2" type="password" placeholder="New Password (min 6, A-Z, a-z, 0-9)"><input id="fcp" class="fc mb-2" type="password" placeholder="Confirm New Password"></div>',
+            title: 'Identity Verified ✅',
+            html: '<div class="text-start"><p>Account: <strong>' + user.fullName + '</strong></p><p class="small text-muted">Set your new password below:</p><input id="fnp" class="fc mb-2" type="password" placeholder="New Password (min 6, A-Z, a-z, 0-9)"><input id="fcp" class="fc mb-2" type="password" placeholder="Confirm New Password"><div class="alert alert-warning small py-2 mt-2"><strong>KUMBUKA:</strong> Hii itakuwa password yako mpya ya kuingia. Chagua password utakayokumbuka.</div></div>',
             showCancelButton: true,
             confirmButtonText: 'Set New Password',
             cancelButtonText: 'Cancel',
@@ -2638,46 +2807,70 @@ async function forgotPassword() {
                 return np;
             }
         });
+        
         if (!pwResult.value) return;
         
-        var newPw = pwResult.value;
+        var newPassword = pwResult.value;
+        
         sl();
+        
         try {
+            // Step 3: Login na recovery password kwenye Appwrite
             await ac.createEmailPasswordSession(user.email, fd.recoveryPw);
-            await ac.updatePassword(newPw, fd.recoveryPw);
+            
+            // Step 4: Badilisha password Appwrite
+            await ac.updatePassword(newPassword, fd.recoveryPw);
+            
+            // Step 5: Update database - futa recovery password
             await db.updateDocument(D, C.U, user.$id, {
                 pwChanged: new Date().toISOString(),
                 recoveryPassword: null,
                 needsPasswordReset: false,
                 updatedAt: new Date().toISOString()
             });
+            
+            // Step 6: Delete session so user logs in with new password
+            try { await ac.deleteSession('current'); } catch (e) {}
+            
             hl();
             await Swal.fire({
                 icon: 'success',
-                title: 'Done!',
-                text: 'Login with your new password.',
+                title: 'Password Reset Successfully! ✅',
+                html: '<p>Password yako mpya imewekwa.</p><p class="small">Unaweza kuingia sasa na <strong>email yako</strong> na <strong>password mpya</strong> uliyoweka.</p>',
                 confirmButtonColor: '#10b981'
             });
             cF();
-        } catch (e) {
-            hl();
+            
+        } catch (loginError) {
+            console.log('Recovery login failed:', loginError.message);
+            
+            // Recovery password haifanyi kazi kwenye Appwrite
             await db.updateDocument(D, C.U, user.$id, {
-                pwChanged: new Date().toISOString(),
-                recoveryPassword: null,
-                needsPasswordReset: false,
+                recoveryPassword: newPassword,
+                pwChanged: 'reset_required',
+                needsPasswordReset: true,
                 updatedAt: new Date().toISOString()
             });
+            
+            hl();
             await Swal.fire({
-                icon: 'success',
-                title: 'Password Reset!',
-                html: '<p>Try logging in with your new password.</p><p class="small">If issues: <strong>0624887209</strong></p>',
-                confirmButtonColor: '#10b981'
+                icon: 'warning',
+                title: 'Password Update In Progress',
+                html: '<p>Password yako inasasishwa. Tafadhali wasiliana na <strong>Behsit Field Support: 0624887209</strong></p><p class="small">Admin atakusaidia kukamilisha mabadiliko ya password.</p>',
+                confirmButtonColor: '#f59e0b'
             });
             cF();
         }
+        
     } catch (e) {
         hl();
-        Swal.fire({ icon: 'error', text: 'Something went wrong' });
+        console.error('Forgot password error:', e);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong. Contact Behsit Field Support: 0624887209',
+            confirmButtonColor: '#1a5276'
+        });
     }
 }
 
@@ -2857,6 +3050,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('smo').addEventListener('click', cS);
     document.getElementById('mDark').addEventListener('click', function() {
         document.body.classList.toggle('dm');
+        var dmStatus = document.getElementById('dmStatus');
+        if (dmStatus) {
+            dmStatus.textContent = document.body.classList.contains('dm') ? 'On' : 'Off';
+        }
         cS();
     });
     document.querySelectorAll('.smi[data-p]').forEach(function(item) {
